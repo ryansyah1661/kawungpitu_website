@@ -15,7 +15,8 @@ class Category extends Model
         'name',
         'slug',
         'type',
-        'sort_order'
+        'sort_order',
+        'icon',
     ];
 
     // Slug juga harus masuk sini Qi, biar URL kategori bisa ganti bahasa

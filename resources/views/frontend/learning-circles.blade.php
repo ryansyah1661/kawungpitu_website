@@ -87,7 +87,7 @@
                     </ul>
                 </div>
 
-                {{-- Kategori --}}
+                {{-- Kategori (Sidebar) --}}
                 <div>
                     <h3
                         class="font-tegas text-xl font-black text-primary mb-6 border-b-2 border-primary/10 pb-2 uppercase tracking-tight">
@@ -99,12 +99,19 @@
                                 <a class="flex justify-between items-center group hover:translate-x-1 transition-transform duration-300"
                                     href="{{ route('lbk.index', ['locale' => app()->getLocale(), 'kategori' => $cat->slug]) }}">
 
-                                    {{-- Wrapper untuk Icon + Nama --}}
-                                    <div class="flex items-center space-x-3">
+                                    <div class="flex items-center space-x-4">
                                         @if ($cat->icon)
-                                            <img src="{{ asset('storage/' . $cat->icon) }}"
-                                                class="w-7 h-7 object-contain rounded-md grayscale group-hover:grayscale-0 transition-all duration-300"
-                                                alt="{{ $cat->name }}">
+                                            <div
+                                                class="p-2 rounded-xl transition-all duration-300 
+                                                {{ request('kategori') == $cat->slug ? 'bg-primary shadow-lg shadow-primary/20' : 'bg-primary/5 group-hover:bg-primary' }}">
+
+                                                <img src="{{ asset('storage/' . $cat->icon) }}"
+                                                    class="w-6 h-6 object-contain transition-all duration-300 
+                                                    {{ request('kategori') == $cat->slug
+                                                        ? 'brightness-0 invert'
+                                                        : 'opacity-70 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert' }}"
+                                                    alt="{{ $cat->name }}">
+                                            </div>
                                         @else
                                             <span
                                                 class="material-symbols-outlined text-lg text-primary/40 group-hover:text-primary transition-colors">
@@ -199,9 +206,11 @@
                                     </div>
                                 @endif
 
-                                <div class="absolute top-4 left-4 flex gap-2">
+                                {{-- Combined Badge Container (Status + Category) --}}
+                                <div class="absolute top-3 left-3 right-3 flex flex-wrap gap-2 pointer-events-none">
+                                    {{-- Status Badge --}}
                                     <span
-                                        class="{{ $material->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5">
+                                        class="{{ $material->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[9px] md:text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5 whitespace-nowrap">
                                         @if ($material->status === 'ongoing')
                                             <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
                                             {{ __('messages.program.ongoing') }}
@@ -210,23 +219,17 @@
                                             {{ __('messages.program.completed') }}
                                         @endif
                                     </span>
-                                </div>
 
-                                <div class="absolute top-4 right-4">
+                                    {{-- Category Badge --}}
                                     <span
-                                        class="bg-primary text-white text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2">
-
-                                        {{-- 1. Tambahkan pengecekan relasi kategori ($material->category) --}}
+                                        class="bg-primary text-white text-[9px] md:text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2 whitespace-nowrap">
                                         @if ($material->category && $material->category->icon)
                                             <img src="{{ asset('storage/' . $material->category->icon) }}"
-                                                {{-- 2. Lepas 'brightness-0 invert' kalau ikonnya sudah berwarna atau mau terlihat aslinya --}} {{-- Gunakan 'grayscale brightness-200' kalau mau tetap putih tapi detailnya ada --}}
-                                                class="w-4 h-4 object-contain"
+                                                class="w-4 h-4 object-contain brightness-0 invert"
                                                 alt="{{ $material->category->name }}">
                                         @else
-                                            {{-- 3. Tambahkan fallback ikon kalau kategorinya nggak punya ikon --}}
                                             <span class="material-symbols-outlined text-[14px]">category</span>
                                         @endif
-
                                         {{ $material->category->name ?? 'Uncategorized' }}
                                     </span>
                                 </div>

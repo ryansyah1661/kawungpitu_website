@@ -19,10 +19,18 @@
 
             {{-- Category + Date --}}
             <div class="flex flex-wrap items-center gap-3 mb-6">
+                {{-- Modifikasi Bagian Badge Kategori untuk Menampilkan Ikon --}}
                 <span
-                    class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg">
+                    class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2">
+                    @if ($lbk->category && $lbk->category->icon)
+                        <img src="{{ asset('storage/' . $lbk->category->icon) }}"
+                            class="w-4 h-4 object-contain brightness-0 invert" alt="{{ $lbk->category->name }}">
+                    @else
+                        <span class="material-symbols-outlined text-[14px]">category</span>
+                    @endif
                     {{ $lbk->category->name }}
                 </span>
+
                 <span
                     class="{{ $lbk->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[10px] font-bold py-2 px-4 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5">
                     @if ($lbk->status === 'ongoing')

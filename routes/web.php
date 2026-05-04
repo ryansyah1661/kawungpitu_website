@@ -6,7 +6,7 @@ use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LbkController;
-use App\Http\Controllers\PageController;
+use App\Http\Controllers\AboutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +25,7 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function () 
     Route::get('/', [LandingPageController::class, 'index'])->name('home');
 
     // Tentang Kami (URI diubah ke /about agar universal)
-    Route::get('/about', [PageController::class, 'tentang'])->name('tentang');
+    Route::get('/about', [AboutController::class, 'index'])->name('tentang');
 
     // Artikel (URI menggunakan /articles agar universal)
     Route::get('/articles', [ArtikelController::class, 'index'])->name('artikel.index');

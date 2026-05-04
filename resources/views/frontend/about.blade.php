@@ -222,22 +222,75 @@
     </section>
 
     {{-- SECTION TIM --}}
-    <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-        <div class="text-center mb-20">
+    <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto scroll-mt-20" x-data="{ activeTab: 'advisors' }">
+        <div class="text-center mb-16">
             <h2 class="font-tegas text-4xl font-black text-primary mb-4 uppercase">{{ __('messages.about.team.title') }}
             </h2>
-            <div class="h-1 w-20 bg-primary mx-auto"></div>
+            <div class="h-1 w-20 bg-primary mx-auto mb-10"></div>
+
+            {{-- Tab Switcher --}}
+            <div class="flex flex-wrap justify-center gap-4 font-tegas">
+                <button @click="activeTab = 'advisors'"
+                    :class="activeTab === 'advisors' ? 'bg-primary text-white shadow-xl shadow-primary/20' :
+                        'bg-primary/5 text-primary hover:bg-primary/10'"
+                    class="px-8 py-3 rounded-xl uppercase tracking-widest font-black transition-all duration-300 border-2 border-primary/10">
+                    Advisors
+                </button>
+                <button @click="activeTab = 'struktur'"
+                    :class="activeTab === 'struktur' ? 'bg-primary text-white shadow-xl shadow-primary/20' :
+                        'bg-primary/5 text-primary hover:bg-primary/10'"
+                    class="px-8 py-3 rounded-xl uppercase tracking-widest font-black transition-all duration-300 border-2 border-primary/10">
+                    Struktur Lembaga
+                </button>
+            </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-            <div class="group text-center">
-                <div class="relative overflow-hidden rounded-2xl bg-cream aspect-[3/4] mb-6 shadow-xl shadow-primary/5">
-                    <img alt="{{ __('messages.about.team.img_alt_founder') }}"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
-                        src="{{ asset('images/noel.jpg') }}" />
-                </div>
-                <h3 class="font-tegas text-xl font-bold text-dark">Noel Gallagher</h3>
-                <p class="font-body text-sm text-primary font-bold mt-1 uppercase tracking-widest">
-                    {{ __('messages.about.team.role_founder') }}</p>
+
+        {{-- Content: Advisors --}}
+        <div x-show="activeTab === 'advisors'" x-cloak x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0 translate-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+                @foreach ($advisors as $advisor)
+                    <div class="group">
+                        <div
+                            class="relative overflow-hidden rounded-3xl bg-cream aspect-[3/4] mb-6 shadow-2xl shadow-primary/5 border border-gray-100">
+                            <img alt="{{ $advisor->name }}"
+                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
+                                src="{{ asset('storage/' . $advisor->photo) }}" />
+                        </div>
+                        <div class="space-y-3">
+                            <h3 class="font-tegas text-2xl font-black text-dark uppercase tracking-tight">
+                                {{ $advisor->name }}</h3>
+                            <p class="font-body text-sm text-primary font-bold uppercase tracking-widest">
+                                {{ $advisor->role }}</p>
+                            @if ($advisor->description)
+                                <p
+                                    class="text-gray-500 font-light leading-relaxed text-sm italic border-l-2 border-primary/10 pl-4">
+                                    {{ $advisor->description }}
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- Content: Struktur Lembaga --}}
+        <div x-show="activeTab === 'struktur'" x-cloak x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0 translate-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                @foreach ($structures as $structure)
+                    <div class="group text-center">
+                        <div
+                            class="relative overflow-hidden rounded-2xl bg-cream aspect-[3/4] mb-6 shadow-xl shadow-primary/5 border border-gray-100">
+                            <img alt="{{ $structure->name }}"
+                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
+                                src="{{ asset('storage/' . $structure->photo) }}" />
+                        </div>
+                        <h3 class="font-tegas text-xl font-bold text-dark">{{ $structure->name }}</h3>
+                        <p class="font-body text-sm text-primary font-bold mt-1 uppercase tracking-widest">
+                            {{ $structure->role }}</p>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
