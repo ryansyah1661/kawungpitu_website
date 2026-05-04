@@ -220,7 +220,7 @@
                                         @if ($material->category && $material->category->icon)
                                             <img src="{{ asset('storage/' . $material->category->icon) }}"
                                                 {{-- 2. Lepas 'brightness-0 invert' kalau ikonnya sudah berwarna atau mau terlihat aslinya --}} {{-- Gunakan 'grayscale brightness-200' kalau mau tetap putih tapi detailnya ada --}}
-                                                class="w-4 h-4 object-contain brightness-200"
+                                                class="w-4 h-4 object-contain"
                                                 alt="{{ $material->category->name }}">
                                         @else
                                             {{-- 3. Tambahkan fallback ikon kalau kategorinya nggak punya ikon --}}
