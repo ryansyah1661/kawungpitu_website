@@ -118,10 +118,7 @@ class LbkMaterialResource extends Resource
                                     ->label('Tanggal Publish')
                                     ->displayFormat('d/m/Y H:i'),
 
-                                Forms\Components\TextInput::make('sort_order')
-                                    ->label('Urutan')
-                                    ->numeric()
-                                    ->default(0),
+                                // Input 'Urutan' sudah dihapus di sini
                             ]),
 
                         Forms\Components\Section::make('Gambar')
@@ -200,9 +197,7 @@ class LbkMaterialResource extends Resource
                     ->trueColor('success')
                     ->falseColor('danger'),
 
-                Tables\Columns\TextColumn::make('sort_order')
-                    ->label('Urut')
-                    ->sortable(),
+                // Kolom 'Urutan' sudah dihapus di sini
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
@@ -222,7 +217,8 @@ class LbkMaterialResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('sort_order');
+            // Default sort diubah ke 'created_at' terbaru
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

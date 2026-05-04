@@ -17,17 +17,11 @@ class AlbumResource extends Resource
     use Translatable;
 
     protected static ?string $model = Album::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-photo';
-
     protected static ?string $navigationGroup = 'Galeri';
-
     protected static ?int $navigationSort = 4;
-
     protected static ?string $navigationLabel = 'Album';
-
     protected static ?string $modelLabel = 'Album';
-
     protected static ?string $pluralModelLabel = 'Album';
 
     public static function form(Form $form): Form
@@ -68,12 +62,8 @@ class AlbumResource extends Resource
                         Forms\Components\Toggle::make('is_published')
                             ->label('Dipublikasikan')
                             ->default(false),
-
-                        Forms\Components\TextInput::make('sort_order')
-                            ->label('Urutan')
-                            ->numeric()
-                            ->default(0),
-                    ])->columns(2),
+                        // Input 'Urutan' sudah dihapus di sini
+                    ]),
             ]);
     }
 
@@ -103,9 +93,7 @@ class AlbumResource extends Resource
                     ->trueColor('success')
                     ->falseColor('danger'),
 
-                Tables\Columns\TextColumn::make('sort_order')
-                    ->label('Urutan')
-                    ->sortable(),
+                // Kolom 'Urutan' sudah dihapus di sini
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
@@ -126,7 +114,8 @@ class AlbumResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('sort_order');
+            // Default sort diubah ke 'created_at' terbaru
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array
