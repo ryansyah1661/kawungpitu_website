@@ -19,7 +19,7 @@ class TeamMemberResource extends Resource
     protected static ?string $model = TeamMember::class;
 
     // Ikon untuk di sidebar
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     // Ganti nama menu di sidebar
     protected static ?string $navigationLabel = 'Tim & Advisor';
@@ -68,12 +68,6 @@ class TeamMemberResource extends Resource
                         ->image()
                         ->directory('team-photos') // Nanti fotonya masuk ke folder storage/app/public/team-photos
                         ->required(),
-
-                    // Forms\Components\TextInput::make('sort_order')
-                    //     ->label('Urutan Tampil')
-                    //     ->numeric()
-                    //     ->default(0)
-                    //     ->helperText('Angka lebih kecil tampil lebih dulu (0, 1, 2, dst)'),
                 ])->columnSpan(1),
             ])->columns(3);
     }

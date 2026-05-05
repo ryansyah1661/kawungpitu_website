@@ -23,7 +23,36 @@
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-8 md:px-12 py-16">
+    <main class="max-w-7xl mx-auto px-8 md:px-12 py-16" x-data="{
+        loading: false,
+        activeStatus: '{{ request('status', 'all') }}',
+        activeCategory: '{{ request('kategori', 'all') }}',
+        fetchMaterials(url, type, value) {
+            this.loading = true;
+    
+            // Update tracker state
+            if (type === 'all') {
+                this.activeStatus = 'all';
+                this.activeCategory = 'all';
+            } else if (type === 'status') {
+                this.activeStatus = value;
+                this.activeCategory = 'all';
+            } else if (type === 'category') {
+                this.activeCategory = value;
+                this.activeStatus = 'all';
+            }
+    
+            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('lbk-container').innerHTML = html;
+                    this.loading = false;
+                    window.history.pushState({}, '', url);
+                    window.scrollTo({ top: 400, behavior: 'smooth' });
+                });
+        }
+    }">
+
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-16">
 
             {{-- Sidebar --}}
@@ -35,51 +64,70 @@
                         {{ __('messages.program.status_title') }}
                     </h3>
                     <ul class="space-y-4 font-body text-gray-600">
+                        {{-- Semua Program --}}
                         <li>
                             <a href="{{ route('lbk.index', ['locale' => app()->getLocale()]) }}"
-                                class="flex justify-between items-center group hover:translate-x-1 transition-transform duration-300">
+                                @click.prevent="fetchMaterials($el.href, 'all', 'all')"
+                                class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
                                 <span
-                                    class="group-hover:text-primary transition-colors {{ !request('status') ? 'font-bold text-primary' : 'font-medium' }}">
+                                    :class="(activeStatus === 'all' && activeCategory === 'all') ?
+                                    'font-bold text-primary' : 'font-medium group-hover:text-primary'"
+                                    class="transition-colors">
                                     {{ __('messages.program.all') }}
                                 </span>
                                 <span
-                                    class="bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
-                                    {{ $materials->total() }}
+                                    :class="(activeStatus === 'all' && activeCategory === 'all') ?
+                                    'bg-primary text-white' :
+                                    'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
+                                    class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
+                                    {{ $totalMaterialsCount }}
                                 </span>
                             </a>
                         </li>
 
+                        {{-- Sedang Berjalan --}}
                         <li>
                             <a href="{{ route('lbk.index', ['locale' => app()->getLocale(), 'status' => 'ongoing']) }}"
-                                class="flex justify-between items-center group hover:translate-x-1 transition-transform duration-300">
+                                @click.prevent="fetchMaterials($el.href, 'status', 'ongoing')"
+                                class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
                                 <div class="flex items-center space-x-3">
+                                    <span class="w-2 h-2 rounded-full bg-yellow-500 transition-all"
+                                        :class="activeStatus === 'ongoing' ? 'ring-4 ring-yellow-100' : ''"></span>
                                     <span
-                                        class="w-2 h-2 rounded-full bg-yellow-500 {{ request('status') == 'ongoing' ? 'ring-4 ring-yellow-100' : '' }}"></span>
-                                    <span
-                                        class="group-hover:text-primary transition-colors {{ request('status') == 'ongoing' ? 'font-bold text-primary' : 'font-medium' }}">
+                                        :class="activeStatus === 'ongoing' ? 'font-bold text-primary' :
+                                            'font-medium group-hover:text-primary'"
+                                        class="transition-colors">
                                         {{ __('messages.program.ongoing') }}
                                     </span>
                                 </div>
                                 <span
-                                    class="bg-gray-100 text-gray-500 group-hover:bg-yellow-50 group-hover:text-yellow-600 transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
+                                    :class="activeStatus === 'ongoing' ? 'bg-yellow-100 text-yellow-700' :
+                                        'bg-gray-100 text-gray-500 group-hover:bg-yellow-50 group-hover:text-yellow-600'"
+                                    class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
                                     {{ \App\Models\LbkMaterial::where('status', 'ongoing')->count() }}
                                 </span>
                             </a>
                         </li>
 
+                        {{-- Selesai --}}
                         <li>
                             <a href="{{ route('lbk.index', ['locale' => app()->getLocale(), 'status' => 'completed']) }}"
-                                class="flex justify-between items-center group hover:translate-x-1 transition-transform duration-300">
+                                @click.prevent="fetchMaterials($el.href, 'status', 'completed')"
+                                class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
                                 <div class="flex items-center space-x-3">
+                                    <span class="w-2 h-2 rounded-full bg-green-500 transition-all"
+                                        :class="activeStatus === 'completed' ? 'ring-4 ring-green-100' : ''"></span>
                                     <span
-                                        class="w-2 h-2 rounded-full bg-green-500 {{ request('status') == 'completed' ? 'ring-4 ring-green-100' : '' }}"></span>
-                                    <span
-                                        class="group-hover:text-primary transition-colors {{ request('status') == 'completed' ? 'font-bold text-primary' : 'font-medium' }}">
+                                        :class="activeStatus === 'completed' ? 'font-bold text-primary' :
+                                            'font-medium group-hover:text-primary'"
+                                        class="transition-colors">
                                         {{ __('messages.program.completed') }}
                                     </span>
                                 </div>
                                 <span
-                                    class="bg-gray-100 text-gray-500 group-hover:bg-green-50 group-hover:text-green-600 transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
+                                    :class="activeStatus === 'completed' ? 'bg-green-100 text-green-700' :
+                                        'bg-gray-100 text-gray-500 group-hover:bg-green-50 group-hover:text-green-600'"
+                                    class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
                                     {{ \App\Models\LbkMaterial::where('status', 'completed')->count() }}
                                 </span>
                             </a>
@@ -96,36 +144,40 @@
                     <ul class="space-y-4 font-body text-gray-600">
                         @foreach ($categories as $cat)
                             <li>
-                                <a class="flex justify-between items-center group hover:translate-x-1 transition-transform duration-300"
-                                    href="{{ route('lbk.index', ['locale' => app()->getLocale(), 'kategori' => $cat->slug]) }}">
+                                <a href="{{ route('lbk.index', ['locale' => app()->getLocale(), 'kategori' => $cat->slug]) }}"
+                                    @click.prevent="fetchMaterials($el.href, 'category', '{{ $cat->slug }}')"
+                                    class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
 
                                     <div class="flex items-center space-x-4">
                                         @if ($cat->icon)
-                                            <div
-                                                class="p-2 rounded-xl transition-all duration-300 
-                                                {{ request('kategori') == $cat->slug ? 'bg-primary shadow-lg shadow-primary/20' : 'bg-primary/5 group-hover:bg-primary' }}">
-
+                                            <div class="p-2 rounded-xl transition-all duration-300"
+                                                :class="activeCategory === '{{ $cat->slug }}' ?
+                                                    'bg-primary shadow-lg shadow-primary/20' :
+                                                    'bg-primary/5 group-hover:bg-primary'">
                                                 <img src="{{ asset('storage/' . $cat->icon) }}"
-                                                    class="w-6 h-6 object-contain transition-all duration-300 
-                                                    {{ request('kategori') == $cat->slug
-                                                        ? 'brightness-0 invert'
-                                                        : 'opacity-70 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert' }}"
+                                                    class="w-6 h-6 object-contain transition-all duration-300"
+                                                    :class="activeCategory === '{{ $cat->slug }}' ? 'brightness-0 invert' :
+                                                        'opacity-70 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert'"
                                                     alt="{{ $cat->name }}">
                                             </div>
                                         @else
-                                            <span
-                                                class="material-symbols-outlined text-lg text-primary/40 group-hover:text-primary transition-colors">
+                                            <span class="material-symbols-outlined text-lg transition-colors"
+                                                :class="activeCategory === '{{ $cat->slug }}' ? 'text-primary' :
+                                                    'text-primary/40 group-hover:text-primary'">
                                                 category
                                             </span>
                                         @endif
-                                        <span
-                                            class="group-hover:text-primary transition-colors {{ request('kategori') == $cat->slug ? 'font-bold text-primary' : 'font-medium' }}">
+
+                                        <span class="transition-colors"
+                                            :class="activeCategory === '{{ $cat->slug }}' ? 'font-bold text-primary' :
+                                                'font-medium group-hover:text-primary'">
                                             {{ $cat->name }}
                                         </span>
                                     </div>
 
-                                    <span
-                                        class="bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
+                                    <span class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold"
+                                        :class="activeCategory === '{{ $cat->slug }}' ? 'bg-primary text-white' :
+                                            'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'">
                                         {{ $cat->lbkMaterials()->published()->count() }}
                                     </span>
                                 </a>
@@ -184,100 +236,35 @@
             </aside>
 
             {{-- Main Content Area --}}
-            <div class="lg:col-span-3">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-                    @forelse ($materials as $material)
-                        @php
-                            $materialUrl = $material->slug
-                                ? route('lbk.show', ['locale' => app()->getLocale(), 'slug' => $material->slug])
-                                : '#';
-                        @endphp
-                        <article
-                            class="bg-white flex flex-col rounded-3xl overflow-hidden shadow-xl shadow-primary/5 hover:-translate-y-2 transition-all duration-500 group border border-gray-100">
-                            <a href="{{ $materialUrl }}" class="relative h-56 overflow-hidden block">
-                                @if ($material->featured_image)
-                                    <img src="{{ asset('storage/' . $material->featured_image) }}"
-                                        alt="{{ $material->title }}"
-                                        class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                                @else
-                                    <div
-                                        class="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-6xl text-primary/30">school</span>
-                                    </div>
-                                @endif
+            <div class="lg:col-span-3 relative">
+                <div x-show="loading" x-transition.opacity
+                    class="absolute inset-0 bg-cream/50 z-20 flex justify-center pt-20 backdrop-blur-[1px]">
+                    <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
 
-                                {{-- Combined Badge Container (Status + Category) --}}
-                                <div class="absolute top-3 left-3 right-3 flex flex-wrap gap-2 pointer-events-none">
-                                    {{-- Status Badge --}}
-                                    <span
-                                        class="{{ $material->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[9px] md:text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5 whitespace-nowrap">
-                                        @if ($material->status === 'ongoing')
-                                            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
-                                            {{ __('messages.program.ongoing') }}
-                                        @else
-                                            <span class="material-symbols-outlined text-xs">check_circle</span>
-                                            {{ __('messages.program.completed') }}
-                                        @endif
-                                    </span>
-
-                                    {{-- Category Badge --}}
-                                    <span
-                                        class="bg-primary text-white text-[9px] md:text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2 whitespace-nowrap">
-                                        @if ($material->category && $material->category->icon)
-                                            <img src="{{ asset('storage/' . $material->category->icon) }}"
-                                                class="w-4 h-4 object-contain brightness-0 invert"
-                                                alt="{{ $material->category->name }}">
-                                        @else
-                                            <span class="material-symbols-outlined text-[14px]">category</span>
-                                        @endif
-                                        {{ $material->category->name ?? 'Uncategorized' }}
-                                    </span>
-                                </div>
-                            </a>
-
-                            <div class="p-8 flex flex-col flex-grow">
-                                <div
-                                    class="flex items-center text-xs text-gray-400 mb-4 font-body font-bold uppercase tracking-widest space-x-3">
-                                    @if ($material->published_at)
-                                        <span>{{ $material->published_at->translatedFormat('d M Y') }}</span>
-                                        <span class="w-1 h-1 bg-primary/30 rounded-full"></span>
-                                    @endif
-                                    <span>{{ number_format($material->view_count) }}
-                                        {{ __('messages.program.views') }}</span>
-                                </div>
-                                <h2
-                                    class="font-tegas text-xl font-black text-primary mb-4 leading-tight uppercase group-hover:text-dark transition-colors duration-300">
-                                    <a href="{{ $materialUrl }}">{{ $material->title }}</a>
-                                </h2>
-                                <p
-                                    class="text-gray-600 font-body text-sm mb-6 line-clamp-3 leading-relaxed font-light italic">
-                                    {{ $material->excerpt }}
-                                </p>
-                                <a href="{{ $materialUrl }}"
-                                    class="mt-auto inline-flex items-center text-primary font-bold font-tegas text-xs uppercase tracking-widest group/link">
-                                    <span class="hover-underline">{{ __('messages.program.see_program') }}</span>
-                                    <span
-                                        class="material-symbols-outlined ml-2 text-[18px] group-hover/link:translate-x-2 transition-transform duration-300">arrow_right_alt</span>
-                                </a>
-                            </div>
-                        </article>
-                    @empty
-                        <div class="col-span-2 text-center py-20">
-                            <span class="material-symbols-outlined text-6xl text-gray-300">school</span>
-                            <p class="text-gray-400 font-tegas uppercase tracking-wider mt-4">
-                                {{ __('messages.program.empty') }}
-                            </p>
-                        </div>
-                    @endforelse
+                <div id="lbk-container" :class="loading ? 'opacity-30' : 'opacity-100'"
+                    class="transition-all duration-500">
+                    @include('frontend.partials.lbk-grid')
                 </div>
             </div>
-
-            {{-- Centered Pagination --}}
-            @if ($materials->hasPages())
-                <div class="lg:col-span-4 mt-20 flex justify-center custom-pagination">
-                    {{ $materials->appends(request()->query())->links() }}
-                </div>
-            @endif
         </div>
     </main>
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+    </style>
 @endsection

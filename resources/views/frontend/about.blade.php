@@ -234,13 +234,13 @@
                     :class="activeTab === 'advisors' ? 'bg-primary text-white shadow-xl shadow-primary/20' :
                         'bg-primary/5 text-primary hover:bg-primary/10'"
                     class="px-8 py-3 rounded-xl uppercase tracking-widest font-black transition-all duration-300 border-2 border-primary/10">
-                    Advisors
+                    {{ __('messages.about.team.tab_advisors') }}
                 </button>
                 <button @click="activeTab = 'struktur'"
                     :class="activeTab === 'struktur' ? 'bg-primary text-white shadow-xl shadow-primary/20' :
                         'bg-primary/5 text-primary hover:bg-primary/10'"
                     class="px-8 py-3 rounded-xl uppercase tracking-widest font-black transition-all duration-300 border-2 border-primary/10">
-                    Struktur Lembaga
+                    {{ __('messages.about.team.tab_structure') }}
                 </button>
             </div>
         </div>

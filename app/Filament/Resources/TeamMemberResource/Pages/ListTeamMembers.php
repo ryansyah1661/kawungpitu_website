@@ -16,6 +16,7 @@ class ListTeamMembers extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\LocaleSwitcher::make(),
         ];
     }
 }

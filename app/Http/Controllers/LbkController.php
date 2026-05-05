@@ -15,7 +15,7 @@ class LbkController extends Controller
     {
         $query = LbkMaterial::with('category')->published();
 
-        // Filter by category (Mencari slug kategori di dalam JSON)
+        // Filter by category
         if ($request->filled('kategori')) {
             $query->whereHas('category', function ($q) use ($request) {
                 $currentLocale = app()->getLocale();
@@ -28,18 +28,26 @@ class LbkController extends Controller
             $query->where('status', $request->status);
         }
 
-        // Search (Opsional, jika kamu mau nambahin fitur search di LBK juga)
+        // Search
         if ($request->filled('search')) {
             $search = $request->search;
             $currentLocale = app()->getLocale();
             $query->where("title->{$currentLocale}", 'like', "%{$search}%");
         }
 
+        // 1. DEFINISIKAN DATA DULU
         $materials = $query->orderBy('sort_order')->paginate(9);
+        $totalMaterialsCount = LbkMaterial::published()->count(); // Total murni semua program
+
+        // 2. CEK AJAX
+        if ($request->ajax()) {
+            return view('frontend.partials.lbk-grid', compact('materials'))->render();
+        }
+
         $categories = Category::lbkType()->orderBy('sort_order')->get();
         $popularPrograms = LbkMaterial::published()->orderBy('view_count', 'desc')->take(5)->get();
 
-        return view('frontend.learning-circles', compact('materials', 'categories', 'popularPrograms'));
+        return view('frontend.learning-circles', compact('materials', 'categories', 'popularPrograms', 'totalMaterialsCount'));
     }
 
     /**
@@ -47,19 +55,15 @@ class LbkController extends Controller
      */
     public function show(string $locale, $slug)
     {
-        // Slug adalah kolom varchar biasa (bukan translatable)
         $lbk = LbkMaterial::where('slug', $slug)->firstOrFail();
 
         if (!$lbk->is_published) {
             abort(404);
         }
 
-        // Increment view count
         $lbk->incrementViewCount();
-
         $lbk->load('category');
 
-        // Navigasi materi sebelumnya & berikutnya (Tetap pakai sort_order)
         $previousMaterial = LbkMaterial::published()
             ->where('sort_order', '<', $lbk->sort_order)
             ->orderBy('sort_order', 'desc')

@@ -12,19 +12,17 @@ class ArtikelController extends Controller
     {
         $query = Article::with('category')->published();
 
-        // Filter by search (Lebih dinamis mengikuti bahasa yang sedang aktif)
+        // Filter Search
         if ($request->filled('search')) {
             $search = $request->search;
             $currentLocale = app()->getLocale();
-
             $query->where(function ($q) use ($search, $currentLocale) {
-                // Mencari hanya di bahasa yang sedang dibuka user agar hasil lebih akurat
                 $q->where("title->{$currentLocale}", 'like', "%{$search}%")
                     ->orWhere("body->{$currentLocale}", 'like', "%{$search}%");
             });
         }
 
-        // Filter by category
+        // Filter Category via Query String
         if ($request->filled('kategori')) {
             $query->whereHas('category', function ($q) use ($request) {
                 $currentLocale = app()->getLocale();
@@ -32,56 +30,62 @@ class ArtikelController extends Controller
             });
         }
 
+        // DEFINISIKAN DATA DULU
         $articles = $query->latest('published_at')->paginate(6);
+        $totalArticlesCount = Article::published()->count(); // Total murni semua artikel
+
+        // BARU CEK AJAX
+        if ($request->ajax()) {
+            return view('frontend.partials.article-grid', compact('articles'))->render();
+        }
+
         $categories = Category::articleType()->orderBy('sort_order')->get();
         $popularArticles = Article::published()->orderBy('view_count', 'desc')->take(5)->get();
 
-        return view('frontend.articles', compact('articles', 'categories', 'popularArticles'));
+        return view('frontend.articles', compact('articles', 'categories', 'popularArticles', 'totalArticlesCount'));
     }
 
-    public function byKategori(string $locale, $kategoriSlug)
+    public function byKategori(string $locale, $kategoriSlug, Request $request)
     {
-        // Cari kategori berdasarkan slug translatable
         $currentLocale = app()->getLocale();
         $kategori = Category::where("slug->{$currentLocale}", $kategoriSlug)->firstOrFail();
 
+        // DEFINISIKAN DATA DULU
         $articles = Article::with('category')
             ->where('category_id', $kategori->id)
             ->published()
             ->latest('published_at')
             ->paginate(6);
 
+        $totalArticlesCount = Article::published()->count();
+
+        // BARU CEK AJAX
+        if ($request->ajax()) {
+            return view('frontend.partials.article-grid', compact('articles'))->render();
+        }
+
         $categories = Category::articleType()->orderBy('sort_order')->get();
         $popularArticles = Article::published()->orderBy('view_count', 'desc')->take(5)->get();
         $currentCategory = $kategori;
 
-        return view('frontend.articles', compact('articles', 'categories', 'popularArticles', 'currentCategory'));
+        return view('frontend.articles', compact('articles', 'categories', 'popularArticles', 'currentCategory', 'totalArticlesCount'));
     }
 
     public function show(string $locale, $slug)
     {
-        // Slug adalah kolom varchar biasa (bukan translatable)
         $artikel = Article::where('slug', $slug)->firstOrFail();
-
-        // Hanya tampilkan jika sudah dipublish
         if (!$artikel->is_published) {
             abort(404);
         }
-
-        // Increment view count
         $artikel->incrementViewCount();
-
-        // Load relasi
         $artikel->load('category');
 
-        // Artikel terkait
         $relatedArticles = Article::with('category')
             ->where('category_id', $artikel->category_id)
             ->where('id', '!=', $artikel->id)
             ->published()
             ->latest('published_at')
-            ->take(3)
-            ->get();
+            ->take(3)->get();
 
         return view('frontend.articles-detail', compact('artikel', 'relatedArticles'));
     }

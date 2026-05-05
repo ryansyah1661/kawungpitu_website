@@ -80,9 +80,9 @@ return [
             'p3_desc' => 'Membangun ketahanan masyarakat dari berbagai goncangan sosial dan ekonomi di masa depan.',
         ],
         'team' => [
-            'title' => 'Tim Kami',
-            'role_founder' => 'Pendiri & Direktur',
-            'img_alt_founder' => 'Direktur Kawungpitu Institute',
+            'title' => 'TIM KAMI',
+            'tab_advisors' => 'Penasihat',
+            'tab_structure' => 'Struktur Lembaga',
         ],
     ],
     'articles' => [

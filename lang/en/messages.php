@@ -80,9 +80,9 @@ return [
             'p3_desc' => 'Building community resilience against various future social and economic shocks.',
         ],
         'team' => [
-            'title' => 'Our Team',
-            'role_founder' => 'Founder & Director',
-            'img_alt_founder' => 'Director of Kawungpitu Institute',
+            'title' => 'OUR TEAM',
+            'tab_advisors' => 'Advisors',
+            'tab_structure' => 'Institutional Structure',
         ],
     ],
     'articles' => [
