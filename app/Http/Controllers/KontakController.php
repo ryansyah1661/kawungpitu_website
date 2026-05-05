@@ -3,23 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use App\Mail\ContactNotification; // Import Mailable
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail; // Import Mail Facade
 
 class KontakController extends Controller
 {
-    /**
-     * Halaman kontak.
-     * Menampilkan form kontak dan informasi alamat.
-     */
     public function index(string $locale)
     {
         return view('frontend.contact');
     }
 
-    /**
-     * Proses submit form kontak.
-     * Simpan pesan ke database dan redirect dengan notifikasi sukses.
-     */
     public function store(string $locale, Request $request)
     {
         $validated = $request->validate([
@@ -29,7 +23,13 @@ class KontakController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
-        Message::create($validated);
+        // 1. Simpan ke Database
+        $contactMessage = Message::create($validated);
+
+        try {
+            Mail::to('info@kawungpitu.org')->send(new ContactNotification($contactMessage));
+        } catch (\Exception $e) {
+        }
 
         return redirect()
             ->back()
