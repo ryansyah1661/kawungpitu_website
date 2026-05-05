@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
-use App\Mail\ContactNotification; // Import Mailable
+use App\Mail\ContactNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail; // Import Mail Facade
+use Illuminate\Support\Facades\Mail;
 
 class KontakController extends Controller
 {
@@ -23,7 +23,6 @@ class KontakController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
-        // 1. Simpan ke Database
         $contactMessage = Message::create($validated);
 
         try {
