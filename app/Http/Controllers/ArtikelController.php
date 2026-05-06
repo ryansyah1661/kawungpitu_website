@@ -30,11 +30,9 @@ class ArtikelController extends Controller
             });
         }
 
-        // DEFINISIKAN DATA DULU
         $articles = $query->latest('published_at')->paginate(6);
         $totalArticlesCount = Article::published()->count(); // Total murni semua artikel
 
-        // BARU CEK AJAX
         if ($request->ajax()) {
             return view('frontend.partials.article-grid', compact('articles'))->render();
         }

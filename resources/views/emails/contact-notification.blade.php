@@ -70,7 +70,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>Pesan Kontak Baru - Kawung Pitu</h2>
+            <h2>Pesan Kontak Baru - Kawungpitu</h2>
         </div>
 
         <div class="info-row">
@@ -95,7 +95,7 @@
 
         <div class="footer">
             <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 15px;">
-            <p>Email ini dikirim otomatis oleh sistem Kawung Pitu Institute karena adanya pesan masuk melalui formulir
+            <p>Email ini dikirim otomatis oleh sistem Kawungpitu Institute karena adanya pesan masuk melalui formulir
                 kontak.</p>
         </div>
     </div>

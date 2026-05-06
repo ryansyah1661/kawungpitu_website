@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use Illuminate\Support\Facades\Log;
 use App\Mail\ContactNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -26,8 +27,9 @@ class KontakController extends Controller
         $contactMessage = Message::create($validated);
 
         try {
-            Mail::to('info@kawungpitu.org')->send(new ContactNotification($contactMessage));
+            Mail::to('muhammadrian1602@gmail.com')->send(new ContactNotification($contactMessage));
         } catch (\Exception $e) {
+            Log::error("Gagal kirim email Brevo: " . $e->getMessage());
         }
 
         return redirect()
