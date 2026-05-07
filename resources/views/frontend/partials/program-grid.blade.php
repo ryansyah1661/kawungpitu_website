@@ -2,7 +2,7 @@
     @forelse ($materials as $material)
         @php
             $materialUrl = $material->slug
-                ? route('lbk.show', ['locale' => app()->getLocale(), 'slug' => $material->slug])
+                ? route('program.show', ['locale' => app()->getLocale(), 'slug' => $material->slug])
                 : '#';
         @endphp
         <article

@@ -31,11 +31,11 @@ class Category extends Model
     }
 
     /**
-     * Relasi ke Program (LBK)
+     * Relasi ke Program
      */
-    public function lbkMaterials()
+    public function programs()
     {
-        return $this->hasMany(LbkMaterial::class);
+        return $this->hasMany(Program::class);
     }
 
     /**
@@ -46,8 +46,8 @@ class Category extends Model
         return $query->where('type', 'article');
     }
 
-    public function scopeLbkType(Builder $query)
+    public function scopeProgramType(Builder $query)
     {
-        return $query->where('type', 'lbk');
+        return $query->where('type', 'program');
     }
 }

@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\LbkMaterial;
+use App\Models\Program;
 use Illuminate\Http\Request;
 
-class LbkController extends Controller
+class ProgramController extends Controller
 {
     /**
      * Halaman index Program (Lingkar Belajar Kawung).
      */
     public function index(string $locale, Request $request)
     {
-        $query = LbkMaterial::with('category')->published();
+        $query = Program::with('category')->published();
 
         // Filter by category
         if ($request->filled('kategori')) {
@@ -37,15 +37,15 @@ class LbkController extends Controller
 
         // 1. DEFINISIKAN DATA DULU
         $materials = $query->orderBy('sort_order')->paginate(9);
-        $totalMaterialsCount = LbkMaterial::published()->count(); // Total murni semua program
+        $totalMaterialsCount = Program::published()->count(); // Total murni semua program
 
         // 2. CEK AJAX
         if ($request->ajax()) {
-            return view('frontend.partials.lbk-grid', compact('materials'))->render();
+            return view('frontend.partials.program-grid', compact('materials'))->render();
         }
 
-        $categories = Category::lbkType()->orderBy('sort_order')->get();
-        $popularPrograms = LbkMaterial::published()->orderBy('view_count', 'desc')->take(5)->get();
+        $categories = Category::programType()->orderBy('sort_order')->get();
+        $popularPrograms = Program::published()->orderBy('view_count', 'desc')->take(5)->get();
 
         return view('frontend.learning-circles', compact('materials', 'categories', 'popularPrograms', 'totalMaterialsCount'));
     }
@@ -55,25 +55,25 @@ class LbkController extends Controller
      */
     public function show(string $locale, $slug)
     {
-        $lbk = LbkMaterial::where('slug', $slug)->firstOrFail();
+        $program = Program::where('slug', $slug)->firstOrFail();
 
-        if (!$lbk->is_published) {
+        if (!$program->is_published) {
             abort(404);
         }
 
-        $lbk->incrementViewCount();
-        $lbk->load('category');
+        $program->incrementViewCount();
+        $program->load('category');
 
-        $previousMaterial = LbkMaterial::published()
-            ->where('sort_order', '<', $lbk->sort_order)
+        $previousMaterial = Program::published()
+            ->where('sort_order', '<', $program->sort_order)
             ->orderBy('sort_order', 'desc')
             ->first();
 
-        $nextMaterial = LbkMaterial::published()
-            ->where('sort_order', '>', $lbk->sort_order)
+        $nextMaterial = Program::published()
+            ->where('sort_order', '>', $program->sort_order)
             ->orderBy('sort_order', 'asc')
             ->first();
 
-        return view('frontend.learning-circles-detail', compact('lbk', 'previousMaterial', 'nextMaterial'));
+        return view('frontend.learning-circles-detail', compact('program', 'previousMaterial', 'nextMaterial'));
     }
 }

@@ -45,7 +45,7 @@
             fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
                 .then(res => res.text())
                 .then(html => {
-                    document.getElementById('lbk-container').innerHTML = html;
+                    document.getElementById('program-container').innerHTML = html;
                     this.loading = false;
                     window.history.pushState({}, '', url);
                     window.scrollTo({ top: 400, behavior: 'smooth' });
@@ -66,7 +66,7 @@
                     <ul class="space-y-4 font-body text-gray-600">
                         {{-- Semua Program --}}
                         <li>
-                            <a href="{{ route('lbk.index', ['locale' => app()->getLocale()]) }}"
+                            <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
                                 @click.prevent="fetchMaterials($el.href, 'all', 'all')"
                                 class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
                                 <span
@@ -87,7 +87,7 @@
 
                         {{-- Sedang Berjalan --}}
                         <li>
-                            <a href="{{ route('lbk.index', ['locale' => app()->getLocale(), 'status' => 'ongoing']) }}"
+                            <a href="{{ route('program.index', ['locale' => app()->getLocale(), 'status' => 'ongoing']) }}"
                                 @click.prevent="fetchMaterials($el.href, 'status', 'ongoing')"
                                 class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
                                 <div class="flex items-center space-x-3">
@@ -104,14 +104,14 @@
                                     :class="activeStatus === 'ongoing' ? 'bg-yellow-100 text-yellow-700' :
                                         'bg-gray-100 text-gray-500 group-hover:bg-yellow-50 group-hover:text-yellow-600'"
                                     class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
-                                    {{ \App\Models\LbkMaterial::where('status', 'ongoing')->count() }}
+                                    {{ \App\Models\Program::where('status', 'ongoing')->count() }}
                                 </span>
                             </a>
                         </li>
 
                         {{-- Selesai --}}
                         <li>
-                            <a href="{{ route('lbk.index', ['locale' => app()->getLocale(), 'status' => 'completed']) }}"
+                            <a href="{{ route('program.index', ['locale' => app()->getLocale(), 'status' => 'completed']) }}"
                                 @click.prevent="fetchMaterials($el.href, 'status', 'completed')"
                                 class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
                                 <div class="flex items-center space-x-3">
@@ -128,7 +128,7 @@
                                     :class="activeStatus === 'completed' ? 'bg-green-100 text-green-700' :
                                         'bg-gray-100 text-gray-500 group-hover:bg-green-50 group-hover:text-green-600'"
                                     class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
-                                    {{ \App\Models\LbkMaterial::where('status', 'completed')->count() }}
+                                    {{ \App\Models\Program::where('status', 'completed')->count() }}
                                 </span>
                             </a>
                         </li>
@@ -144,7 +144,7 @@
                     <ul class="space-y-4 font-body text-gray-600">
                         @foreach ($categories as $cat)
                             <li>
-                                <a href="{{ route('lbk.index', ['locale' => app()->getLocale(), 'kategori' => $cat->slug]) }}"
+                                <a href="{{ route('program.index', ['locale' => app()->getLocale(), 'kategori' => $cat->slug]) }}"
                                     @click.prevent="fetchMaterials($el.href, 'category', '{{ $cat->slug }}')"
                                     class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
 
@@ -178,7 +178,7 @@
                                     <span class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold"
                                         :class="activeCategory === '{{ $cat->slug }}' ? 'bg-primary text-white' :
                                             'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'">
-                                        {{ $cat->lbkMaterials()->published()->count() }}
+                                        {{ $cat->programs()->published()->count() }}
                                     </span>
                                 </a>
                             </li>
@@ -196,7 +196,7 @@
                         @foreach ($popularPrograms as $popular)
                             @php
                                 $popularUrl = $popular->slug
-                                    ? route('lbk.show', ['locale' => app()->getLocale(), 'slug' => $popular->slug])
+                                    ? route('program.show', ['locale' => app()->getLocale(), 'slug' => $popular->slug])
                                     : '#';
                             @endphp
                             <a href="{{ $popularUrl }}" class="flex items-center gap-4 group">
@@ -242,9 +242,9 @@
                     <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                 </div>
 
-                <div id="lbk-container" :class="loading ? 'opacity-30' : 'opacity-100'"
+                <div id="program-container" :class="loading ? 'opacity-30' : 'opacity-100'"
                     class="transition-all duration-500">
-                    @include('frontend.partials.lbk-grid')
+                    @include('frontend.partials.program-grid')
                 </div>
             </div>
         </div>

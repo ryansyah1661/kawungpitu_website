@@ -2,21 +2,33 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LbkMaterialResource\Pages;
-use App\Models\LbkMaterial;
+use App\Filament\Resources\ProgramResource\Pages;
+use App\Models\Program;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Slider;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Set;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
-class LbkMaterialResource extends Resource
+class ProgramResource extends Resource
 {
     use Translatable;
 
-    protected static ?string $model = LbkMaterial::class;
+    protected static ?string $model = Program::class;
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?string $navigationGroup = 'Pembelajaran';
     protected static ?int $navigationSort = 3;
@@ -28,73 +40,101 @@ class LbkMaterialResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Konten Materi')
+                        Section::make('Konten Materi')
                             ->schema([
-                                Forms\Components\TextInput::make('title')
+                                TextInput::make('title')
                                     ->label('Judul Materi')
                                     ->required()
                                     ->maxLength(255),
 
-                                Forms\Components\TextInput::make('slug')
+                                TextInput::make('slug')
                                     ->label('Slug')
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->maxLength(255)
                                     ->helperText('Ketik manual slug untuk URL program ini.'),
 
-                                Forms\Components\TextInput::make('author_name')
+                                TextInput::make('author_name')
                                     ->label('Nama Penulis')
                                     ->placeholder('Contoh: Tim Kawungpitu')
                                     ->required(),
 
-                                Forms\Components\Hidden::make('user_id')
+                                Hidden::make('user_id')
                                     ->default(auth()->id()),
 
-                                Forms\Components\Textarea::make('excerpt')
+                                Textarea::make('excerpt')
                                     ->label('Ringkasan')
                                     ->rows(3)
                                     ->maxLength(500),
 
-                                Forms\Components\RichEditor::make('body')
+                                RichEditor::make('body')
                                     ->label('Isi Materi')
                                     ->required()
                                     ->columnSpanFull()
-                                    ->fileAttachmentsDirectory('lbk/attachments'),
+                                    ->fileAttachmentsDirectory('programs/attachments'),
                             ]),
 
-                        Forms\Components\Section::make('Media')
+                        Section::make('Statistik Pentagon Aset')
+                            ->description('Input skor 1-100 untuk membangun ketangguhan menyeluruh komunitas')
                             ->schema([
-                                Forms\Components\TextInput::make('video_url')
+                                Slider::make('human_capital')
+                                    ->label('Modal Manusia')
+                                    ->helperText('Pelatihan teknis, pendidikan kritis, literasi kesehatan')
+                                    ->min(0)->max(100)->default(0),
+
+                                Slider::make('social_capital')
+                                    ->label('Modal Sosial')
+                                    ->helperText('Pendampingan koperasi, penguatan lembaga adat, kolaborasi')
+                                    ->min(0)->max(100)->default(0),
+
+                                Slider::make('natural_capital')
+                                    ->label('Modal Alam')
+                                    ->helperText('Konservasi pesisir Anambas, hutan desa, pertanian berkelanjutan')
+                                    ->min(0)->max(100)->default(0),
+
+                                Slider::make('physical_capital')
+                                    ->label('Modal Fisik')
+                                    ->helperText('Pengolahan sampah, air bersih, alat produksi tepat guna')
+                                    ->min(0)->max(100)->default(0),
+
+                                Slider::make('financial_capital')
+                                    ->label('Modal Finansial')
+                                    ->helperText('Unit usaha desa, keuangan mikro, diversifikasi pendapatan')
+                                    ->min(0)->max(100)->default(0),
+                            ])->columns(2),
+
+                        Section::make('Media')
+                            ->schema([
+                                TextInput::make('video_url')
                                     ->label('URL Video YouTube')
                                     ->url()
                                     ->placeholder('https://www.youtube.com/watch?v=...')
                                     ->helperText('URL lengkap video YouTube'),
 
-                                Forms\Components\FileUpload::make('pdf_file')
+                                FileUpload::make('pdf_file')
                                     ->label('File PDF')
                                     ->acceptedFileTypes(['application/pdf'])
-                                    ->directory('lbk/pdf')
+                                    ->directory('programs/pdf')
                                     ->visibility('public')
                                     ->maxSize(10240)
                                     ->helperText('Maks. 10MB'),
                             ]),
                     ])->columnSpan(['lg' => 2]),
 
-                Forms\Components\Group::make()
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Pengaturan')
+                        Section::make('Pengaturan')
                             ->schema([
-                                Forms\Components\Select::make('category_id')
+                                Select::make('category_id')
                                     ->label('Kategori')
-                                    ->relationship('category', 'name', fn($query) => $query->where('type', 'lbk'))
-                                    ->getOptionLabelFromRecordUsing(fn($record) => $record->name)
+                                    ->relationship('category', 'name', fn($query) => $query->where('type', 'program'))
                                     ->required()
                                     ->preload()
                                     ->searchable(),
 
-                                Forms\Components\Select::make('status')
+                                Select::make('status')
                                     ->label('Status Program')
                                     ->options([
                                         'ongoing' => 'Sedang Berjalan',
@@ -103,7 +143,7 @@ class LbkMaterialResource extends Resource
                                     ->default('ongoing')
                                     ->required(),
 
-                                Forms\Components\Toggle::make('is_published')
+                                Toggle::make('is_published')
                                     ->label('Dipublikasikan')
                                     ->default(false)
                                     ->live()
@@ -114,23 +154,18 @@ class LbkMaterialResource extends Resource
                                             $set('published_at', null);
                                         }
                                     }),
-                                Forms\Components\DateTimePicker::make('published_at')
+
+                                DateTimePicker::make('published_at')
                                     ->label('Tanggal Publish')
                                     ->displayFormat('d/m/Y H:i'),
-
-                                // Input 'Urutan' sudah dihapus di sini
                             ]),
 
-                        Forms\Components\Section::make('Gambar')
+                        Section::make('Gambar')
                             ->schema([
-                                Forms\Components\FileUpload::make('featured_image')
+                                FileUpload::make('featured_image')
                                     ->label('Gambar Utama')
                                     ->image()
-                                    ->imageResizeMode('cover')
-                                    ->imageCropAspectRatio('16:9')
-                                    ->imageResizeTargetWidth('1200')
-                                    ->imageResizeTargetHeight('675')
-                                    ->directory('lbk')
+                                    ->directory('programs')
                                     ->visibility('public'),
                             ]),
                     ])->columnSpan(['lg' => 1]),
@@ -164,49 +199,26 @@ class LbkMaterialResource extends Resource
                     ->trueIcon('heroicon-o-play-circle')
                     ->falseIcon('heroicon-o-minus-circle')
                     ->trueColor('info')
-                    ->falseColor('gray')
-                    ->alignCenter(),
-
-                Tables\Columns\IconColumn::make('pdf_file')
-                    ->label('PDF')
-                    ->boolean()
-                    ->getStateUsing(fn($record) => !empty($record->pdf_file))
-                    ->trueIcon('heroicon-o-document-arrow-down')
-                    ->falseIcon('heroicon-o-minus-circle')
-                    ->trueColor('success')
-                    ->falseColor('gray')
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
-                        'ongoing' => 'Berjalan',
-                        'completed' => 'Selesai',
-                        default => $state,
-                    })
                     ->color(fn(string $state): string => match ($state) {
-                        'ongoing' => 'success',
-                        'completed' => 'info',
+                        'ongoing' => 'warning',
+                        'completed' => 'success',
                         default => 'gray',
                     }),
 
                 Tables\Columns\IconColumn::make('is_published')
                     ->label('Publish')
-                    ->boolean()
-                    ->trueColor('success')
-                    ->falseColor('danger'),
-
-                // Kolom 'Urutan' sudah dihapus di sini
+                    ->boolean(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
                     ->label('Kategori')
-                    ->relationship('category', 'name', fn($query) => $query->where('type', 'lbk'))
+                    ->relationship('category', 'name', fn($query) => $query->where('type', 'program'))
                     ->preload(),
-
-                Tables\Filters\TernaryFilter::make('is_published')
-                    ->label('Status Publish'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -217,21 +229,15 @@ class LbkMaterialResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            // Default sort diubah ke 'created_at' terbaru
             ->defaultSort('created_at', 'desc');
-    }
-
-    public static function getRelations(): array
-    {
-        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLbkMaterials::route('/'),
-            'create' => Pages\CreateLbkMaterial::route('/create'),
-            'edit' => Pages\EditLbkMaterial::route('/{record}/edit'),
+            'index' => Pages\ListPrograms::route('/'),
+            'create' => Pages\CreateProgram::route('/create'),
+            'edit' => Pages\EditProgram::route('/{record}/edit'),
         ];
     }
 }

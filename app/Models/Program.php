@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class LbkMaterial extends Model
+class Program extends Model
 {
     use HasFactory, HasTranslations;
 
@@ -29,6 +29,11 @@ class LbkMaterial extends Model
         'sort_order',
         'status',
         'view_count',
+        'human_capital',    // Fokus pada kualitas individu [cite: 8, 9]
+        'social_capital',   // Fokus pada jejaring dan kepercayaan [cite: 12, 13]
+        'natural_capital',  // Fokus pada perlindungan sumber daya alam [cite: 16, 17]
+        'physical_capital', // Fokus pada infrastruktur pendukung [cite: 20, 21]
+        'financial_capital' // Fokus pada akses pendanaan [cite: 24, 25]
     ];
 
     public $translatable = ['title', 'excerpt', 'body'];
@@ -39,7 +44,7 @@ class LbkMaterial extends Model
     ];
 
     /**
-     * Get the category that owns this LBK material.
+     * Get the category that owns this program.
      */
     public function category()
     {

@@ -203,8 +203,8 @@
                     {{ __('messages.navbar.article') }}
                 </a>
 
-                <a href="{{ route('lbk.index', ['locale' => app()->getLocale()]) }}"
-                    class="{{ request()->routeIs('lbk.*') ? 'text-primary font-semibold' : 'text-gray-dark hover:text-primary font-medium' }} text-sm tracking-wide transition-colors hover-underline">
+                <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
+                    class="{{ request()->routeIs('program.*') ? 'text-primary font-semibold' : 'text-gray-dark hover:text-primary font-medium' }} text-sm tracking-wide transition-colors hover-underline">
                     {{ __('messages.navbar.program') }}
                 </a>
 
@@ -316,7 +316,7 @@
                         <li><a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
                                 class="hover:text-primary transition-colors">{{ __('messages.navbar.article') }}</a>
                         </li>
-                        <li><a href="{{ route('lbk.index', ['locale' => app()->getLocale()]) }}"
+                        <li><a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
                                 class="hover:text-primary transition-colors">{{ __('messages.footer.our_program') }}</a>
                         </li>
                     </ul>

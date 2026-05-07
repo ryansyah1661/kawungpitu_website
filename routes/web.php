@@ -5,7 +5,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\LbkController;
+use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\AboutController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,8 +33,8 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function () 
     Route::get('/articles/{slug}', [ArtikelController::class, 'show'])->name('artikel.show');
 
     // Programs / LBK (Sudah sesuai permintaanmu ke /program)
-    Route::get('/programs', [LbkController::class, 'index'])->name('lbk.index');
-    Route::get('/programs/{slug}', [LbkController::class, 'show'])->name('lbk.show');
+    Route::get('/programs', [ProgramController::class, 'index'])->name('program.index');
+    Route::get('/programs/{slug}', [ProgramController::class, 'show'])->name('program.show');
 
     // Galeri (URI menggunakan /gallery agar universal)
     Route::get('/gallery', [GaleriController::class, 'index'])->name('galeri.index');

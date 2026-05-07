@@ -30,7 +30,7 @@
                     {{ __('messages.hero.description') }}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-6">
-                    <a href="{{ route('lbk.index', ['locale' => app()->getLocale()]) }}"
+                    <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
                         class="inline-flex justify-center items-center bg-primary text-white px-8 py-4 rounded hover:bg-primary-hover transition-all duration-300 font-medium text-lg shadow-xl shadow-primary/30 group">
                         {{ __('messages.buttons.explore') }}
                         <span

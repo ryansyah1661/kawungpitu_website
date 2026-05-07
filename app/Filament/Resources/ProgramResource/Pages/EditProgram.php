@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\LbkMaterialResource\Pages;
+namespace App\Filament\Resources\ProgramResource\Pages;
 
-use App\Filament\Resources\LbkMaterialResource;
+use App\Filament\Resources\ProgramResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditLbkMaterial extends EditRecord
+class EditProgram extends EditRecord
 {
     use EditRecord\Concerns\Translatable;
 
-    protected static string $resource = LbkMaterialResource::class;
+    protected static string $resource = ProgramResource::class;
 
     protected function getHeaderActions(): array
     {
