@@ -49,11 +49,11 @@ class Program extends Model
     ];
 
     /**
-     * Get the category that owns this program.
+     * Get the categories that own this program.
      */
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'category_program');
     }
 
     /**

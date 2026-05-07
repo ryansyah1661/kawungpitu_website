@@ -18,15 +18,32 @@
                     </div>
                 @endif
 
+                {{-- Container Badge (Status & Kategori) --}}
                 <div class="absolute top-3 left-3 right-3 flex flex-wrap gap-2 pointer-events-none">
+                    {{-- Status Badge --}}
                     <span
                         class="{{ $material->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[9px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5">
+                        @if ($material->status === 'ongoing')
+                            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+                        @else
+                            <span class="material-symbols-outlined text-xs">check_circle</span>
+                        @endif
                         {{ $material->status === 'ongoing' ? __('messages.program.ongoing') : __('messages.program.completed') }}
                     </span>
-                    <span
-                        class="bg-primary text-white text-[9px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2">
-                        {{ $material->category->name ?? 'Program' }}
-                    </span>
+
+                    {{-- Loop Banyak Kategori --}}
+                    @foreach ($material->categories as $category)
+                        <span
+                            class="bg-primary text-white text-[9px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2 whitespace-nowrap">
+                            @if ($category->icon)
+                                <img src="{{ asset('storage/' . $category->icon) }}"
+                                    class="w-3.5 h-3.5 object-contain brightness-0 invert" alt="{{ $category->name }}">
+                            @else
+                                <span class="material-symbols-outlined text-[14px]">category</span>
+                            @endif
+                            {{ $category->name }}
+                        </span>
+                    @endforeach
                 </div>
             </a>
 
@@ -78,6 +95,9 @@
             </div>
         </article>
     @empty
-        {{-- Empty state --}}
+        <div class="col-span-full text-center py-20 bg-white rounded-3xl border border-dashed border-gray-200">
+            <span class="material-symbols-outlined text-5xl text-gray-300">search_off</span>
+            <p class="text-gray-400 font-tegas uppercase tracking-widest mt-4">Belum ada program yang ditemukan</p>
+        </div>
     @endforelse
 </div>

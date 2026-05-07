@@ -69,10 +69,16 @@ class ArticleResource extends Resource
                     ->schema([
                         Forms\Components\Section::make('Pengaturan')
                             ->schema([
-                                Forms\Components\Select::make('category_id')
+                                // Update Kategori menjadi Multiple Select
+                                Forms\Components\Select::make('categories')
                                     ->label('Kategori')
-                                    ->relationship('category', 'name', fn($query) => $query->where('type', 'article'))
-                                    ->getOptionLabelFromRecordUsing(fn($record) => $record->name)
+                                    ->multiple()
+                                    ->relationship(
+                                        name: 'categories',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn($query) => $query->where('type', 'article')
+                                    )
+                                    ->getOptionLabelFromRecordUsing(fn($record) => $record->getTranslation('name', app()->getLocale()))
                                     ->required()
                                     ->preload()
                                     ->searchable(),
@@ -99,10 +105,6 @@ class ArticleResource extends Resource
                                 Forms\Components\FileUpload::make('featured_image')
                                     ->label('Gambar Utama')
                                     ->image()
-                                    ->imageResizeMode('cover')
-                                    ->imageCropAspectRatio('16:9')
-                                    ->imageResizeTargetWidth('1200')
-                                    ->imageResizeTargetHeight('675')
                                     ->directory('articles')
                                     ->visibility('public'),
                             ]),
@@ -125,7 +127,8 @@ class ArticleResource extends Resource
                     ->sortable()
                     ->limit(40),
 
-                Tables\Columns\TextColumn::make('category.name')
+                // Menampilkan badge untuk banyak kategori
+                Tables\Columns\TextColumn::make('categories.name')
                     ->label('Kategori')
                     ->badge()
                     ->sortable(),
@@ -147,9 +150,11 @@ class ArticleResource extends Resource
                     ->alignCenter(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('category_id')
+                // Filter kategori diubah menjadi multiple
+                Tables\Filters\SelectFilter::make('categories')
                     ->label('Kategori')
-                    ->relationship('category', 'name', fn($query) => $query->where('type', 'article'))
+                    ->multiple()
+                    ->relationship('categories', 'name', fn($query) => $query->where('type', 'article'))
                     ->preload(),
 
                 Tables\Filters\TernaryFilter::make('is_published')
@@ -165,11 +170,6 @@ class ArticleResource extends Resource
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
-    }
-
-    public static function getRelations(): array
-    {
-        return [];
     }
 
     public static function getPages(): array

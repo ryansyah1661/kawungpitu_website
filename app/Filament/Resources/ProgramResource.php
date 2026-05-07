@@ -170,10 +170,11 @@ class ProgramResource extends Resource
                     ->schema([
                         Section::make('Pengaturan')
                             ->schema([
-                                Select::make('category_id')
+                                Select::make('categories')
                                     ->label('Kategori')
+                                    ->multiple()
                                     ->relationship(
-                                        name: 'category',
+                                        name: 'categories',
                                         titleAttribute: 'name',
                                         modifyQueryUsing: fn($query) => $query->where('type', 'program')
                                     )
@@ -235,7 +236,7 @@ class ProgramResource extends Resource
                     ->sortable()
                     ->limit(40),
 
-                Tables\Columns\TextColumn::make('category.name')
+                Tables\Columns\TextColumn::make('categories.name')
                     ->label('Kategori')
                     ->badge()
                     ->sortable(),
@@ -243,6 +244,15 @@ class ProgramResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
+                    ->formatStateUsing(function (string $state, $livewire): string {
+                        $locale = $livewire->activeLocale ?? app()->getLocale();
+                        return match ($state) {
+                            // Kita panggil file bahasa dengan menyertakan variabel $locale
+                            'ongoing' => __('messages.program.ongoing', [], $locale),
+                            'completed' => __('messages.program.completed', [], $locale),
+                            default => $state,
+                        };
+                    })
                     ->color(fn(string $state): string => match ($state) {
                         'ongoing' => 'warning',
                         'completed' => 'success',
@@ -254,9 +264,10 @@ class ProgramResource extends Resource
                     ->boolean(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('category_id')
+                Tables\Filters\SelectFilter::make('categories')
                     ->label('Kategori')
-                    ->relationship('category', 'name', fn($query) => $query->where('type', 'program'))
+                    ->multiple()
+                    ->relationship('categories', 'name', fn($query) => $query->where('type', 'program'))
                     ->preload(),
             ])
             ->actions([

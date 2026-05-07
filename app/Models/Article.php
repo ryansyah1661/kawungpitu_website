@@ -11,7 +11,6 @@ class Article extends Model
     use HasFactory, HasTranslations;
 
     protected $fillable = [
-        'category_id',
         'title',
         'slug',
         'author_name',
@@ -32,11 +31,11 @@ class Article extends Model
     ];
 
     /**
-     * Get the category that owns this article.
+     * Relasi diubah menjadi Many-to-Many
      */
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'article_category');
     }
 
     /**

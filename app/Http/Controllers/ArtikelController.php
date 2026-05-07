@@ -10,9 +10,10 @@ class ArtikelController extends Controller
 {
     public function index(string $locale, Request $request)
     {
-        $query = Article::with('category')->published();
+        // 1. Eager Load 'categories' (jamak)
+        $query = Article::with('categories')->published();
 
-        // Filter Search
+        // Filter Search (Judul & Isi)
         if ($request->filled('search')) {
             $search = $request->search;
             $currentLocale = app()->getLocale();
@@ -22,22 +23,23 @@ class ArtikelController extends Controller
             });
         }
 
-        // Filter Category via Query String
+        // Filter Category via Query String (Many-to-Many)
         if ($request->filled('kategori')) {
-            $query->whereHas('category', function ($q) use ($request) {
+            $query->whereHas('categories', function ($q) use ($request) {
                 $currentLocale = app()->getLocale();
                 $q->where("slug->{$currentLocale}", $request->kategori);
             });
         }
 
         $articles = $query->latest('published_at')->paginate(6);
-        $totalArticlesCount = Article::published()->count(); // Total murni semua artikel
+        $totalArticlesCount = Article::published()->count();
 
         if ($request->ajax()) {
             return view('frontend.partials.article-grid', compact('articles'))->render();
         }
 
-        $categories = Category::articleType()->orderBy('sort_order')->get();
+        // Ambil kategori khusus tipe artikel
+        $categories = Category::where('type', 'article')->orderBy('sort_order')->get();
         $popularArticles = Article::published()->orderBy('view_count', 'desc')->take(5)->get();
 
         return view('frontend.articles', compact('articles', 'categories', 'popularArticles', 'totalArticlesCount'));
@@ -48,21 +50,22 @@ class ArtikelController extends Controller
         $currentLocale = app()->getLocale();
         $kategori = Category::where("slug->{$currentLocale}", $kategoriSlug)->firstOrFail();
 
-        // DEFINISIKAN DATA DULU
-        $articles = Article::with('category')
-            ->where('category_id', $kategori->id)
+        // DEFINISIKAN DATA: Mencari artikel yang memiliki kategori ini di tabel pivot
+        $articles = Article::with('categories')
+            ->whereHas('categories', function ($q) use ($kategori) {
+                $q->where('categories.id', $kategori->id);
+            })
             ->published()
             ->latest('published_at')
             ->paginate(6);
 
         $totalArticlesCount = Article::published()->count();
 
-        // BARU CEK AJAX
         if ($request->ajax()) {
             return view('frontend.partials.article-grid', compact('articles'))->render();
         }
 
-        $categories = Category::articleType()->orderBy('sort_order')->get();
+        $categories = Category::where('type', 'article')->orderBy('sort_order')->get();
         $popularArticles = Article::published()->orderBy('view_count', 'desc')->take(5)->get();
         $currentCategory = $kategori;
 
@@ -72,18 +75,27 @@ class ArtikelController extends Controller
     public function show(string $locale, $slug)
     {
         $artikel = Article::where('slug', $slug)->firstOrFail();
+
         if (!$artikel->is_published) {
             abort(404);
         }
-        $artikel->incrementViewCount();
-        $artikel->load('category');
 
-        $relatedArticles = Article::with('category')
-            ->where('category_id', $artikel->category_id)
-            ->where('id', '!=', $artikel->id)
+        $artikel->incrementViewCount();
+        $artikel->load('categories');
+
+        // LOGIKA ARTIKEL TERKAIT: 
+        // Mencari artikel lain yang punya salah satu kategori yang sama dengan artikel ini
+        $categoryIds = $artikel->categories->pluck('id')->toArray();
+
+        $relatedArticles = Article::with('categories')
+            ->whereHas('categories', function ($q) use ($categoryIds) {
+                $q->whereIn('categories.id', $categoryIds);
+            })
+            ->where('id', '!=', $artikel->id) // Jangan tampilkan artikel itu sendiri
             ->published()
             ->latest('published_at')
-            ->take(3)->get();
+            ->take(3)
+            ->get();
 
         return view('frontend.articles-detail', compact('artikel', 'relatedArticles'));
     }

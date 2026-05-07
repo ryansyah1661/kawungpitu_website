@@ -43,15 +43,15 @@ class CategoryResource extends Resource
 
                         FileUpload::make('icon')
                             ->label('Icon Kategori')
-                            ->image() // Supaya hanya bisa upload gambar
-                            ->directory('category-icons') // Folder penyimpanannya
-                            ->imageEditor(), // Opsional: biar bisa crop icon di admin
+                            ->image()
+                            ->directory('category-icons')
+                            ->imageEditor(),
 
                         Forms\Components\Select::make('type')
                             ->label('Tipe')
                             ->options([
                                 'article' => 'Artikel',
-                                'lbk' => 'Program',
+                                'program' => 'Program', // Mengubah 'lbk' jadi 'program' agar konsisten
                             ])
                             ->required()
                             ->default('article'),
@@ -76,14 +76,17 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->badge()
                     ->label('Tipe')
-                    ->colors([
-                        'primary' => 'article',
-                        'warning' => 'lbk',
-                    ])
+                    // Mengatur warna badge berdasarkan tipe
+                    ->color(fn(string $state): string => match ($state) {
+                        'article' => 'info',
+                        'program', 'lbk' => 'warning',
+                        default => 'gray',
+                    })
+                    // Kunci untuk mengubah huruf depan jadi kapital (program -> Program)
                     ->formatStateUsing(fn(string $state): string => match ($state) {
                         'article' => 'Artikel',
-                        'lbk' => 'Program',
-                        default => $state,
+                        'program', 'lbk' => 'Program',
+                        default => ucfirst($state),
                     }),
 
                 Tables\Columns\TextColumn::make('articles_count')
@@ -102,7 +105,7 @@ class CategoryResource extends Resource
                     ->label('Tipe')
                     ->options([
                         'article' => 'Artikel',
-                        'lbk' => 'Program',
+                        'program' => 'Program',
                     ]),
             ])
             ->actions([

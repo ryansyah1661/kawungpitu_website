@@ -9,42 +9,49 @@ use Illuminate\Http\Request;
 class ProgramController extends Controller
 {
     /**
-     * Halaman index Program (Lingkar Belajar Kawung).
+     * Halaman index Program.
      */
     public function index(string $locale, Request $request)
     {
-        $query = Program::with('category')->published();
+        // Pastikan eager loading pake 'categories' (jamak)
+        $query = Program::with('categories')->published();
 
-        // Filter by category
+        // Filter berdasarkan kategori (Many-to-Many)
         if ($request->filled('kategori')) {
-            $query->whereHas('category', function ($q) use ($request) {
+            $query->whereHas('categories', function ($q) use ($request) {
                 $currentLocale = app()->getLocale();
+                // Menggunakan JSON selector untuk slug translatable
                 $q->where("slug->{$currentLocale}", $request->kategori);
             });
         }
 
-        // Filter by status
+        // Filter berdasarkan status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Search
+        // Search berdasarkan judul (Translatable)
         if ($request->filled('search')) {
             $search = $request->search;
             $currentLocale = app()->getLocale();
             $query->where("title->{$currentLocale}", 'like', "%{$search}%");
         }
 
-        // 1. DEFINISIKAN DATA DULU
-        $materials = $query->orderBy('sort_order')->paginate(9);
-        $totalMaterialsCount = Program::published()->count(); // Total murni semua program
+        // Jika sort_order tidak ada di DB, ganti ke 'published_at' atau 'created_at'
+        $materials = $query->orderBy('published_at', 'desc')->paginate(9);
 
-        // 2. CEK AJAX
+        // Total murni semua program untuk statistik sidebar
+        $totalMaterialsCount = Program::published()->count();
+
+        // Response untuk AJAX (Filter/Pagination tanpa reload)
         if ($request->ajax()) {
             return view('frontend.partials.program-grid', compact('materials'))->render();
         }
 
-        $categories = Category::programType()->orderBy('sort_order')->get();
+        // Ambil kategori khusus tipe program
+        $categories = Category::where('type', 'program')->orderBy('name')->get();
+
+        // Program paling banyak dilihat
         $popularPrograms = Program::published()->orderBy('view_count', 'desc')->take(5)->get();
 
         return view('frontend.program', compact('materials', 'categories', 'popularPrograms', 'totalMaterialsCount'));
@@ -55,25 +62,30 @@ class ProgramController extends Controller
      */
     public function show(string $locale, $slug)
     {
+        // Cari program berdasarkan slug (biasanya slug program tidak translatable/tetap string)
         $program = Program::where('slug', $slug)->firstOrFail();
 
         if (!$program->is_published) {
             abort(404);
         }
 
+        // Update view count & load relasi categories
         $program->incrementViewCount();
-        $program->load('category');
+        $program->load('categories');
 
+        // Navigasi: Program Sebelumnya
         $previousMaterial = Program::published()
-            ->where('sort_order', '<', $program->sort_order)
-            ->orderBy('sort_order', 'desc')
+            ->where('published_at', '>', $program->published_at)
+            ->orderBy('published_at', 'asc')
             ->first();
 
+        // Navigasi: Program Selanjutnya
         $nextMaterial = Program::published()
-            ->where('sort_order', '>', $program->sort_order)
-            ->orderBy('sort_order', 'asc')
+            ->where('published_at', '<', $program->published_at)
+            ->orderBy('published_at', 'desc')
             ->first();
 
+        // Pastikan nama view ini sesuai dengan file blade kamu
         return view('frontend.program-detail', compact('program', 'previousMaterial', 'nextMaterial'));
     }
 }

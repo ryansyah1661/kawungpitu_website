@@ -17,9 +17,15 @@
                         <span class="material-symbols-outlined text-6xl text-gray-400">article</span>
                     </div>
                 @endif
-                <div class="absolute top-4 left-4">
-                    <span
-                        class="bg-primary text-white text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg">{{ $article->category->name }}</span>
+
+                {{-- Container Badge Kategori (Hanya Teks) --}}
+                <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+                    @foreach ($article->categories as $category)
+                        <span
+                            class="bg-primary text-white text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg">
+                            {{ $category->name }}
+                        </span>
+                    @endforeach
                 </div>
             </a>
 
@@ -29,15 +35,21 @@
                     <span class="w-1 h-1 bg-primary/30 rounded-full"></span>
                     <span class="text-gray-400"> {{ $article->author_name ?? 'Admin' }}</span>
                     <span class="w-1 h-1 bg-primary/30 rounded-full"></span>
-                    <span>{{ number_format($article->view_count) }} views</span>
+                    <span class="flex items-center">
+                        <span class="material-symbols-outlined text-[14px] mr-1">visibility</span>
+                        {{ number_format($article->view_count) }}
+                    </span>
                 </div>
+
                 <h2
                     class="font-tegas text-xl font-black text-primary mb-4 leading-tight uppercase group-hover:text-dark transition-colors">
                     <a href="{{ $articleUrl }}">{{ $article->title }}</a>
                 </h2>
+
                 <p class="text-gray-600 font-body text-sm mb-8 line-clamp-3 leading-relaxed font-light">
                     {{ $article->excerpt }}
                 </p>
+
                 <a class="inline-flex items-center text-primary font-bold font-tegas text-xs uppercase tracking-widest group mt-auto"
                     href="{{ $articleUrl }}">
                     <span class="hover-underline">{{ __('messages.articles.read_more') }}</span>
@@ -47,9 +59,9 @@
             </div>
         </article>
     @empty
-        <div class="col-span-2 text-center py-20">
-            <span class="material-symbols-outlined text-6xl text-gray-300 mb-4">article</span>
-            <p class="text-gray-400 font-tegas uppercase tracking-wider">{{ __('messages.articles.empty') }}</p>
+        <div class="col-span-full text-center py-20 bg-white rounded-3xl border border-dashed border-gray-200">
+            <span class="material-symbols-outlined text-5xl text-gray-300">search_off</span>
+            <p class="text-gray-400 font-tegas uppercase tracking-widest mt-4">{{ __('messages.articles.empty') }}</p>
         </div>
     @endforelse
 

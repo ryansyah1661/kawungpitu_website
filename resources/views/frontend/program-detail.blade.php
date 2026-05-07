@@ -21,17 +21,21 @@
 
             {{-- Category + Status + Date --}}
             <div class="flex flex-wrap items-center gap-3 mb-6">
-                <span
-                    class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2">
-                    @if ($program->category && $program->category->icon)
-                        <img src="{{ asset('storage/' . $program->category->icon) }}"
-                            class="w-4 h-4 object-contain brightness-0 invert" alt="{{ $program->category->name }}">
-                    @else
-                        <span class="material-symbols-outlined text-[14px]">category</span>
-                    @endif
-                    {{ $program->category->name }}
-                </span>
+                {{-- Loop Semua Kategori yang Dipilih --}}
+                @foreach ($program->categories as $category)
+                    <span
+                        class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2">
+                        @if ($category->icon)
+                            <img src="{{ asset('storage/' . $category->icon) }}"
+                                class="w-4 h-4 object-contain brightness-0 invert" alt="{{ $category->name }}">
+                        @else
+                            <span class="material-symbols-outlined text-[14px]">category</span>
+                        @endif
+                        {{ $category->name }}
+                    </span>
+                @endforeach
 
+                {{-- Status Badge --}}
                 <span
                     class="{{ $program->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[10px] font-bold py-2 px-4 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5">
                     @if ($program->status === 'ongoing')
@@ -63,7 +67,6 @@
             @endif
 
             @if ($program->video_url)
-                {{-- Logic YouTube Embed --}}
                 @php
                     preg_match(
                         '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/',
@@ -88,9 +91,10 @@
             {{-- PENTAGON ASET (RADAR CHART) --}}
             <div class="mt-16 bg-white p-10 rounded-3xl shadow-xl shadow-primary/5 border border-gray-100 animate-fade-in">
                 <div class="text-center mb-10">
-                    <h3 class="font-tegas text-2xl font-black text-primary uppercase tracking-tight mb-2">Pentagon Aset</h3>
-                    <p class="text-gray-400 text-sm font-body italic">Visualisasi Dampak Program Terhadap 5 Modal
-                        Kehidupan</p>
+                    <h3 class="font-tegas text-2xl font-black text-primary uppercase tracking-tight mb-2">Pentagon Aset
+                        Ketangguhan</h3>
+                    <p class="text-gray-400 text-sm font-body italic">Visualisasi dampak program terhadap 5 modal
+                        ketangguhan komunitas</p>
                 </div>
 
                 <div class="max-w-md mx-auto relative h-[400px]">
@@ -99,7 +103,6 @@
 
                 {{-- Bukti Teks Per Pilar --}}
                 <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-10">
-                    {{-- Modal Manusia --}}
                     <div class="flex gap-4">
                         <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                             <span class="material-symbols-outlined text-primary text-xl">person</span>
@@ -112,7 +115,6 @@
                             </p>
                         </div>
                     </div>
-                    {{-- Modal Sosial --}}
                     <div class="flex gap-4">
                         <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                             <span class="material-symbols-outlined text-primary text-xl">groups</span>
@@ -125,7 +127,6 @@
                             </p>
                         </div>
                     </div>
-                    {{-- Modal Alam --}}
                     <div class="flex gap-4">
                         <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                             <span class="material-symbols-outlined text-primary text-xl">eco</span>
@@ -138,7 +139,6 @@
                             </p>
                         </div>
                     </div>
-                    {{-- Modal Fisik --}}
                     <div class="flex gap-4">
                         <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                             <span class="material-symbols-outlined text-primary text-xl">factory</span>
@@ -151,7 +151,6 @@
                             </p>
                         </div>
                     </div>
-                    {{-- Modal Finansial --}}
                     <div class="flex gap-4 md:col-span-2 md:max-w-md md:mx-auto">
                         <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                             <span class="material-symbols-outlined text-primary text-xl">payments</span>
