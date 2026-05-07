@@ -29,11 +29,16 @@ class Program extends Model
         'sort_order',
         'status',
         'view_count',
-        'human_capital',    // Fokus pada kualitas individu [cite: 8, 9]
-        'social_capital',   // Fokus pada jejaring dan kepercayaan [cite: 12, 13]
-        'natural_capital',  // Fokus pada perlindungan sumber daya alam [cite: 16, 17]
-        'physical_capital', // Fokus pada infrastruktur pendukung [cite: 20, 21]
-        'financial_capital' // Fokus pada akses pendanaan [cite: 24, 25]
+        'human_capital',
+        'social_capital',
+        'natural_capital',
+        'physical_capital',
+        'financial_capital',
+        'human_capital_note',
+        'social_capital_note',
+        'natural_capital_note',
+        'physical_capital_note',
+        'financial_capital_note',
     ];
 
     public $translatable = ['title', 'excerpt', 'body'];

@@ -7,7 +7,6 @@ use App\Models\Program;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Slider;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
@@ -22,7 +21,6 @@ use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class ProgramResource extends Resource
 {
@@ -76,33 +74,78 @@ class ProgramResource extends Resource
                                     ->fileAttachmentsDirectory('programs/attachments'),
                             ]),
 
-                        Section::make('Statistik Pentagon Aset')
-                            ->description('Input skor 1-100 untuk membangun ketangguhan menyeluruh komunitas')
+                        Section::make('Statistik & Bukti Pentagon Aset')
+                            ->description('Input skor (1-100) dan berikan narasi bukti untuk tiap pilar ketangguhan.')
                             ->schema([
-                                Slider::make('human_capital')
-                                    ->label('Modal Manusia')
-                                    ->helperText('Pelatihan teknis, pendidikan kritis, literasi kesehatan')
-                                    ->min(0)->max(100)->default(0),
+                                // Modal Manusia
+                                Group::make([
+                                    TextInput::make('human_capital')
+                                        ->label('Skor Modal Manusia')
+                                        ->numeric()
+                                        ->minValue(0)
+                                        ->maxValue(100)
+                                        ->default(0),
+                                    Textarea::make('human_capital_note')
+                                        ->label('Bukti Teks (Manusia)')
+                                        ->placeholder('Contoh: Warga telah mengikuti pelatihan sertifikasi...')
+                                        ->rows(2),
+                                ])->columns(1),
 
-                                Slider::make('social_capital')
-                                    ->label('Modal Sosial')
-                                    ->helperText('Pendampingan koperasi, penguatan lembaga adat, kolaborasi')
-                                    ->min(0)->max(100)->default(0),
+                                // Modal Sosial
+                                Group::make([
+                                    TextInput::make('social_capital')
+                                        ->label('Skor Modal Sosial')
+                                        ->numeric()
+                                        ->minValue(0)
+                                        ->maxValue(100)
+                                        ->default(0),
+                                    Textarea::make('social_capital_note')
+                                        ->label('Bukti Teks (Sosial)')
+                                        ->placeholder('Contoh: Memperkuat gotong royong dan lembaga adat...')
+                                        ->rows(2),
+                                ])->columns(1),
 
-                                Slider::make('natural_capital')
-                                    ->label('Modal Alam')
-                                    ->helperText('Konservasi pesisir Anambas, hutan desa, pertanian berkelanjutan')
-                                    ->min(0)->max(100)->default(0),
+                                // Modal Alam
+                                Group::make([
+                                    TextInput::make('natural_capital')
+                                        ->label('Skor Modal Alam')
+                                        ->numeric()
+                                        ->minValue(0)
+                                        ->maxValue(100)
+                                        ->default(0),
+                                    Textarea::make('natural_capital_note')
+                                        ->label('Bukti Teks (Alam)')
+                                        ->placeholder('Contoh: Konservasi wilayah pesisir dan hutan...')
+                                        ->rows(2),
+                                ])->columns(1),
 
-                                Slider::make('physical_capital')
-                                    ->label('Modal Fisik')
-                                    ->helperText('Pengolahan sampah, air bersih, alat produksi tepat guna')
-                                    ->min(0)->max(100)->default(0),
+                                // Modal Fisik
+                                Group::make([
+                                    TextInput::make('physical_capital')
+                                        ->label('Skor Modal Fisik')
+                                        ->numeric()
+                                        ->minValue(0)
+                                        ->maxValue(100)
+                                        ->default(0),
+                                    Textarea::make('physical_capital_note')
+                                        ->label('Bukti Teks (Fisik)')
+                                        ->placeholder('Contoh: Pembangunan gudang alat produksi tepat guna...')
+                                        ->rows(2),
+                                ])->columns(1),
 
-                                Slider::make('financial_capital')
-                                    ->label('Modal Finansial')
-                                    ->helperText('Unit usaha desa, keuangan mikro, diversifikasi pendapatan')
-                                    ->min(0)->max(100)->default(0),
+                                // Modal Finansial
+                                Group::make([
+                                    TextInput::make('financial_capital')
+                                        ->label('Skor Modal Finansial')
+                                        ->numeric()
+                                        ->minValue(0)
+                                        ->maxValue(100)
+                                        ->default(0),
+                                    Textarea::make('financial_capital_note')
+                                        ->label('Bukti Teks (Finansial)')
+                                        ->placeholder('Contoh: Peningkatan pendapatan melalui unit usaha desa...')
+                                        ->rows(2),
+                                ])->columns(1),
                             ])->columns(2),
 
                         Section::make('Media')
@@ -129,7 +172,12 @@ class ProgramResource extends Resource
                             ->schema([
                                 Select::make('category_id')
                                     ->label('Kategori')
-                                    ->relationship('category', 'name', fn($query) => $query->where('type', 'program'))
+                                    ->relationship(
+                                        name: 'category',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn($query) => $query->where('type', 'program')
+                                    )
+                                    ->getOptionLabelFromRecordUsing(fn($record) => $record->getTranslation('name', app()->getLocale()))
                                     ->required()
                                     ->preload()
                                     ->searchable(),
@@ -191,15 +239,6 @@ class ProgramResource extends Resource
                     ->label('Kategori')
                     ->badge()
                     ->sortable(),
-
-                Tables\Columns\IconColumn::make('video_url')
-                    ->label('Video')
-                    ->boolean()
-                    ->getStateUsing(fn($record) => !empty($record->video_url))
-                    ->trueIcon('heroicon-o-play-circle')
-                    ->falseIcon('heroicon-o-minus-circle')
-                    ->trueColor('info')
-                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')

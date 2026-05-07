@@ -47,7 +47,7 @@ class ProgramController extends Controller
         $categories = Category::programType()->orderBy('sort_order')->get();
         $popularPrograms = Program::published()->orderBy('view_count', 'desc')->take(5)->get();
 
-        return view('frontend.learning-circles', compact('materials', 'categories', 'popularPrograms', 'totalMaterialsCount'));
+        return view('frontend.program', compact('materials', 'categories', 'popularPrograms', 'totalMaterialsCount'));
     }
 
     /**
@@ -74,6 +74,6 @@ class ProgramController extends Controller
             ->orderBy('sort_order', 'asc')
             ->first();
 
-        return view('frontend.learning-circles-detail', compact('program', 'previousMaterial', 'nextMaterial'));
+        return view('frontend.program-detail', compact('program', 'previousMaterial', 'nextMaterial'));
     }
 }
