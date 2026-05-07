@@ -115,8 +115,8 @@
                         ],
                         [
                             'icon' => 'handshake',
-                            'title' => __('messages.strategy.items.mentoring.title'),
-                            'desc' => __('messages.strategy.items.mentoring.desc'),
+                            'title' => __('messages.strategy.items.development.title'),
+                            'desc' => __('messages.strategy.items.development.desc'),
                         ],
                         [
                             'icon' => 'school',

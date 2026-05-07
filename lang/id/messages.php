@@ -33,12 +33,12 @@ return [
     'strategy' => [
         'title' => 'Strategi Kami',
         'items' => [
-            'organizing' => ['title' => 'Pengorganisasian', 'desc' => 'Membangun kekuatan kolektif warga desa.'],
-            'mentoring' => ['title' => 'Pendampingan', 'desc' => 'Menjadi mitra setia dalam setiap langkah warga.'],
+            'organizing' => ['title' => 'Pengorganisasian Masyarakat', 'desc' => 'Membangun kekuatan kolektif warga desa.'],
+            'development' => ['title' => 'Pengembangan Masyarakat', 'desc' => 'Menjadi mitra setia dalam setiap langkah warga.'],
             'capacity' => ['title' => 'Penguatan Kapasitas', 'desc' => 'Edukasi dan pelatihan kritis untuk kemandirian.'],
             'research' => ['title' => 'Riset Partisipatif', 'desc' => 'Mengkaji potensi desa bersama masyarakat.'],
             'advocacy' => ['title' => 'Advokasi Kebijakan', 'desc' => 'Menyuarakan hak warga ke tingkat kebijakan.'],
-            'modelling' => ['title' => 'Modelling', 'desc' => 'Menciptakan percontohan sistem yang lestari.'],
+            'modelling' => ['title' => 'Model', 'desc' => 'Menciptakan percontohan sistem yang lestari.'],
         ],
     ],
     'about' => [

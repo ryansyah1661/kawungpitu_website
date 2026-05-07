@@ -88,10 +88,9 @@
             {{-- PENTAGON ASET (RADAR CHART) --}}
             <div class="mt-16 bg-white p-10 rounded-3xl shadow-xl shadow-primary/5 border border-gray-100 animate-fade-in">
                 <div class="text-center mb-10">
-                    <h3 class="font-tegas text-2xl font-black text-primary uppercase tracking-tight mb-2">Pentagon Aset
-                        Ketangguhan</h3>
-                    <p class="text-gray-400 text-sm font-body italic">Visualisasi dampak program terhadap 5 modal
-                        ketangguhan komunitas</p>
+                    <h3 class="font-tegas text-2xl font-black text-primary uppercase tracking-tight mb-2">Pentagon Aset</h3>
+                    <p class="text-gray-400 text-sm font-body italic">Visualisasi Dampak Program Terhadap 5 Modal
+                        Kehidupan</p>
                 </div>
 
                 <div class="max-w-md mx-auto relative h-[400px]">

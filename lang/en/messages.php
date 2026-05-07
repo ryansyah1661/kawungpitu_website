@@ -33,11 +33,11 @@ return [
     'strategy' => [
         'title' => 'Our Strategy',
         'items' => [
-            'organizing' => ['title' => 'Organizing', 'desc' => 'Building the collective strength of villagers.'],
-            'mentoring' => ['title' => 'Mentoring', 'desc' => 'Becoming a loyal partner in every step for the community.'],
+            'organizing' => ['title' => 'Community Organizing', 'desc' => 'Building the collective strength of villagers.'],
+            'development' => ['title' => 'Community Development', 'desc' => 'Becoming a loyal partner in every step for the community.'],
             'capacity' => ['title' => 'Capacity Building', 'desc' => 'Critical education and training for independence.'],
             'research' => ['title' => 'Participatory Research', 'desc' => 'Assessing village potential together with the community.'],
-            'advocacy' => ['title' => 'Policy Advocacy', 'desc' => 'Voicing citizens\' rights at the policy level.'],
+            'advocacy' => ['title' => 'Policy Advocacy', 'desc' => 'Voicing citizens rights at the policy level.'],
             'modelling' => ['title' => 'Modelling', 'desc' => 'Creating sustainable system prototypes.'],
         ],
     ],
