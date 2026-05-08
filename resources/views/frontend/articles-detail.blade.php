@@ -15,25 +15,37 @@
             </nav>
 
             {{-- Category + Date --}}
-            <div class="flex items-center space-x-4 mb-6">
-                <span
-                    class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg">
-                    {{ $artikel->category->name }}
-                </span>
-                <time class="text-sm text-gray-400 font-bold">
-                    {{ $artikel->published_at->translatedFormat('d F Y') }}
-                </time>
-                <span class="w-1.5 h-1.5 bg-gray-200 rounded-full"></span>
-                <span class="flex items-center text-sm text-gray-400 font-bold">
-                    <span class="material-symbols-outlined text-sm mr-1.5 text-primary/60">person</span>
-                    {{ $artikel->author_name ?? 'Admin' }}
-                </span>
+            <div class="flex flex-wrap items-center gap-y-4 gap-x-6 mb-6">
+                {{-- Bagian Kategori (Bisa Banyak) --}}
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($artikel->categories as $category)
+                        <span
+                            class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg">
+                            {{ $category->name }}
+                        </span>
+                    @endforeach
+                </div>
 
-                <span class="w-1.5 h-1.5 bg-gray-200 rounded-full"></span>
-                <span class="flex items-center text-sm text-gray-400">
-                    <span class="material-symbols-outlined text-sm mr-1">visibility</span>
-                    {{ number_format($artikel->view_count) }}
-                </span>
+                {{-- Meta Data: Tanggal, Penulis, Views --}}
+                <div class="flex items-center space-x-4">
+                    <time class="text-sm text-gray-400 font-bold uppercase tracking-wide">
+                        {{ $artikel->published_at->translatedFormat('d F Y') }}
+                    </time>
+
+                    <span class="w-1.5 h-1.5 bg-gray-200 rounded-full"></span>
+
+                    <span class="flex items-center text-sm text-gray-400 font-bold">
+                        <span class="material-symbols-outlined text-sm mr-1.5 text-primary/60">person</span>
+                        {{ $artikel->author_name ?? 'Admin' }}
+                    </span>
+
+                    <span class="w-1.5 h-1.5 bg-gray-200 rounded-full"></span>
+
+                    <span class="flex items-center text-sm text-gray-400">
+                        <span class="material-symbols-outlined text-sm mr-1">visibility</span>
+                        <span class="ml-1">{{ number_format($artikel->view_count) }}</span>
+                    </span>
+                </div>
             </div>
 
             {{-- Title --}}
