@@ -196,9 +196,13 @@
                                     <span class="material-symbols-outlined text-6xl text-gray-400">article</span>
                                 </div>
                             @endif
-                            <div class="absolute top-4 left-4">
-                                <span
-                                    class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg">{{ $article->category->name }}</span>
+                            <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+                                @foreach ($article->categories as $category)
+                                    <span
+                                        class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg">
+                                        {{ $category->name }}
+                                    </span>
+                                @endforeach
                             </div>
                         </a>
                         <div class="flex flex-col flex-grow px-2">

@@ -13,7 +13,7 @@ class LandingPageController extends Controller
      */
     public function index(string $locale)
     {
-        $latestArticles = Article::with('category')
+        $latestArticles = Article::with('categories')
             ->published()
             ->latest('published_at')
             ->take(3)
