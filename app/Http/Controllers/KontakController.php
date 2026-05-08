@@ -27,7 +27,7 @@ class KontakController extends Controller
         $contactMessage = Message::create($validated);
 
         try {
-            Mail::to('muhammadrian1602@gmail.com')->send(new ContactNotification($contactMessage));
+            Mail::to('info@kawungpitu.org')->send(new ContactNotification($contactMessage));
         } catch (\Exception $e) {
             Log::error("Gagal kirim email Brevo: " . $e->getMessage());
         }

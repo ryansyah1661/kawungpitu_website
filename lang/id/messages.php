@@ -15,19 +15,18 @@ return [
         'call_us' => 'Hubungi Kami',
     ],
     'hero' => [
-        'badge' => 'Inisiatif Keberlanjutan',
         'title_1' => 'Promote',
         'title_2' => 'Sustainable',
         'title_3' => 'Livelihood',
-        'description' => 'Menjaga keseimbangan ekosistem dan memberdayakan komunitas lokal untuk masa depan yang lebih baik, mengakar pada nilai-nilai leluhur.',
+        'description' => 'Mendorong ketangguhan komunitas lokal melalui pengelolaan aset strategis yang adil, mandiri, dan berkelanjutan.',
     ],
     'commitment' => [
-        'badge' => 'Komitmen Kami',
-        'benefit_label' => 'Penerima Manfaat',
-        'title' => 'Mewujudkan',
-        'title_dark' => 'Penghidupan Berkelanjutan',
+        'title_1' => 'Mewujudkan Ketangguhan,',
+        'title_2' => 'Menganyam Masa Depan',
+        'title_3' => 'Berkelanjutan',
         'quote' => '<span class="font-bold">Kawungpitu berkomitmen</span> mewujudkan penghidupan berkelanjutan berbasis kearifan lokal.',
-        'description' => 'Mereka hadir sebagai penggerak yang menghidupkan kembali impian yang tertidur, dari kota hingga ladang-ladang petani.',
+        'description_1' => '<strong>Kawungpitu Institute</strong> adalah lembaga penggerak kemandirian komunitas yang berdedikasi untuk mentransformasi penghidupan masyarakat melalui pendekatan <em>Sustainable Livelihoods Framework</em> (SLF).',
+        'description_2' => 'Kami hadir untuk menjembatani potensi lokal dengan strategi pembangunan yang inklusif dan tangguh iklim, berfokus pada penguatan kapasitas masyarakat untuk mengelola sumber daya mereka sendiri secara berdaulat.',
         'learn_more' => 'Pelajari Selengkapnya',
     ],
     'strategy' => [
@@ -81,8 +80,8 @@ return [
         ],
         'team' => [
             'title' => 'TIM KAMI',
-            'tab_advisors' => 'Penasihat',
-            'tab_structure' => 'Struktur Lembaga',
+            'tab_advisors' => 'Dewan Penasehat',
+            'tab_structure' => 'Eksekutif',
         ],
     ],
     'articles' => [

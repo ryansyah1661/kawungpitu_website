@@ -13,10 +13,6 @@
 
         <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
             <div class="max-w-3xl mt-6 md:mt-0">
-                <span
-                    class="inline-block text-white/90 font-medium tracking-[0.2em] uppercase text-sm mb-6 pl-4 border-l-2 border-primary ml-1">
-                    {{ __('messages.hero.badge') }}
-                </span>
                 <h1
                     class="font-tegas text-5xl md:text-6xl lg:text-7xl font-black mb-8 uppercase tracking-tighter animate-fade-in-left w-fit">
                     <span
@@ -46,52 +42,64 @@
     </section>
 
     {{-- SECTION COMMITMENT --}}
-    <section class="py-24 md:py-32 bg-cream">
+    <section class="py-24 bg-white font-sans">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-                <div class="relative order-2 lg:order-1">
-                    <div
-                        class="absolute -top-10 -left-10 w-72 h-72 bg-primary/5 rounded-full mix-blend-multiply filter blur-3xl">
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&q=80&w=1000"
-                        alt="Community"
-                        class="relative z-10 rounded-xl shadow-2xl object-cover h-[500px] w-full lg:w-[90%] lg:ml-auto">
-                    <div
-                        class="absolute bottom-10 -left-8 bg-white p-8 rounded-xl shadow-2xl z-20 hidden md:block border border-gray-100/50">
-                        <div class="text-5xl font-tegas font-black text-primary mb-2">10k+</div>
-                        <div class="text-sm font-bold text-dark uppercase tracking-widest">
-                            {{ __('messages.commitment.benefit_label') }}</div>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
 
-                <div class="space-y-8 order-1 lg:order-2">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-px bg-primary"></div>
-                        <span
-                            class="text-primary font-tegas font-bold uppercase tracking-[0.2em] text-sm">{{ __('messages.commitment.badge') }}</span>
-                    </div>
+                {{-- Sisi Kiri --}}
+                <div class="lg:col-span-7 space-y-8">
                     <h2
-                        class="font-tegas text-4xl md:text-5xl font-black text-primary leading-tight uppercase tracking-tighter">
-                        {{ __('messages.commitment.title') }} <span
-                            class="text-dark">{{ __('messages.commitment.title_dark') }}</span>
+                        class="font-montserrat font-black text-[2rem] md:text-[2.6rem] leading-[1.15] uppercase tracking-tighter">
+                        <span class="block text-[#1a1a1a] whitespace-nowrap">
+                            {{ __('messages.commitment.title_1') }}
+                        </span>
+                        <span class="block text-primary italic whitespace-nowrap">
+                            {{ __('messages.commitment.title_2') }}
+                        </span>
+                        <span class="block text-[#1a1a1a]">
+                            {{ __('messages.commitment.title_3') }}
+                        </span>
                     </h2>
-                    <div class="space-y-6">
-                        <p class="text-xl text-primary leading-relaxed italic opacity-95 font-medium">
-                            "{!! __('messages.commitment.quote') !!}"
+
+                    <div class="space-y-5 max-w-2xl">
+                        <p class="text-gray-700 text-lg leading-relaxed font-medium">
+                            {!! __('messages.commitment.description_1') !!}
                         </p>
-                        <p class="text-lg text-primary leading-relaxed font-light">
-                            {{ __('messages.commitment.description') }}
+                        <p class="text-gray-700 text-lg leading-relaxed">
+                            {!! __('messages.commitment.description_2') !!}
                         </p>
                     </div>
-                    <div class="pt-6">
+
+                    <div class="pt-4">
                         <a href="{{ route('tentang', ['locale' => app()->getLocale()]) }}"
-                            class="inline-flex items-center text-primary font-tegas font-bold hover-underline group text-lg uppercase tracking-wider">
+                            class="inline-flex items-center text-primary font-montserrat font-bold hover:underline group text-lg uppercase tracking-wider">
                             {{ __('messages.commitment.learn_more') }}
                             <span
                                 class="material-symbols-outlined ml-2 group-hover:translate-x-2 transition-transform duration-300">east</span>
                         </a>
                     </div>
                 </div>
+
+                {{-- Sisi Kanan: Quote Card --}}
+                <div class="lg:col-span-5 bg-[#FFF5F3] rounded-[3rem] p-10 md:p-14 relative shadow-sm">
+                    <div class="opacity-20 mb-6">
+                        <span class="material-symbols-outlined text-6xl text-primary">
+                            format_quote
+                        </span>
+                    </div>
+
+                    <blockquote
+                        class="text-xl md:text-2xl font-montserrat italic font-medium text-primary leading-snug mb-8">
+                        "{!! __('messages.commitment.quote') !!}"
+                    </blockquote>
+
+                    <footer
+                        class="font-montserrat font-black text-xs uppercase tracking-[0.2em] text-primary/70 flex items-center">
+                        <div class="w-8 h-px bg-primary/30 mr-3"></div>
+                        Prinsip Kawungpitu
+                    </footer>
+                </div>
+
             </div>
         </div>
     </section>

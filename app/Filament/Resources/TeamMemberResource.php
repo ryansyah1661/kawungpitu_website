@@ -47,8 +47,8 @@ class TeamMemberResource extends Resource
                     Forms\Components\Select::make('type')
                         ->label('Tipe Anggota')
                         ->options([
-                            'advisor' => 'Advisor',
-                            'structure' => 'Struktur Lembaga',
+                            'advisor' => 'Dewan Penasehat',
+                            'structure' => 'Eksekutif',
                         ])
                         ->required()
                         ->native(false)
