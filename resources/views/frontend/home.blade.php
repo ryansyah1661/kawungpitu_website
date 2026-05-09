@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('content', 'home')
+@section('content')
     {{-- SECTION HERO --}}
     <section class="relative min-h-[90vh] flex items-center pt-32 pb-16 overflow-hidden bg-dark">
         <div class="absolute inset-0 z-0 overflow-hidden">
@@ -23,7 +23,7 @@
                         class="bg-white text-dark pl-6 pr-12 py-2 block w-full shadow-xl">{{ __('messages.hero.title_3') }}</span>
                 </h1>
                 <p class="text-lg md:text-xl text-white/80 font-light mb-12 max-w-2xl leading-relaxed">
-                    {{ __('messages.hero.description') }}
+                    {!! __('messages.hero.description') !!}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-6">
                     <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
@@ -53,7 +53,7 @@
                         <span class="block text-[#1a1a1a] whitespace-nowrap">
                             {{ __('messages.commitment.title_1') }}
                         </span>
-                        <span class="block text-primary italic whitespace-nowrap">
+                        <span class="block text-primary whitespace-nowrap">
                             {{ __('messages.commitment.title_2') }}
                         </span>
                         <span class="block text-[#1a1a1a]">
@@ -110,14 +110,27 @@
     </section>
 
     {{-- SECTION STRATEGY --}}
-    <section class="py-24 bg-primary border-t border-white/10">
+    <section class="pt-12 pb-24 bg-primary border-t border-white/10">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
-            <div class="text-center mb-20 space-y-4">
-                <h2 class="font-tegas text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">
+
+            {{-- Header Section --}}
+            <div class="text-center mb-12"> {{-- Jarak total header ke grid --}}
+
+                {{-- Judul: Margin bawah 4 --}}
+                <h2 class="font-tegas text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-2">
                     {{ __('messages.strategy.title') }}
                 </h2>
-                <div class="h-1.5 w-24 bg-white/50 mx-auto rounded-full"></div>
+
+                {{-- Deskripsi: Kita beri mb-12 agar jarak ke card di bawahnya tegas dan rapi --}}
+                <div class="max-w-3xl mx-auto mb-12">
+                    <p
+                        class="text-lg md:text-xl font-light leading-relaxed text-justify text-white/90 hyphens-auto tracking-tight">
+                        {!! __('messages.strategy.subtitle') !!}
+                    </p>
+                </div>
             </div>
+
+            {{-- Grid Pilar Kerja --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
                 @php
                     $strategi = [
@@ -125,45 +138,90 @@
                             'icon' => 'hub',
                             'title' => __('messages.strategy.items.organizing.title'),
                             'desc' => __('messages.strategy.items.organizing.desc'),
+                            'back_icon' => 'groups',
+                            'back_desc' => '<strong class="font-black text-primary">Aksi Kami:</strong> pelatihan keterampilan teknis, literasi kesehatan, serta peningkatan kapasitas kepemimpinan bagi pemuda dan perempuan desa menggunakan pendekatan pendidikan kritis.<br><br><strong class="font-black text-primary">Tujuan:</strong> memastikan setiap individu memiliki pengetahuan dan kemampuan untuk berinovasi.'
                         ],
                         [
                             'icon' => 'handshake',
                             'title' => __('messages.strategy.items.development.title'),
                             'desc' => __('messages.strategy.items.development.desc'),
+                            'back_icon' => 'volunteer_activism',
+                            'back_desc' => '<strong>Aksi Kami:</strong> pendampingan ekonomi kreatif dan akses pasar bagi produk lokal desa.<br><br><strong>Tujuan:</strong> menjalin kolaborasi strategis untuk keberlanjutan ekonomi komunitas.'
                         ],
                         [
                             'icon' => 'school',
                             'title' => __('messages.strategy.items.capacity.title'),
                             'desc' => __('messages.strategy.items.capacity.desc'),
+                            'back_icon' => 'psychology',
+                            'back_desc' => '<strong>Aksi Kami:</strong> workshop inovasi digital dan manajemen organisasi komunitas.<br><br><strong>Tujuan:</strong> mentransfer pengetahuan teknis agar masyarakat mampu berinovasi mandiri.'
                         ],
                         [
                             'icon' => 'analytics',
                             'title' => __('messages.strategy.items.research.title'),
                             'desc' => __('messages.strategy.items.research.desc'),
+                            'back_icon' => 'find_in_page',
+                            'back_desc' => '<strong>Aksi Kami:</strong> pengumpulan data lapangan dan pemetaan potensi wilayah secara partisipatif.<br><br><strong>Tujuan:</strong> menjadikan data yang akurat sebagai fondasi pengambilan keputusan yang tepat.'
                         ],
                         [
                             'icon' => 'campaign',
                             'title' => __('messages.strategy.items.advocacy.title'),
                             'desc' => __('messages.strategy.items.advocacy.desc'),
+                            'back_icon' => 'record_voice_over',
+                            'back_desc' => '<strong>Aksi Kami:</strong> dialog kebijakan dan kampanye kesadaran hak-hak masyarakat desa.<br><br><strong>Tujuan:</strong> menyuarakan hak-hak komunitas di tingkat kebijakan publik secara inklusif.'
                         ],
                         [
                             'icon' => 'architecture',
                             'title' => __('messages.strategy.items.modelling.title'),
                             'desc' => __('messages.strategy.items.modelling.desc'),
+                            'back_icon' => 'layers',
+                            'back_desc' => '<strong>Aksi Kami:</strong> pengembangan prototipe sistem kemandirian dan dokumentasi praktik terbaik.<br><br><strong>Tujuan:</strong> menciptakan model replikatif yang bisa diadaptasi di berbagai daerah.'
                         ],
                     ];
                 @endphp
+
                 @foreach ($strategi as $s)
-                    <div
-                        class="group bg-[#F2E7DF] p-10 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 flex flex-col items-center text-center h-full border border-primary/5">
+                    {{-- Container Utama dengan Perspektif 3D --}}
+                    <div class="group h-[360px] [perspective:1000px]">
+                        {{-- Wrapper Kartu yang Berputar --}}
                         <div
-                            class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 text-primary border border-primary/10">
-                            <span class="material-symbols-outlined text-4xl">{{ $s['icon'] }}</span>
+                            class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+
+                            {{-- SISI DEPAN --}}
+                            <div
+                                class="absolute inset-0 bg-[#F2E7DF] p-10 rounded-3xl shadow-xl flex flex-col items-center border border-primary/5 [backface-visibility:hidden]">
+                                {{-- Icon Depan --}}
+                                <div
+                                    class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 text-primary border border-primary/10">
+                                    <span class="material-symbols-outlined text-4xl">{{ $s['icon'] }}</span>
+                                </div>
+
+                                <h3
+                                    class="font-tegas text-xl font-black text-primary uppercase mb-1 tracking-tighter leading-tight text-center">
+                                    {{ $s['title'] }}
+                                </h3> {{-- Description: Sekarang Rata Kiri (text-left) dan Full Width --}}
+                                <p class="text-primary text-justify px-4 leading-relaxed opacity-90 text-sm text-left w-full">
+                                    {{ $s['desc'] }}
+                                </p>
+                            </div>
+
+                            {{-- SISI BELAKANG --}}
+                            <div
+                                class="absolute inset-0 h-full w-full rounded-3xl bg-[#d5a132] p-10 text-primary [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center border border-white/10 shadow-2xl">
+
+                                {{-- Icon Belakang --}}
+                                <div
+                                    class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-6 text-white border border-white/20">
+                                    <span class=" material-symbols-outlined text-3xl">{{ $s['back_icon'] }}</span>
+                                </div>
+
+                                {{-- Deskripsi Belakang --}}
+                                {{-- Tanda kutip dihapus, pakai {!! !!}, dan ganti ke text-left --}}
+                                <p class="text-primary/90 font-light leading-relaxed text-justify text-sm text-left w-full px-2">
+                                    {!! $s['back_desc'] !!}
+                                </p>
+                            </div>
+
                         </div>
-                        <h3 class="font-tegas text-xl font-black text-primary uppercase mb-4 tracking-tighter leading-tight">
-                            {{ $s['title'] }}
-                        </h3>
-                        <p class="text-primary font-bold leading-relaxed opacity-90 text-sm">{{ $s['desc'] }}</p>
                     </div>
                 @endforeach
             </div>
