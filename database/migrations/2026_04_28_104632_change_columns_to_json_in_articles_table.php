@@ -8,6 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // Drop unique index pada slug dulu sebelum ubah ke JSON
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropUnique(['slug']);
+        });
+
         Schema::table('articles', function (Blueprint $table) {
             $table->json('title')->change();
             $table->json('slug')->change(); // Jangan kasih ->unique() di sini

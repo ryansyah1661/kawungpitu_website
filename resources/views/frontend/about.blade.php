@@ -47,17 +47,15 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div class="space-y-6 animate-fade-in-left">
                     <div class="flex items-center space-x-4">
-                        <div class="w-12 h-px bg-primary"></div>
-                        <span
-                            class="text-primary font-bold uppercase tracking-widest text-sm">{{ __('messages.about.intro.badge') }}</span>
+                        <div class="w-12 bg-primary"></div>
                     </div>
                     <h2 class="font-tegas text-4xl font-black text-dark uppercase tracking-tight leading-tight">
                         {!! __('messages.about.intro.title') !!}
                     </h2>
-                    <p class="text-lg text-primary font-light leading-relaxed">
+                    <p class="text-lg text-gray-700 font-light leading-relaxed">
                         {{ __('messages.about.intro.p1') }}
                     </p>
-                    <p class="text-lg text-primary font-light leading-relaxed">
+                    <p class="text-lg text-gray-700 font-light leading-relaxed">
                         {{ __('messages.about.intro.p2') }}
                     </p>
                 </div>

@@ -19,8 +19,7 @@ class Category extends Model
         'icon',
     ];
 
-    // Slug juga harus masuk sini Qi, biar URL kategori bisa ganti bahasa
-    public array $translatable = ['name', 'slug'];
+    public array $translatable = ['name'];
 
     /**
      * Relasi ke Artikel

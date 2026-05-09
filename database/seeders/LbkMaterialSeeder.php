@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use App\Models\LbkMaterial;
+use App\Models\Program;
 use Illuminate\Database\Seeder;
 
 class LbkMaterialSeeder extends Seeder
@@ -82,7 +82,7 @@ class LbkMaterialSeeder extends Seeder
         ];
 
         foreach ($materials as $material) {
-            LbkMaterial::create($material);
+            Program::create($material);
         }
     }
 }

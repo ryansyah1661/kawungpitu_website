@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('content')
+@section('content', 'home')
     {{-- SECTION HERO --}}
     <section class="relative min-h-[90vh] flex items-center pt-32 pb-16 overflow-hidden bg-dark">
         <div class="absolute inset-0 z-0 overflow-hidden">
@@ -62,7 +62,7 @@
                     </h2>
 
                     <div class="space-y-5 max-w-2xl">
-                        <p class="text-gray-700 text-lg leading-relaxed font-medium">
+                        <p class="text-gray-700 text-lg leading-relaxed">
                             {!! __('messages.commitment.description_1') !!}
                         </p>
                         <p class="text-gray-700 text-lg leading-relaxed">
@@ -72,10 +72,16 @@
 
                     <div class="pt-4">
                         <a href="{{ route('tentang', ['locale' => app()->getLocale()]) }}"
-                            class="inline-flex items-center text-primary font-montserrat font-bold hover:underline group text-lg uppercase tracking-wider">
-                            {{ __('messages.commitment.learn_more') }}
+                            class="inline-flex items-center text-primary font-tegas font-bold text-xs uppercase tracking-widest group/link">
+
+                            {{-- Teks dengan efek garis bawah kustom --}}
+                            <span class="hover-underline">{{ __('messages.commitment.learn_more') }}</span>
+
+                            {{-- Ikon panah yang bergeser halus saat di-hover --}}
                             <span
-                                class="material-symbols-outlined ml-2 group-hover:translate-x-2 transition-transform duration-300">east</span>
+                                class="material-symbols-outlined ml-1 text-[18px] group-hover/link:translate-x-1 transition-transform duration-300">
+                                chevron_right
+                            </span>
                         </a>
                     </div>
                 </div>
@@ -88,8 +94,7 @@
                         </span>
                     </div>
 
-                    <blockquote
-                        class="text-xl md:text-2xl font-montserrat italic font-medium text-primary leading-snug mb-8">
+                    <blockquote class="text-xl md:text-2xl font-montserrat italic font-bold text-primary leading-snug mb-8">
                         "{!! __('messages.commitment.quote') !!}"
                     </blockquote>
 
@@ -155,9 +160,9 @@
                             class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 text-primary border border-primary/10">
                             <span class="material-symbols-outlined text-4xl">{{ $s['icon'] }}</span>
                         </div>
-                        <h3
-                            class="font-tegas text-xl font-black text-primary uppercase mb-4 tracking-tighter leading-tight">
-                            {{ $s['title'] }}</h3>
+                        <h3 class="font-tegas text-xl font-black text-primary uppercase mb-4 tracking-tighter leading-tight">
+                            {{ $s['title'] }}
+                        </h3>
                         <p class="text-primary font-bold leading-relaxed opacity-90 text-sm">{{ $s['desc'] }}</p>
                     </div>
                 @endforeach
@@ -176,7 +181,8 @@
                             class="text-primary font-bold tracking-[0.2em] uppercase text-sm">{{ __('messages.articles.badge') }}</span>
                     </div>
                     <h2 class="font-tegas text-4xl md:text-5xl font-black text-dark uppercase tracking-tighter">
-                        {{ __('messages.articles.title') }}</h2>
+                        {{ __('messages.articles.title') }}
+                    </h2>
                 </div>
                 <a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
                     class="inline-flex items-center space-x-2 text-dark hover:text-primary transition-colors font-tegas font-bold uppercase text-xs tracking-widest border border-gray-200 px-6 py-3 rounded-xl hover:border-primary">
@@ -221,7 +227,8 @@
                                 <a href="{{ $articleUrl }}">{{ $article->title }}</a>
                             </h3>
                             <p class="text-gray-600 mb-8 line-clamp-3 font-body text-sm leading-relaxed italic font-light">
-                                {{ $article->excerpt }}</p>
+                                {{ $article->excerpt }}
+                            </p>
                             <a href="{{ $articleUrl }}"
                                 class="mt-auto inline-flex items-center text-primary font-bold font-tegas text-xs uppercase tracking-widest group/link">
                                 <span class="hover-underline">{{ __('messages.articles.read_more') }}</span>
@@ -244,7 +251,8 @@
         <div class="max-w-4xl mx-auto px-8 md:px-12">
             <div class="text-center mb-16 animate-fade-up">
                 <h2 class="font-tegas text-4xl md:text-5xl font-black text-primary uppercase tracking-tighter">
-                    {{ __('messages.faq.title') }}</h2>
+                    {{ __('messages.faq.title') }}
+                </h2>
                 <p class="mt-4 text-primary/60 font-body italic">{{ __('messages.faq.subtitle') }}</p>
             </div>
 
@@ -262,7 +270,8 @@
                             </summary>
                             <div class="p-6 md:p-8 bg-white border-t border-gray-100">
                                 <div class="text-gray-600 font-body leading-relaxed prose max-w-none">
-                                    {!! $faq->answer !!}</div>
+                                    {!! $faq->answer !!}
+                                </div>
                             </div>
                         </details>
                     </div>
@@ -278,9 +287,11 @@
         </div>
         <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
             <h2 class="font-tegas text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8 tracking-tight uppercase">
-                {{ __('messages.cta.title') }}</h2>
+                {{ __('messages.cta.title') }}
+            </h2>
             <p class="text-xl text-white/80 font-light mb-12 max-w-2xl mx-auto leading-relaxed">
-                {{ __('messages.cta.description') }}</p>
+                {{ __('messages.cta.description') }}
+            </p>
             <a href="{{ route('kontak', ['locale' => app()->getLocale()]) }}"
                 class="inline-flex justify-center items-center bg-cream text-primary px-10 py-5 rounded-xl font-black font-tegas uppercase tracking-widest hover:bg-white hover:scale-105 transition-all duration-300 text-lg shadow-2xl">
                 {{ __('messages.cta.button') }}

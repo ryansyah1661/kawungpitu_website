@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? 'Kawung Pitu Institute - Promoting Sustainable Livelihood' }}</title>
+    <title>
+        @yield('title') - Kawung Pitu Institute
+    </title>
 
     <link rel="icon" type="image/png" href="{{ asset('kawung.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -345,10 +347,8 @@
                 class="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs text-gray-500 font-tegas font-bold">
                 <p>&copy; {{ date('Y') }} Kawungpitu Institute. {{ __('messages.footer.tagline') }}</p>
                 <div class="flex space-x-8">
-                    <a href="#"
-                        class="hover:text-primary transition-colors">{{ __('messages.footer.privacy') }}</a>
-                    <a href="#"
-                        class="hover:text-primary transition-colors">{{ __('messages.footer.terms') }}</a>
+                    <a href="#" class="hover:text-primary transition-colors">{{ __('messages.footer.privacy') }}</a>
+                    <a href="#" class="hover:text-primary transition-colors">{{ __('messages.footer.terms') }}</a>
                 </div>
             </div>
         </div>
