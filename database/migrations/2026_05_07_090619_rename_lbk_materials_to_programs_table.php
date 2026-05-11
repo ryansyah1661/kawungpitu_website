@@ -16,11 +16,11 @@ return new class extends Migration
 
         // 2. Tambahkan kolom pilar modal ke tabel programs yang baru di-rename
         Schema::table('programs', function (Blueprint $table) {
-            $table->integer('human_capital')->default(0);    // Modal Manusia [cite: 8]
-            $table->integer('social_capital')->default(0);   // Modal Sosial [cite: 12]
-            $table->integer('natural_capital')->default(0);  // Modal Alam [cite: 16]
-            $table->integer('physical_capital')->default(0); // Modal Fisik [cite: 20]
-            $table->integer('financial_capital')->default(0); // Modal Finansial [cite: 24]
+            $table->integer('human_capital')->default(0);
+            $table->integer('social_capital')->default(0);
+            $table->integer('natural_capital')->default(0);
+            $table->integer('physical_capital')->default(0);
+            $table->integer('financial_capital')->default(0);
         });
     }
 

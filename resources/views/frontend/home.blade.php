@@ -146,35 +146,36 @@
                             'title' => __('messages.strategy.items.development.title'),
                             'desc' => __('messages.strategy.items.development.desc'),
                             'back_icon' => 'volunteer_activism',
-                            'back_desc' => '<strong>Aksi Kami:</strong> pendampingan ekonomi kreatif dan akses pasar bagi produk lokal desa.<br><br><strong>Tujuan:</strong> menjalin kolaborasi strategis untuk keberlanjutan ekonomi komunitas.'
+                            'back_desc' => '<strong class="font-black text-primary">Aksi Kami:</strong> pendampingan pembentukan lembaga ekonomi di desa, penguatan lembaga adat/desa, serta fasilitasi kolaborasi antar-komunitas dan kemitraan dengan pihak eksternal..<br><br><strong class="font-black text-primary">Tujuan:</strong> meningkatkan solidaritas dan posisi tawar komunitas dalam pengambilan keputusan.'
                         ],
                         [
                             'icon' => 'school',
                             'title' => __('messages.strategy.items.capacity.title'),
                             'desc' => __('messages.strategy.items.capacity.desc'),
                             'back_icon' => 'psychology',
-                            'back_desc' => '<strong>Aksi Kami:</strong> workshop inovasi digital dan manajemen organisasi komunitas.<br><br><strong>Tujuan:</strong> mentransfer pengetahuan teknis agar masyarakat mampu berinovasi mandiri.'
+                            'back_desc' => '<strong class="font-black text-primary">Aksi Kami:</strong> konservasi wilayah pesisir, pengelolaan hutan desa, serta praktik pertanian berkelanjutan yang menjaga kesuburan tanah dan sumber air.<br><br><strong class="font-black text-primary">Tujuan:</strong> menjamin ketersediaan dan akses sumber daya alam produktif lintas generasi.'
                         ],
                         [
                             'icon' => 'analytics',
                             'title' => __('messages.strategy.items.research.title'),
                             'desc' => __('messages.strategy.items.research.desc'),
                             'back_icon' => 'find_in_page',
-                            'back_desc' => '<strong>Aksi Kami:</strong> pengumpulan data lapangan dan pemetaan potensi wilayah secara partisipatif.<br><br><strong>Tujuan:</strong> menjadikan data yang akurat sebagai fondasi pengambilan keputusan yang tepat.'
+                            'back_desc' => '<strong class="font-black text-primary">Aksi Kami:</strong> inisiasi sistem pengolahan sampah mandiri, akses air bersih, serta penyediaan alat produksi pertanian atau perikanan yang tepat guna.<br><br><strong class="font-black text-primary">Tujuan:</strong> mempermudah akses komunitas terhadap alat produk.'
                         ],
                         [
                             'icon' => 'campaign',
                             'title' => __('messages.strategy.items.advocacy.title'),
                             'desc' => __('messages.strategy.items.advocacy.desc'),
                             'back_icon' => 'record_voice_over',
-                            'back_desc' => '<strong>Aksi Kami:</strong> dialog kebijakan dan kampanye kesadaran hak-hak masyarakat desa.<br><br><strong>Tujuan:</strong> menyuarakan hak-hak komunitas di tingkat kebijakan publik secara inklusif.'
+                            'back_desc' => '<strong class="font-black text-primary">Aksi Kami:</strong> pengembangan unit usaha di desa, akses ke lembaga keuangan mikro, serta diversifikasi sumber pendapatan untuk mengurangi kerentanan ekonomi.<br><br><strong class="font-black text-primary">Tujuan:</strong> membangun kemandirian ekonomi untuk menunjang ketangguhan komunitas menghadapi guncangan pasar.'
                         ],
                         [
                             'icon' => 'architecture',
                             'title' => __('messages.strategy.items.modelling.title'),
                             'desc' => __('messages.strategy.items.modelling.desc'),
+                            'bg_custom' => '#d5a132',
                             'back_icon' => 'layers',
-                            'back_desc' => '<strong>Aksi Kami:</strong> pengembangan prototipe sistem kemandirian dan dokumentasi praktik terbaik.<br><br><strong>Tujuan:</strong> menciptakan model replikatif yang bisa diadaptasi di berbagai daerah.'
+                            'back_desc' => 'Selain memperkuat 5 aset di atas, Kawungpitu bekerja pada level kebijakan dan struktur untuk mengurangi dampak Vulnerability Context (Konteks Kerentanan) seperti perubahan iklim, bencana alam, dan fluktuasi ekonomi global.'
                         ],
                     ];
                 @endphp
@@ -197,10 +198,10 @@
 
                                 <h3
                                     class="font-tegas text-xl font-black text-primary uppercase mb-1 tracking-tighter leading-tight text-center">
-                                    {{ $s['title'] }}
+                                    {!! $s['title'] !!}
                                 </h3> {{-- Description: Sekarang Rata Kiri (text-left) dan Full Width --}}
                                 <p class="text-primary text-justify px-4 leading-relaxed opacity-90 text-sm text-left w-full">
-                                    {{ $s['desc'] }}
+                                    {!! $s['desc'] !!}
                                 </p>
                             </div>
 
@@ -208,15 +209,11 @@
                             <div
                                 class="absolute inset-0 h-full w-full rounded-3xl bg-[#d5a132] p-10 text-primary [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center border border-white/10 shadow-2xl">
 
-                                {{-- Icon Belakang --}}
-                                <div
-                                    class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-6 text-white border border-white/20">
-                                    <span class=" material-symbols-outlined text-3xl">{{ $s['back_icon'] }}</span>
-                                </div>
 
                                 {{-- Deskripsi Belakang --}}
                                 {{-- Tanda kutip dihapus, pakai {!! !!}, dan ganti ke text-left --}}
-                                <p class="text-primary/90 font-light leading-relaxed text-justify text-sm text-left w-full px-2">
+                                <p
+                                    class="text-primary/90 font-light leading-relaxed text-justify text-sm text-left w-full px-2">
                                     {!! $s['back_desc'] !!}
                                 </p>
                             </div>
@@ -227,6 +224,151 @@
             </div>
         </div>
     </section>
+
+    {{-- SECTION STRATEGI INTEGRATIF --}}
+    <section class="py-24 bg-[#FDF2EA] relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10"
+            style="background-image: radial-gradient(#800000 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="font-tegas text-4xl md:text-5xl font-black text-primary uppercase tracking-tighter mb-4">
+                    Strategi Integratif
+                </h2>
+                <p class="text-primary/70 font-bold uppercase tracking-widest text-sm mb-6">
+                    Pemanfaatan Pentagonal Aset Dalam Tiap Inisiatif
+                </p>
+                <div class="w-24 h-1.5 bg-primary/20 mx-auto rounded-full"></div>
+            </div>
+
+            @php
+                // Nilai aset: [Human, Social, Natural, Physical, Financial]
+                // Skala 0, 1, 2
+                $integratif = [
+                    [
+                        'title' => 'Social-Enterprise Hub',
+                        'icon' => 'trending_up',
+                        'desc' => 'Membangun ekosistem bisnis berbasis komunitas yang menghubungkan produsen lokal ke pasar global.',
+                        'values' => [2, 2, 1, 1, 2]
+                    ],
+                    [
+                        'title' => 'Community Research',
+                        'icon' => 'search',
+                        'desc' => 'Pendataan partisipatif untuk memetakan aset, kerentanan, dan peluang di tingkat akar rumput.',
+                        'values' => [2, 1, 2, 0, 1]
+                    ],
+                    [
+                        'title' => 'Climate Resilience',
+                        'icon' => 'filter_drama',
+                        'desc' => 'Integrasi adaptasi perubahan iklim ke dalam pengelolaan lahan dan infrastruktur desa.',
+                        'values' => [1, 1, 2, 2, 1]
+                    ],
+                    [
+                        'title' => 'Policy Advocacy',
+                        'icon' => 'gavel',
+                        'desc' => 'Mendorong kebijakan publik yang inklusif untuk memperkuat posisi tawar komunitas desa.',
+                        'values' => [2, 2, 0, 1, 1]
+                    ],
+                ];
+
+                // Fungsi Helper untuk menghitung koordinat Pentagonal
+                function getPoints($values)
+                {
+                    $points = [];
+                    $center = 50;
+                    $scale = 20; // Jarak antar nilai (0 ke 1 = 20px, 1 ke 2 = 40px)
+
+                    for ($i = 0; $i < 5; $i++) {
+                        $angle = deg2rad($i * 72 - 90);
+                        $r = $values[$i] * $scale;
+                        $x = $center + $r * cos($angle);
+                        $y = $center + $r * sin($angle);
+                        $points[] = "$x,$y";
+                    }
+                    return implode(' ', $points);
+                }
+            @endphp
+
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+                @foreach ($integratif as $item)
+                    <div
+                        class="bg-white p-10 rounded-[40px] shadow-sm hover:shadow-xl transition-all duration-500 border border-primary/5 flex flex-col h-full group">
+
+                        <div class="flex justify-between items-start mb-8">
+                            <div
+                                class="w-16 h-16 bg-[#FDF2EA] rounded-2xl flex items-center justify-center text-primary/40 group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                                <span class="material-symbols-outlined text-3xl">{{ $item['icon'] }}</span>
+                            </div>
+
+                            {{-- Radar Chart SVG Animasi --}}
+                            <div class="w-32 h-32 relative">
+                                <svg viewBox="0 0 100 100" class="w-full h-full overflow-visible">
+                                    {{-- Background Grid (Garis Pentagon) --}}
+                                    <polygon points="{{ getPoints([1, 1, 1, 1, 1]) }}" fill="none" stroke="#800000"
+                                        stroke-width="0.5" stroke-dasharray="2" opacity="0.2" />
+                                    <polygon points="{{ getPoints([2, 2, 2, 2, 2]) }}" fill="none" stroke="#800000"
+                                        stroke-width="0.5" opacity="0.1" />
+
+                                    {{-- Garis Sumbu --}}
+                                    @for($i = 0; $i < 5; $i++)
+                                        @php $angle = deg2rad($i * 72 - 90); @endphp
+                                        <line x1="50" y1="50" x2="{{ 50 + 40 * cos($angle) }}" y2="{{ 50 + 40 * sin($angle) }}"
+                                            stroke="#800000" stroke-width="0.2" opacity="0.2" />
+                                    @endfor
+
+                                    {{-- Polygon Data (Area yang bergerak) --}}
+                                    <polygon points="{{ getPoints($item['values']) }}"
+                                        class="fill-primary/30 stroke-primary stroke-[1.5] transition-all duration-1000 animate-pulse-slow"
+                                        style="transform-origin: center;" />
+
+                                    {{-- Label Aset (Opsional) --}}
+                                    <text x="50" y="5" text-anchor="middle" font-size="8"
+                                        class="fill-primary/40 font-bold">H</text>
+                                    <text x="95" y="40" text-anchor="middle" font-size="8"
+                                        class="fill-primary/40 font-bold">S</text>
+                                    <text x="80" y="95" text-anchor="middle" font-size="8"
+                                        class="fill-primary/40 font-bold">N</text>
+                                    <text x="20" y="95" text-anchor="middle" font-size="8"
+                                        class="fill-primary/40 font-bold">P</text>
+                                    <text x="5" y="40" text-anchor="middle" font-size="8"
+                                        class="fill-primary/40 font-bold">F</text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto">
+                            <h3 class="font-tegas text-2xl font-black text-primary uppercase mb-4 tracking-tight">
+                                {{ $item['title'] }}
+                            </h3>
+                            <p class="text-primary/60 leading-relaxed text-sm font-medium">
+                                {{ $item['desc'] }}
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <style>
+        @keyframes pulse-slow {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 4s ease-in-out infinite;
+        }
+    </style>
 
     {{-- SECTION ARTICLES --}}
     <section class="py-24 md:py-32 bg-white">

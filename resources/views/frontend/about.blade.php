@@ -24,7 +24,7 @@
 
                 <p class="text-xl text-white/80 max-w-2xl font-light animate-fade-in-left leading-relaxed mb-10"
                     style="animation-delay: 0.3s;">
-                    {{ __('messages.about.header.subtitle') }}
+                    {!! __('messages.about.header.subtitle') !!}
                 </p>
 
                 <div class="flex flex-wrap gap-4 animate-fade-in-left" style="animation-delay: 0.5s;">
@@ -52,11 +52,11 @@
                     <h2 class="font-tegas text-4xl font-black text-dark uppercase tracking-tight leading-tight">
                         {!! __('messages.about.intro.title') !!}
                     </h2>
-                    <p class="text-lg text-gray-700 font-light leading-relaxed">
-                        {{ __('messages.about.intro.p1') }}
+                    <p class="text-gray-700 text-lg leading-relaxed">
+                        {!! __('messages.about.intro.p1') !!}
                     </p>
-                    <p class="text-lg text-gray-700 font-light leading-relaxed">
-                        {{ __('messages.about.intro.p2') }}
+                    <p class="text-gray-700 text-lg leading-relaxed">
+                        {!! __('messages.about.intro.p2') !!}
                     </p>
                 </div>
                 <div class="relative group">

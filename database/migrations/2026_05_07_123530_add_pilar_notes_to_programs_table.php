@@ -26,7 +26,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('programs', function (Blueprint $table) {
-            //
+            $table->dropColumn([
+                'human_capital_note',
+                'social_capital_note',
+                'natural_capital_note',
+                'physical_capital_note',
+                'financial_capital_note'
+            ]);
         });
     }
 };

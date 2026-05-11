@@ -21,6 +21,7 @@ use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class ProgramResource extends Resource
 {
@@ -45,14 +46,16 @@ class ProgramResource extends Resource
                                 TextInput::make('title')
                                     ->label('Judul Materi')
                                     ->required()
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                                 TextInput::make('slug')
                                     ->label('Slug')
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->maxLength(255)
-                                    ->helperText('Ketik manual slug untuk URL program ini.'),
+                                    ->helperText('Slug otomatis terisi dari judul.'),
 
                                 TextInput::make('author_name')
                                     ->label('Nama Penulis')
@@ -75,7 +78,7 @@ class ProgramResource extends Resource
                             ]),
 
                         Section::make('Statistik & Bukti Pentagon Aset')
-                            ->description('Input skor (1-100) dan berikan narasi bukti untuk tiap pilar ketangguhan.')
+                            ->description('Input skor (0-2) dan berikan narasi bukti untuk tiap pilar ketangguhan.')
                             ->schema([
                                 // Modal Manusia
                                 Group::make([
@@ -83,8 +86,9 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Manusia')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(100)
-                                        ->default(0),
+                                        ->maxValue(2)
+                                        ->default(0)
+                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
                                     Textarea::make('human_capital_note')
                                         ->label('Bukti Teks (Manusia)')
                                         ->placeholder('Contoh: Warga telah mengikuti pelatihan sertifikasi...')
@@ -97,11 +101,12 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Sosial')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(100)
-                                        ->default(0),
+                                        ->maxValue(2)
+                                        ->default(0)
+                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
                                     Textarea::make('social_capital_note')
                                         ->label('Bukti Teks (Sosial)')
-                                        ->placeholder('Contoh: Memperkuat gotong royong dan lembaga adat...')
+                                        ->placeholder('Contoh: Memperkuat gotong royong...')
                                         ->rows(2),
                                 ])->columns(1),
 
@@ -111,11 +116,12 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Alam')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(100)
-                                        ->default(0),
+                                        ->maxValue(2)
+                                        ->default(0)
+                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
                                     Textarea::make('natural_capital_note')
                                         ->label('Bukti Teks (Alam)')
-                                        ->placeholder('Contoh: Konservasi wilayah pesisir dan hutan...')
+                                        ->placeholder('Contoh: Konservasi wilayah pesisir...')
                                         ->rows(2),
                                 ])->columns(1),
 
@@ -125,11 +131,12 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Fisik')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(100)
-                                        ->default(0),
+                                        ->maxValue(2)
+                                        ->default(0)
+                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
                                     Textarea::make('physical_capital_note')
                                         ->label('Bukti Teks (Fisik)')
-                                        ->placeholder('Contoh: Pembangunan gudang alat produksi tepat guna...')
+                                        ->placeholder('Contoh: Pembangunan gudang alat...')
                                         ->rows(2),
                                 ])->columns(1),
 
@@ -139,11 +146,12 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Finansial')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(100)
-                                        ->default(0),
+                                        ->maxValue(2)
+                                        ->default(0)
+                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
                                     Textarea::make('financial_capital_note')
                                         ->label('Bukti Teks (Finansial)')
-                                        ->placeholder('Contoh: Peningkatan pendapatan melalui unit usaha desa...')
+                                        ->placeholder('Contoh: Peningkatan pendapatan...')
                                         ->rows(2),
                                 ])->columns(1),
                             ])->columns(2),
@@ -247,7 +255,6 @@ class ProgramResource extends Resource
                     ->formatStateUsing(function (string $state, $livewire): string {
                         $locale = $livewire->activeLocale ?? app()->getLocale();
                         return match ($state) {
-                            // Kita panggil file bahasa dengan menyertakan variabel $locale
                             'ongoing' => __('messages.program.ongoing', [], $locale),
                             'completed' => __('messages.program.completed', [], $locale),
                             default => $state,
