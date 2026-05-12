@@ -13,19 +13,12 @@ use Filament\Resources\Concerns\Translatable;
 
 class TeamMemberResource extends Resource
 {
-    // Aktifkan fitur 2 bahasa (Spatie Translatable)
     use Translatable;
 
     protected static ?string $model = TeamMember::class;
-
-    // Ikon untuk di sidebar
     protected static ?string $navigationIcon = 'heroicon-o-identification';
-
-    // Ganti nama menu di sidebar
     protected static ?string $navigationLabel = 'Tim & Advisor';
     protected static ?string $pluralModelLabel = 'Anggota Tim';
-
-    // Mau ditaruh di grup mana? Misal kita buat grup 'Profil Lembaga'
     protected static ?string $navigationGroup = 'Profil Lembaga';
     protected static ?int $navigationSort = 1;
 
@@ -52,13 +45,12 @@ class TeamMemberResource extends Resource
                         ])
                         ->required()
                         ->native(false)
-                        ->live(), // Penting biar deskripsi bisa disembunyikan dinamis
+                        ->live(),
 
                     Forms\Components\Textarea::make('description')
                         ->label('Keterangan Singkat')
                         ->rows(4)
                         ->maxLength(500)
-                        // Keterangan cuma wajib/muncul kalau tipenya 'advisor'
                         ->hidden(fn(Forms\Get $get) => $get('type') !== 'advisor'),
                 ])->columnSpan(2),
 
@@ -66,8 +58,26 @@ class TeamMemberResource extends Resource
                     Forms\Components\FileUpload::make('photo')
                         ->label('Foto Profil')
                         ->image()
-                        ->directory('team-photos') // Nanti fotonya masuk ke folder storage/app/public/team-photos
-                        ->required(),
+                        ->directory('team-photos')
+                        ->nullable()
+                        ->helperText('Kosongkan jika ingin menggunakan foto profil default.'),
+
+                    Forms\Components\Radio::make('gender')
+                        ->label('Jenis Kelamin')
+                        ->options([
+                            'male' => 'Laki-laki',
+                            'female' => 'Perempuan',
+                        ])
+                        ->required() // Sebaiknya wajib isi biar logika foto default jalan
+                        ->inline() // Tampilkan ke samping, nggak ke bawah
+                        ->columnSpanFull(), // Penuhi satu baris
+
+
+                    Forms\Components\TextInput::make('sort_order')
+                        ->label('Nomor Urut')
+                        ->numeric()
+                        ->default(0)
+                        ->helperText('Bisa diatur manual atau drag-and-drop di tabel daftar.'),
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -75,10 +85,15 @@ class TeamMemberResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            // FITUR BARU: Sekarang kamu bisa tarik-ulur (drag-drop) urutan di tabel
+            ->reorderable('sort_order')
+            ->defaultSort('sort_order', 'asc')
             ->columns([
                 Tables\Columns\ImageColumn::make('photo')
                     ->label('Foto')
-                    ->circular(), // Biar fotonya bulet di tabel
+                    ->circular()
+                    // Menangani tampilan jika foto kosong di admin
+                    ->defaultImageUrl(asset('images/default-profile.svg')),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
@@ -89,24 +104,24 @@ class TeamMemberResource extends Resource
                     ->label('Jabatan')
                     ->searchable(),
 
-                Tables\Columns\BadgeColumn::make('type')
+                Tables\Columns\TextColumn::make('type')
                     ->label('Tipe')
-                    ->colors([
-                        'primary' => 'advisor',
-                        'success' => 'structure',
-                    ])
+                    ->badge() // Menggunakan badge modern Filament 3
+                    ->color(fn(string $state): string => match ($state) {
+                        'advisor' => 'warning',
+                        'structure' => 'success',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn(string $state): string => match ($state) {
                         'advisor' => 'Advisor',
-                        'structure' => 'Struktur',
+                        'structure' => 'Eksekutif',
                     }),
 
                 Tables\Columns\TextColumn::make('sort_order')
                     ->label('Urutan')
                     ->sortable(),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -115,16 +130,12 @@ class TeamMemberResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            // Biar datanya urut otomatis berdasarkan sort_order
-            ->defaultSort('sort_order', 'asc');
+            ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

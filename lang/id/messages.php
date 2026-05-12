@@ -85,8 +85,7 @@ return [
         ],
     ],
     'articles' => [
-        'badge' => 'Update Terbaru',
-        'title' => 'Artikel & Berita',
+        'title' => 'Artikel',
         'view_all' => 'Lihat Semua',
         'header_1' => 'Artikel',
         'header_2' => '& Berita',
@@ -127,17 +126,6 @@ return [
         'empty' => 'Belum ada album',
         'empty_photos' => 'Belum ada foto di album ini',
     ],
-    'faq' => [
-        'title' => 'Pertanyaan Umum',
-        'subtitle' => 'Mengenal Kawungpitu lebih dekat.',
-        'header_1' => 'Mengenal',
-        'header_2' => 'Lebih Dekat',
-        'description' => 'Temukan jawaban cepat mengenai inisiatif, metode pendampingan, dan bagaimana kami berkolaborasi dengan masyarakat.',
-        'empty' => 'Belum ada FAQ',
-        'cta_title' => 'Masih punya pertanyaan lain?',
-        'cta_desc' => 'Tim kami siap membantu menjawab segala keingintahuan Anda.',
-        'cta_btn' => 'Hubungi Kami Sekarang',
-    ],
     'contact' => [
         'header_1' => 'Hubungi',
         'header_2' => 'Kami',
@@ -163,8 +151,8 @@ return [
         'button' => 'Hubungi Kami Sekarang',
     ],
     'footer' => [
-        'description' => 'Lembaga konsultan dan pendampingan masyarakat yang berfokus pada pelestarian lingkungan serta pemberdayaan ekonomi lokal melalui semangat kolaborasi.',
-        'company' => 'PERUSAHAAN',
+        'description' => 'Kawungpitu Institute adalah lembaga penggerak kemandirian komunitas yang berdedikasi untuk mentransformasi penghidupan masyarakat melalui pendekatan <em>Sustainable Livelihoods Framework</em> (SLF).',
+        'company' => 'KELEMBAGAAN',
         'program_title' => 'PROGRAM',
         'our_program' => 'Program Kami',
         'contact_us' => 'HUBUNGI KAMI',

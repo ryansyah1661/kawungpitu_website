@@ -32,16 +32,13 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function () 
     Route::get('/articles/category/{slug}', [ArtikelController::class, 'byKategori'])->name('artikel.kategori');
     Route::get('/articles/{slug}', [ArtikelController::class, 'show'])->name('artikel.show');
 
-    // Programs / LBK (Sudah sesuai permintaanmu ke /program)
+    // Programs (Sudah sesuai permintaanmu ke /program)
     Route::get('/programs', [ProgramController::class, 'index'])->name('program.index');
     Route::get('/programs/{slug}', [ProgramController::class, 'show'])->name('program.show');
 
     // Galeri (URI menggunakan /gallery agar universal)
     Route::get('/gallery', [GaleriController::class, 'index'])->name('galeri.index');
     Route::get('/gallery/{slug}', [GaleriController::class, 'show'])->name('galeri.show');
-
-    // FAQ
-    Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
     // Kontak (URI menggunakan /contact agar universal)
     Route::get('/contact', [KontakController::class, 'index'])->name('kontak');

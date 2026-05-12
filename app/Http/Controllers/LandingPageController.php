@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use App\Models\Faq;
 
 class LandingPageController extends Controller
 {
@@ -19,8 +18,6 @@ class LandingPageController extends Controller
             ->take(3)
             ->get();
 
-        $faqs = Faq::orderBy('sort_order')->take(3)->get();
-
-        return view('frontend.home', compact('latestArticles', 'faqs'));
+        return view('frontend.home', compact('latestArticles'));
     }
 }

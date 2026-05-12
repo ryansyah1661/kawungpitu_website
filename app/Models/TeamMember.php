@@ -11,7 +11,7 @@ class TeamMember extends Model
     use HasFactory;
     use HasTranslations;
 
-    protected $fillable = ['name', 'role', 'description', 'photo', 'type', 'sort_order'];
+    protected $fillable = ['name', 'role', 'description', 'photo', 'type', 'gender', 'sort_order'];
 
     public array $translatable = ['name', 'role', 'description'];
 }

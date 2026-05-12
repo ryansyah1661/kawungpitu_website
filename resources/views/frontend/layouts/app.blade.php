@@ -215,11 +215,6 @@
                     class="{{ request()->routeIs('galeri.*') ? 'text-primary font-semibold' : 'text-gray-dark hover:text-primary font-medium' }} text-sm tracking-wide transition-colors hover-underline">
                     {{ __('messages.navbar.gallery') }}
                 </a>
-
-                <a href="{{ route('faq', ['locale' => app()->getLocale()]) }}"
-                    class="{{ request()->routeIs('faq') ? 'text-primary font-semibold' : 'text-gray-dark hover:text-primary font-medium' }} text-sm tracking-wide transition-colors hover-underline">
-                    {{ __('messages.navbar.faq') }}
-                </a>
             </div>
 
             @php
@@ -257,82 +252,76 @@
 
     <main> @yield('content')</main>
 
-    <footer class="bg-dark text-white pt-24 pb-8 border-t-[12px] border-primary">
+    <footer class="bg-dark text-white pt-24 pb-12 border-t-[12px] border-primary">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
+            {{-- Grid Menu Utama --}}
             <div
-                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 border-b border-gray-800 pb-16">
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-5 border-b border-gray-800 pb-10 items-start">
 
-                <div class="lg:col-span-5 pr-0 lg:pr-16 animate-fade-up">
-                    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="mb-10 block group">
+                {{-- KOLOM 1: LOGO & DESKRIPSI --}}
+                <div class="lg:col-span-5 pr-0 lg:pr-16">
+                    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="mb-8 block group">
                         <img src="{{ asset('images/logo-kawung-ori.png') }}" alt="Logo Kawungpitu"
-                            class="h-16 w-auto brightness-0 invert group-hover:scale-105 transition-transform duration-500">
+                            class="h-16 w-auto brightness-0 invert group-hover:opacity-80 transition-opacity duration-300">
                     </a>
 
                     <p class="text-gray-400 font-body text-sm leading-relaxed mb-10 max-w-sm opacity-75">
-                        {{ __('messages.footer.description') }}
+                        {!! __('messages.footer.description') !!}
                     </p>
 
                     <div class="flex space-x-5">
-                        <a href="#" title="LinkedIn"
+                        <a href="#"
                             class="w-12 h-12 rounded-full border border-gray-800 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group">
-                            <i
-                                class="fa-brands fa-linkedin-in text-lg text-gray-500 group-hover:text-white transition-all"></i>
+                            <i class="fa-brands fa-linkedin-in text-lg text-gray-500 group-hover:text-white"></i>
                         </a>
-
-                        <a href="#" title="Instagram"
+                        <a href="#"
                             class="w-12 h-12 rounded-full border border-gray-800 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group">
-                            <i
-                                class="fa-brands fa-instagram text-lg text-gray-500 group-hover:text-white transition-all"></i>
+                            <i class="fa-brands fa-instagram text-lg text-gray-500 group-hover:text-white"></i>
                         </a>
-
-                        <a href="mailto:info@kawungpitu.org" title="Email"
+                        <a href="mailto:info@kawungpitu.org"
                             class="w-12 h-12 rounded-full border border-gray-800 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group">
-                            <i
-                                class="fa-solid fa-envelope text-lg text-gray-500 group-hover:text-white transition-all"></i>
+                            <i class="fa-solid fa-envelope text-lg text-gray-500 group-hover:text-white"></i>
                         </a>
                     </div>
                 </div>
 
+                {{-- KOLOM 2: KELEMBAGAAN --}}
                 <div class="lg:col-span-2">
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.company') }}
                     </h4>
-                    <ul class="space-y-5 text-gray-400 font-light">
+                    <ul class="space-y-5 text-gray-400 font-light text-sm">
                         <li><a href="{{ route('tentang', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">{{ __('messages.navbar.about') }}</a></li>
+                                class="hover:text-primary transition-colors">Tentang Kami</a></li>
                         <li><a href="{{ route('galeri.index', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">{{ __('messages.navbar.gallery') }}</a>
-                        </li>
-                        <li><a href="{{ route('faq', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">{{ __('messages.navbar.faq') }}</a></li>
+                                class="hover:text-primary transition-colors">Galeri</a></li>
                         <li><a href="{{ route('kontak', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">{{ __('messages.navbar.contact') }}</a>
-                        </li>
+                                class="hover:text-primary transition-colors">Kontak</a></li>
                     </ul>
                 </div>
 
+                {{-- KOLOM 3: PROGRAM --}}
                 <div class="lg:col-span-2">
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.program_title') }}
                     </h4>
-                    <ul class="space-y-5 text-gray-400 font-light">
+                    <ul class="space-y-5 text-gray-400 font-light text-sm">
                         <li><a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">{{ __('messages.navbar.article') }}</a>
-                        </li>
+                                class="hover:text-primary transition-colors">Artikel</a></li>
                         <li><a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">{{ __('messages.footer.our_program') }}</a>
-                        </li>
+                                class="hover:text-primary transition-colors">Program Kami</a></li>
                     </ul>
                 </div>
 
+                {{-- KOLOM 4: HUBUNGI KAMI --}}
                 <div class="lg:col-span-3">
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
-                        {{ __('messages.footer.contact_us') }}
+                        Hubungi Kami
                     </h4>
                     <ul class="space-y-6 text-gray-400 font-light text-sm">
                         <li class="flex items-start space-x-4">
                             <span class="material-symbols-outlined text-primary mt-1">location_on</span>
-                            <span>Jl. Mawar Raya No. 16, Kota Bogor, Jawa Barat 16113</span>
+                            <span class="leading-relaxed">Jl. Mawar Raya No. 16, Kota Bogor, Jawa Barat 16113</span>
                         </li>
                         <li class="flex items-center space-x-4">
                             <span class="material-symbols-outlined text-primary">mail</span>
@@ -343,13 +332,9 @@
                 </div>
             </div>
 
-            <div
-                class="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] md:text-xs text-gray-500 font-tegas font-bold">
-                <p>&copy; {{ date('Y') }} Kawungpitu Institute. {{ __('messages.footer.tagline') }}</p>
-                <div class="flex space-x-8">
-                    <a href="#" class="hover:text-primary transition-colors">{{ __('messages.footer.privacy') }}</a>
-                    <a href="#" class="hover:text-primary transition-colors">{{ __('messages.footer.terms') }}</a>
-                </div>
+            {{-- COPYRIGHT: Apple Style (No Uppercase, No Letter Spacing, Normal Font) --}}
+            <div class="text-sm text-gray-500 font-body font-medium">
+                Copyright © {{ date('Y') }} Kawungpitu Institute. All rights reserved.
             </div>
         </div>
     </footer>

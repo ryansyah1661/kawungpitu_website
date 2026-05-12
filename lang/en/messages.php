@@ -128,17 +128,6 @@ return [
         'empty' => 'No albums available',
         'empty_photos' => 'No photos available in this album yet',
     ],
-    'faq' => [
-        'title' => 'FAQ',
-        'subtitle' => 'Getting to know us better.',
-        'header_1' => 'Getting',
-        'header_2' => 'To Know Us',
-        'description' => 'Find quick answers about our initiatives, assistance methods, and how we collaborate with the community.',
-        'empty' => 'No FAQs available',
-        'cta_title' => 'Still have other questions?',
-        'cta_desc' => 'Our team is ready to help answer all your inquiries.',
-        'cta_btn' => 'Contact Us Now',
-    ],
     'contact' => [
         'header_1' => 'Contact',
         'header_2' => 'Us',

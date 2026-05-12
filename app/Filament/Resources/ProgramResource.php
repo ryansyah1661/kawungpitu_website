@@ -78,7 +78,7 @@ class ProgramResource extends Resource
                             ]),
 
                         Section::make('Statistik & Bukti Pentagon Aset')
-                            ->description('Input skor (0-2) dan berikan narasi bukti untuk tiap pilar ketangguhan.')
+                            ->description('Input skor (0-100) dan berikan narasi bukti untuk tiap pilar ketangguhan.')
                             ->schema([
                                 // Modal Manusia
                                 Group::make([
@@ -86,9 +86,10 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Manusia')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(2)
+                                        ->maxValue(100)
                                         ->default(0)
-                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
+                                        ->suffix('%')
+                                        ->helperText('Input skor antara 0-100 berdasarkan penilaian Anda'),
                                     Textarea::make('human_capital_note')
                                         ->label('Bukti Teks (Manusia)')
                                         ->placeholder('Contoh: Warga telah mengikuti pelatihan sertifikasi...')
@@ -101,9 +102,10 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Sosial')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(2)
+                                        ->maxValue(100)
                                         ->default(0)
-                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
+                                        ->suffix('%')
+                                        ->helperText('Input skor antara 0-100 berdasarkan penilaian Anda'),
                                     Textarea::make('social_capital_note')
                                         ->label('Bukti Teks (Sosial)')
                                         ->placeholder('Contoh: Memperkuat gotong royong...')
@@ -116,9 +118,10 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Alam')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(2)
+                                        ->maxValue(100)
                                         ->default(0)
-                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
+                                        ->suffix('%')
+                                        ->helperText('Input skor antara 0-100 berdasarkan penilaian Anda'),
                                     Textarea::make('natural_capital_note')
                                         ->label('Bukti Teks (Alam)')
                                         ->placeholder('Contoh: Konservasi wilayah pesisir...')
@@ -131,9 +134,10 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Fisik')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(2)
+                                        ->maxValue(100)
                                         ->default(0)
-                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
+                                        ->suffix('%')
+                                        ->helperText('Input skor antara 0-100 berdasarkan penilaian Anda'),
                                     Textarea::make('physical_capital_note')
                                         ->label('Bukti Teks (Fisik)')
                                         ->placeholder('Contoh: Pembangunan gudang alat...')
@@ -146,9 +150,10 @@ class ProgramResource extends Resource
                                         ->label('Skor Modal Finansial')
                                         ->numeric()
                                         ->minValue(0)
-                                        ->maxValue(2)
+                                        ->maxValue(100)
                                         ->default(0)
-                                        ->helperText('0: Rendah, 1: Sedang, 2: Tinggi'),
+                                        ->suffix('%')
+                                        ->helperText('Input skor antara 0-100 berdasarkan penilaian Anda'),
                                     Textarea::make('financial_capital_note')
                                         ->label('Bukti Teks (Finansial)')
                                         ->placeholder('Contoh: Peningkatan pendapatan...')

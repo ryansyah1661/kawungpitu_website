@@ -11,8 +11,7 @@
                     {{ __('messages.navbar.home') }}
                 </a>
                 <span class="material-symbols-outlined text-xs">chevron_right</span>
-                <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
-                    class="hover:text-primary transition-colors">
+                <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}" class="hover:text-primary transition-colors">
                     {{ __('messages.navbar.program') }}
                 </a>
                 <span class="material-symbols-outlined text-xs">chevron_right</span>
@@ -21,13 +20,10 @@
 
             {{-- Category + Status + Date --}}
             <div class="flex flex-wrap items-center gap-3 mb-6">
-                {{-- Loop Semua Kategori yang Dipilih --}}
                 @foreach ($program->categories as $category)
-                    <span
-                        class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2">
+                    <span class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2">
                         @if ($category->icon)
-                            <img src="{{ asset('storage/' . $category->icon) }}"
-                                class="w-4 h-4 object-contain brightness-0 invert" alt="{{ $category->name }}">
+                            <img src="{{ asset('storage/' . $category->icon) }}" class="w-4 h-4 object-contain brightness-0 invert" alt="{{ $category->name }}">
                         @else
                             <span class="material-symbols-outlined text-[14px]">category</span>
                         @endif
@@ -35,9 +31,7 @@
                     </span>
                 @endforeach
 
-                {{-- Status Badge --}}
-                <span
-                    class="{{ $program->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[10px] font-bold py-2 px-4 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5">
+                <span class="{{ $program->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[10px] font-bold py-2 px-4 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5">
                     @if ($program->status === 'ongoing')
                         <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
                         {{ __('messages.program.ongoing') }}
@@ -58,128 +52,93 @@
                 {{ $program->title }}
             </h1>
 
-            {{-- Featured Image & Video --}}
+            {{-- Featured Media --}}
             @if ($program->featured_image)
                 <div class="aspect-video rounded-2xl overflow-hidden mb-12 shadow-2xl shadow-primary/10">
-                    <img src="{{ asset('storage/' . $program->featured_image) }}" alt="{{ $program->title }}"
-                        class="w-full h-full object-cover">
+                    <img src="{{ asset('storage/' . $program->featured_image) }}" alt="{{ $program->title }}" class="w-full h-full object-cover">
                 </div>
             @endif
 
             @if ($program->video_url)
                 @php
-                    preg_match(
-                        '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/',
-                        $program->video_url,
-                        $match,
-                    );
+                    preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $program->video_url, $match);
                     $videoId = $match[1] ?? null;
                 @endphp
                 @if ($videoId)
                     <div class="aspect-video rounded-2xl overflow-hidden mb-12 shadow-2xl shadow-primary/10">
-                        <iframe src="https://www.youtube.com/embed/{{ $videoId }}" class="w-full h-full"
-                            frameborder="0" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/{{ $videoId }}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
                     </div>
                 @endif
             @endif
 
-            <div
-                class="prose prose-lg max-w-none prose-headings:font-tegas prose-headings:uppercase prose-headings:tracking-tight mb-16">
+            <div class="prose prose-lg max-w-none prose-headings:font-tegas prose-headings:uppercase prose-headings:tracking-tight mb-16">
                 {!! $program->body !!}
             </div>
 
-            {{-- PENTAGON ASET (RADAR CHART) --}}
-            <div class="mt-16 bg-white p-10 rounded-3xl shadow-xl shadow-primary/5 border border-gray-100 animate-fade-in">
-                <div class="text-center mb-10">
-                    <h3 class="font-tegas text-2xl font-black text-primary uppercase tracking-tight mb-2">Pentagon Aset
-                        Ketangguhan</h3>
-                    <p class="text-gray-400 text-sm font-body italic">Visualisasi dampak program terhadap 5 modal
-                        ketangguhan komunitas</p>
+            {{-- PENTAGON ASET (DIKECILKAN) --}}
+            <div class="mt-12 bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-primary/5 border border-gray-100 animate-fade-in">
+                <div class="text-center mb-6">
+                    <h3 class="font-tegas text-xl font-black text-primary uppercase tracking-tight mb-1">
+                        Pentagon Aset Ketangguhan
+                    </h3>
+                    <p class="text-gray-400 text-[10px] font-body italic">
+                        Visualisasi dampak program (Skala 0-100%)
+                    </p>
                 </div>
 
-                <div class="max-w-md mx-auto relative h-[400px]">
+                {{-- Ukuran kontainer Chart dikecilkan ke max-w-sm dan h-[200px] --}}
+                <div class="max-w-sm mx-auto relative h-[200px]">
                     <canvas id="pentagonChart"></canvas>
                 </div>
 
-                {{-- Bukti Teks Per Pilar --}}
-                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined text-primary text-xl">person</span>
+                {{-- Bukti Teks Per Pilar (Grid Dikecilkan) --}}
+                <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-50 pt-8">
+                    @php
+                        $assets = [
+                            ['key' => 'human_capital', 'label' => 'Modal Manusia', 'icon' => 'person'],
+                            ['key' => 'social_capital', 'label' => 'Modal Sosial', 'icon' => 'groups'],
+                            ['key' => 'natural_capital', 'label' => 'Modal Alam', 'icon' => 'eco'],
+                            ['key' => 'physical_capital', 'label' => 'Modal Fisik', 'icon' => 'factory'],
+                            ['key' => 'financial_capital', 'label' => 'Modal Finansial', 'icon' => 'payments'],
+                        ];
+                    @endphp
+
+                    @foreach($assets as $asset)
+                        @php
+                            $val = $program->{$asset['key']} ?? 0;
+                            $statusLabel = $val >= 70 ? 'Tinggi' : ($val >= 35 ? 'Sedang' : 'Rendah');
+                        @endphp
+                        <div class="flex gap-3 @if($loop->last) md:col-span-2 md:max-w-xs md:mx-auto @endif">
+                            {{-- Icon Dikecilkan ke w-9 h-9 --}}
+                            <div class="w-9 h-9 bg-primary/5 rounded-lg flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-primary text-lg">{{ $asset['icon'] }}</span>
+                            </div>
+                            <div>
+                                <h4 class="font-tegas font-bold text-dark uppercase text-[10px] tracking-widest mb-0.5">
+                                    {{ $asset['label'] }} 
+                                    (<span class="asset-counter" data-target="{{ $val }}">0</span>%) 
+                                    <span class="text-primary italic">[{{ $statusLabel }}]</span>
+                                </h4>
+                                <p class="text-gray-500 text-[11px] leading-snug italic">
+                                    {{ $program->{$asset['key'] . '_note'} ?? 'Catatan modal ini.' }}
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 class="font-tegas font-bold text-dark uppercase text-[11px] tracking-widest mb-1">Modal
-                                Manusia ({{ $program->human_capital }}%)</h4>
-                            <p class="text-gray-500 text-xs leading-relaxed italic">
-                                {{ $program->human_capital_note ?? 'Fokus pada peningkatan kapasitas individu dan keterampilan teknis.' }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined text-primary text-xl">groups</span>
-                        </div>
-                        <div>
-                            <h4 class="font-tegas font-bold text-dark uppercase text-[11px] tracking-widest mb-1">Modal
-                                Sosial ({{ $program->social_capital }}%)</h4>
-                            <p class="text-gray-500 text-xs leading-relaxed italic">
-                                {{ $program->social_capital_note ?? 'Penguatan jejaring dan aksi kolektif komunitas.' }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined text-primary text-xl">eco</span>
-                        </div>
-                        <div>
-                            <h4 class="font-tegas font-bold text-dark uppercase text-[11px] tracking-widest mb-1">Modal Alam
-                                ({{ $program->natural_capital }}%)</h4>
-                            <p class="text-gray-500 text-xs leading-relaxed italic">
-                                {{ $program->natural_capital_note ?? 'Perlindungan dan pengelolaan sumber daya alam berkelanjutan.' }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined text-primary text-xl">factory</span>
-                        </div>
-                        <div>
-                            <h4 class="font-tegas font-bold text-dark uppercase text-[11px] tracking-widest mb-1">Modal
-                                Fisik ({{ $program->physical_capital }}%)</h4>
-                            <p class="text-gray-500 text-xs leading-relaxed italic">
-                                {{ $program->physical_capital_note ?? 'Penyediaan infrastruktur dan alat produksi tepat guna.' }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4 md:col-span-2 md:max-w-md md:mx-auto">
-                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined text-primary text-xl">payments</span>
-                        </div>
-                        <div>
-                            <h4 class="font-tegas font-bold text-dark uppercase text-[11px] tracking-widest mb-1">Modal
-                                Finansial ({{ $program->financial_capital }}%)</h4>
-                            <p class="text-gray-500 text-xs leading-relaxed italic">
-                                {{ $program->financial_capital_note ?? 'Akses terhadap sumber pendanaan dan aset ekonomi warga.' }}
-                            </p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
 
             {{-- PDF Section --}}
             @if ($program->pdf_file)
-                <div
-                    class="mt-12 p-8 bg-white rounded-2xl border-2 border-primary/10 flex items-center justify-between shadow-lg">
+                <div class="mt-12 p-6 bg-white rounded-2xl border-2 border-primary/10 flex items-center justify-between shadow-lg">
                     <div class="flex items-center space-x-4">
-                        <span class="material-symbols-outlined text-4xl text-red-500">picture_as_pdf</span>
+                        <span class="material-symbols-outlined text-3xl text-red-500">picture_as_pdf</span>
                         <div>
-                            <h4 class="font-tegas font-bold text-dark uppercase text-sm">
-                                {{ __('messages.program.download_title') }}</h4>
-                            <p class="text-gray-400 text-xs">{{ __('messages.program.download_subtitle') }}</p>
+                            <h4 class="font-tegas font-bold text-dark uppercase text-xs">{{ __('messages.program.download_title') }}</h4>
+                            <p class="text-gray-400 text-[10px]">{{ __('messages.program.download_subtitle') }}</p>
                         </div>
                     </div>
-                    <a href="{{ asset('storage/' . $program->pdf_file) }}" target="_blank"
-                        class="bg-primary text-white px-6 py-3 rounded-xl font-tegas font-bold uppercase text-xs tracking-widest hover:bg-dark transition-all">
+                    <a href="{{ asset('storage/' . $program->pdf_file) }}" target="_blank" class="bg-primary text-white px-5 py-2.5 rounded-xl font-tegas font-bold uppercase text-[10px] tracking-widest hover:bg-dark transition-all">
                         {{ __('messages.program.download_btn') }}
                     </a>
                 </div>
@@ -188,55 +147,85 @@
     </article>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('pentagonChart');
-            new Chart(ctx, {
+    document.addEventListener('DOMContentLoaded', function() {
+        const chartElement = document.getElementById('pentagonChart');
+        const targetData = [
+            {{ $program->human_capital ?? 0 }},
+            {{ $program->social_capital ?? 0 }},
+            {{ $program->natural_capital ?? 0 }},
+            {{ $program->physical_capital ?? 0 }},
+            {{ $program->financial_capital ?? 0 }}
+        ];
+
+        let chartRendered = false;
+
+        const animateValue = (obj, start, end, duration) => {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        };
+
+        const initChart = () => {
+            new Chart(chartElement, {
                 type: 'radar',
                 data: {
                     labels: ['Manusia', 'Sosial', 'Alam', 'Fisik', 'Finansial'],
                     datasets: [{
-                        label: 'Skor Aset',
-                        data: [
-                            {{ $program->human_capital ?? 0 }},
-                            {{ $program->social_capital ?? 0 }},
-                            {{ $program->natural_capital ?? 0 }},
-                            {{ $program->physical_capital ?? 0 }},
-                            {{ $program->financial_capital ?? 0 }}
-                        ],
+                        label: 'Skor Aset (%)',
+                        data: targetData,
                         fill: true,
-                        backgroundColor: 'rgba(50, 0, 2, 0.15)',
-                        borderColor: '#320002',
-                        pointBackgroundColor: '#320002',
-                        borderWidth: 3,
+                        backgroundColor: 'rgba(128, 0, 0, 0.12)',
+                        borderColor: '#800000',
+                        pointBackgroundColor: '#800000',
+                        borderWidth: 2, // Garis diperhalus
+                        pointRadius: 2, // Titik diperkecil
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 3000,
+                        easing: 'easeOutQuart'
+                    },
                     scales: {
                         r: {
                             suggestedMin: 0,
                             suggestedMax: 100,
-                            ticks: {
-                                display: false
-                            },
+                            ticks: { stepSize: 25, display: false },
                             pointLabels: {
-                                font: {
-                                    family: 'Montserrat',
-                                    size: 12,
-                                    weight: 'bold'
-                                },
-                                color: '#320002'
+                                font: { family: 'Montserrat', size: 10, weight: 'bold' },
+                                color: '#800000'
                             }
                         }
                     },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
+                    plugins: { legend: { display: false } }
                 }
             });
-        });
+
+            document.querySelectorAll('.asset-counter').forEach((counter) => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                animateValue(counter, 0, target, 3000);
+            });
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !chartRendered) {
+                    initChart();
+                    chartRendered = true;
+                }
+            });
+        }, { threshold: 0.2 });
+
+        observer.observe(chartElement);
+    });
     </script>
 @endsection
