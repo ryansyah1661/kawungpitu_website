@@ -5,7 +5,7 @@
         <div class="max-w-7xl mx-auto relative">
             <div class="relative z-10">
                 <h1
-                    class="font-tegas text-5xl md:text-7xl font-black mb-10 uppercase tracking-tighter animate-fade-in-left w-fit text-left">
+                    class="font-tegas text-5xl md:text-7xl font-black mb-10 uppercase tracking-normal animate-fade-in-left w-fit text-left">
                     <span class="bg-white text-dark px-6 pr-20 py-2 block mb-2 w-full shadow-xl shadow-primary/5">
                         {{ __('messages.articles.header_1') }}
                     </span>
@@ -24,21 +24,21 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-8 md:px-12 py-16 -mt-12 relative z-10" x-data="{
-        loading: false,
-        activeId: {{ isset($currentCategory) ? $currentCategory->id : "'all'" }},
-        fetchArticles(url, id) {
-            this.loading = true;
-            this.activeId = id;
-            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById('article-container').innerHTML = html;
-                    this.loading = false;
-                    window.history.pushState({}, '', url);
-                    window.scrollTo({ top: 400, behavior: 'smooth' });
-                });
-        }
-    }">
+            loading: false,
+            activeId: {{ isset($currentCategory) ? $currentCategory->id : "'all'" }},
+            fetchArticles(url, id) {
+                this.loading = true;
+                this.activeId = id;
+                fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('article-container').innerHTML = html;
+                        this.loading = false;
+                        window.history.pushState({}, '', url);
+                        window.scrollTo({ top: 400, behavior: 'smooth' });
+                    });
+            }
+        }">
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-16">
             <aside class="lg:col-span-1 space-y-12">
@@ -66,15 +66,13 @@
                             <a class="flex justify-between items-center group cursor-pointer"
                                 @click.prevent="fetchArticles($el.href, 'all')"
                                 href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}">
-                                <span
-                                    :class="activeId === 'all' ? 'font-bold text-primary' :
-                                        'font-medium text-gray-600 group-hover:text-primary'"
+                                <span :class="activeId === 'all' ? 'font-bold text-primary' :
+                                            'font-medium text-gray-600 group-hover:text-primary'"
                                     class="transition-colors">
                                     {{ __('messages.articles.all_articles') }}
                                 </span>
-                                <span
-                                    :class="activeId === 'all' ? 'bg-primary text-white' :
-                                        'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
+                                <span :class="activeId === 'all' ? 'bg-primary text-white' :
+                                            'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
                                     class="text-xs py-1 px-2.5 rounded-lg font-bold transition-colors">
                                     {{ $totalArticlesCount }}
                                 </span>
@@ -86,15 +84,14 @@
                                 <a class="flex justify-between items-center group hover:translate-x-1 transition-all cursor-pointer"
                                     @click.prevent="fetchArticles($el.href, {{ $cat->id }})"
                                     href="{{ route('artikel.kategori', ['locale' => app()->getLocale(), 'slug' => $cat->slug]) }}">
-                                    <span
-                                        :class="activeId === {{ $cat->id }} ? 'font-bold text-primary' :
-                                            'font-medium text-gray-600 group-hover:text-primary'"
+                                    <span :class="activeId === {{ $cat->id }} ? 'font-bold text-primary' :
+                                                    'font-medium text-gray-600 group-hover:text-primary'"
                                         class="transition-colors">
                                         {{ $cat->name }}
                                     </span>
                                     <span
                                         :class="activeId === {{ $cat->id }} ? 'bg-primary text-white' :
-                                            'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
+                                                    'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
                                         class="text-xs py-1 px-2.5 rounded-lg font-bold transition-colors">
                                         {{ $cat->articles()->published()->count() }}
                                     </span>

@@ -12,8 +12,7 @@
                     <img src="{{ asset('storage/' . $material->featured_image) }}" alt="{{ $material->title }}"
                         class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
                 @else
-                    <div
-                        class="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                    <div class="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
                         <span class="material-symbols-outlined text-6xl text-primary/30">school</span>
                     </div>
                 @endif
@@ -22,7 +21,7 @@
                 <div class="absolute top-3 left-3 right-3 flex flex-wrap gap-2 pointer-events-none">
                     {{-- Status Badge --}}
                     <span
-                        class="{{ $material->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[9px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5">
+                        class="{{ $material->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[9px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-normal shadow-lg flex items-center gap-1.5">
                         @if ($material->status === 'ongoing')
                             <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
                         @else
@@ -34,7 +33,7 @@
                     {{-- Loop Banyak Kategori --}}
                     @foreach ($material->categories as $category)
                         <span
-                            class="bg-primary text-white text-[9px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2 whitespace-nowrap">
+                            class="bg-primary text-white text-[9px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-normal shadow-lg flex items-center gap-2 whitespace-nowrap">
                             @if ($category->icon)
                                 <img src="{{ asset('storage/' . $category->icon) }}"
                                     class="w-3.5 h-3.5 object-contain brightness-0 invert" alt="{{ $category->name }}">
@@ -48,8 +47,23 @@
             </a>
 
             <div class="p-8 flex flex-col flex-grow">
+                {{-- TAMBAHAN: Metadata (Tanggal, Penulis, Views) --}}
+                <div class="flex items-center space-x-3 text-[10px] text-gray-400 font-bold uppercase tracking-normal mb-3">
+                    <time>{{ $material->published_at ? $material->published_at->translatedFormat('d F Y') : '-' }}</time>
+                    <span class="w-1 h-1 bg-gray-200 rounded-full"></span>
+                    <span class="flex items-center">
+                        <span class="material-symbols-outlined text-[14px] mr-1.5 text-primary/30">person</span>
+                        ADMIN
+                    </span>
+                    <span class="w-1 h-1 bg-gray-200 rounded-full"></span>
+                    <span class="flex items-center">
+                        <span class="material-symbols-outlined text-[14px] mr-1 text-primary/30">visibility</span>
+                        <span class="ml-1">{{ number_format($material->view_count) }}</span>
+                    </span>
+                </div>
+
                 <h2
-                    class="font-tegas text-xl font-black text-primary mb-4 uppercase group-hover:text-dark transition-colors">
+                    class="font-tegas text-xl font-black text-primary mb-4 uppercase tracking-normal group-hover:text-dark transition-colors leading-tight">
                     <a href="{{ $materialUrl }}">{{ $material->title }}</a>
                 </h2>
 
@@ -59,7 +73,7 @@
 
                 {{-- MINI PENTAGON STATS --}}
                 <div
-                    class="mt-auto pt-6 border-t border-gray-50 flex items-center justify-between text-[8px] font-tegas font-bold uppercase tracking-wider text-gray-400">
+                    class="mt-auto pt-6 border-t border-gray-50 flex items-center justify-between text-[8px] font-tegas font-bold uppercase tracking-normal text-gray-400">
                     <div class="flex flex-col items-center gap-1">
                         <span class="text-primary">{{ $material->human_capital }}%</span>
                         <span>Manusia</span>

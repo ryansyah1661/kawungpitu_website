@@ -7,6 +7,7 @@ use App\Models\Article;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Illuminate\Support\Str;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -35,14 +36,16 @@ class ArticleResource extends Resource
                                 Forms\Components\TextInput::make('title')
                                     ->label('Judul')
                                     ->required()
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                                 Forms\Components\TextInput::make('slug')
                                     ->label('Slug')
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->maxLength(255)
-                                    ->helperText('Ketik manual slug untuk URL artikel ini.'),
+                                    ->helperText('Slug otomatis terisi dari judul'),
 
                                 Forms\Components\TextInput::make('author_name')
                                     ->label('Nama Penulis')

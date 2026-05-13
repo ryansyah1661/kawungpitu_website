@@ -52,7 +52,7 @@ class TeamMemberResource extends Resource
                         ->rows(4)
                         ->maxLength(500)
                         ->hidden(fn(Forms\Get $get) => $get('type') !== 'advisor'),
-                ])->columnSpan(2),
+                        ])->columnSpan(2),
 
                 Forms\Components\Section::make('Media & Pengaturan')->schema([
                     Forms\Components\FileUpload::make('photo')

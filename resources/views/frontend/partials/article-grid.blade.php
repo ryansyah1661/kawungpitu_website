@@ -18,11 +18,11 @@
                     </div>
                 @endif
 
-                {{-- Container Badge Kategori (Hanya Teks) --}}
+                {{-- Container Badge Kategori --}}
                 <div class="absolute top-4 left-4 flex flex-wrap gap-2">
                     @foreach ($article->categories as $category)
                         <span
-                            class="bg-primary text-white text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-widest shadow-lg">
+                            class="bg-primary text-white text-[10px] font-bold py-1.5 px-3 rounded-lg uppercase tracking-normal shadow-lg">
                             {{ $category->name }}
                         </span>
                     @endforeach
@@ -30,19 +30,24 @@
             </a>
 
             <div class="p-8 flex flex-grow flex-col">
-                <div class="flex items-center text-xs text-gray-400 mb-4 font-body font-bold space-x-3">
-                    <span>{{ $article->published_at->translatedFormat('d M Y') }}</span>
-                    <span class="w-1 h-1 bg-primary/30 rounded-full"></span>
-                    <span class="text-gray-400"> {{ $article->author_name ?? 'Admin' }}</span>
+                {{-- PERBAIKAN: Metadata (Tanggal, Penulis, Views) - Sama dengan Program --}}
+                <div class="flex items-center space-x-3 text-[10px] text-gray-400 font-bold uppercase tracking-normal mb-4">
+                    <time>{{ $article->published_at->translatedFormat('d F Y') }}</time>
                     <span class="w-1 h-1 bg-primary/30 rounded-full"></span>
                     <span class="flex items-center">
-                        <span class="material-symbols-outlined text-[14px] mr-1">visibility</span>
-                        {{ number_format($article->view_count) }}
+                        <span class="material-symbols-outlined text-[14px] mr-1.5 text-primary/30">person</span>
+                        {{ $article->author_name ?? 'ADMIN' }}
+                    </span>
+                    <span class="w-1 h-1 bg-primary/30 rounded-full"></span>
+                    <span class="flex items-center">
+                        <span class="material-symbols-outlined text-[14px] mr-1 text-primary/30">visibility</span>
+                        <span class="ml-1">{{ number_format($article->view_count) }}</span>
                     </span>
                 </div>
 
+                {{-- Judul: Uppercase & Tracking Normal --}}
                 <h2
-                    class="font-tegas text-xl font-black text-primary mb-4 leading-tight uppercase group-hover:text-dark transition-colors">
+                    class="font-tegas text-xl font-black text-primary mb-4 leading-tight uppercase tracking-normal group-hover:text-dark transition-colors">
                     <a href="{{ $articleUrl }}">{{ $article->title }}</a>
                 </h2>
 

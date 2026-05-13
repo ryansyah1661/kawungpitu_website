@@ -6,6 +6,8 @@ use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Resource;
@@ -33,13 +35,16 @@ class CategoryResource extends Resource
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Kategori')
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug')
                             ->required()
                             ->unique(ignoreRecord: true)
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->helperText('Slug otomatis terisi dari judul'),
 
                         FileUpload::make('icon')
                             ->label('Icon Kategori')

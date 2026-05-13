@@ -5,57 +5,76 @@
 
     <article class="bg-cream pt-36 pb-24">
         <div class="max-w-4xl mx-auto px-8 md:px-12">
-            {{-- Breadcrumb --}}
-            <nav class="mb-10 flex items-center space-x-2 text-sm text-gray-400 font-body">
-                <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="hover:text-primary transition-colors">
-                    {{ __('messages.navbar.home') }}
-                </a>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-                <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}" class="hover:text-primary transition-colors">
-                    {{ __('messages.navbar.program') }}
-                </a>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-                <span class="text-primary font-medium truncate max-w-[200px]">{{ $program->title }}</span>
+
+            {{-- Breadcrumb: Poles lebih halus & hapus judul program --}}
+            <nav class="mb-8 flex items-center space-x-3 text-[10px] uppercase tracking-normal font-tegas text-gray-400">
+                <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
+                    class="hover:text-primary transition-colors">{{ __('messages.navbar.home') }}</a>
+                <span class="text-gray-300">/</span>
+                <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
+                    class="hover:text-primary transition-colors">{{ __('messages.navbar.program') }}</a>
             </nav>
 
-            {{-- Category + Status + Date --}}
-            <div class="flex flex-wrap items-center gap-3 mb-6">
-                @foreach ($program->categories as $category)
-                    <span class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-2">
-                        @if ($category->icon)
-                            <img src="{{ asset('storage/' . $category->icon) }}" class="w-4 h-4 object-contain brightness-0 invert" alt="{{ $category->name }}">
-                        @else
-                            <span class="material-symbols-outlined text-[14px]">category</span>
+            {{-- Category + Metadata --}}
+            <div class="flex flex-wrap items-center gap-y-4 gap-x-6 mb-8 uppercase tracking-normal">
+
+                {{-- Group 1: Badges (Kategori & Status digabung di sini) --}}
+                <div class="flex flex-wrap gap-2">
+                    @foreach ($program->categories as $category)
+                        <span class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg shadow-lg">
+                            {{ $category->name }}
+                        </span>
+                    @endforeach
+
+                    {{-- Status Badge dimasukkan ke kelompok badge agar jaraknya rapat (gap-2) --}}
+                    <span
+                        class="{{ $program->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[10px] font-bold py-2 px-4 rounded-lg shadow-lg flex items-center gap-1.5">
+                        @if ($program->status === 'ongoing')
+                            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
                         @endif
-                        {{ $category->name }}
+                        {{ $program->status === 'ongoing' ? __('messages.program.ongoing') : __('messages.program.completed') }}
                     </span>
-                @endforeach
+                </div>
 
-                <span class="{{ $program->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[10px] font-bold py-2 px-4 rounded-lg uppercase tracking-widest shadow-lg flex items-center gap-1.5">
-                    @if ($program->status === 'ongoing')
-                        <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
-                        {{ __('messages.program.ongoing') }}
-                    @else
-                        <span class="material-symbols-outlined text-xs">check_circle</span>
-                        {{ __('messages.program.completed') }}
+                {{-- Group 2: Meta Data (Tanggal, Penulis, Views dengan jarak gap-x-6 dari badge) --}}
+                <div class="flex items-center space-x-4">
+                    {{-- Tanggal --}}
+                    @if ($program->published_at)
+                        <time class="text-xs text-gray-400 font-bold">
+                            {{ $program->published_at->translatedFormat('d F Y') }}
+                        </time>
                     @endif
-                </span>
 
-                @if ($program->published_at)
-                    <time class="text-sm text-gray-400 font-bold uppercase tracking-widest">
-                        {{ $program->published_at->translatedFormat('d F Y') }}
-                    </time>
-                @endif
+                    {{-- Pemisah Titik --}}
+                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+
+                    {{-- Penulis --}}
+                    <span class="flex items-center text-xs text-gray-400 font-bold">
+                        <span class="material-symbols-outlined text-[14px] mr-1.5 text-primary/40">person</span>
+                        ADMIN
+                    </span>
+
+                    {{-- Pemisah Titik --}}
+                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+
+                    {{-- Views --}}
+                    <span class="flex items-center text-xs text-gray-400 font-bold">
+                        <span class="material-symbols-outlined text-[14px] mr-1 text-primary/40">visibility</span>
+                        <span class="ml-1 font-bold">{{ number_format($program->view_count) }} VIEWS</span>
+                    </span>
+                </div>
             </div>
 
-            <h1 class="font-tegas text-4xl md:text-5xl font-black text-dark uppercase tracking-tighter leading-tight mb-10">
+            {{-- Judul Program --}}
+            <h1 class="font-tegas text-4xl md:text-5xl font-black text-dark uppercase tracking-normal leading-tight mb-10">
                 {{ $program->title }}
             </h1>
 
             {{-- Featured Media --}}
             @if ($program->featured_image)
-                <div class="aspect-video rounded-2xl overflow-hidden mb-12 shadow-2xl shadow-primary/10">
-                    <img src="{{ asset('storage/' . $program->featured_image) }}" alt="{{ $program->title }}" class="w-full h-full object-cover">
+                <div class="aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl shadow-primary/5">
+                    <img src="{{ asset('storage/' . $program->featured_image) }}" alt="{{ $program->title }}"
+                        class="w-full h-full object-cover">
                 </div>
             @endif
 
@@ -66,17 +85,20 @@
                 @endphp
                 @if ($videoId)
                     <div class="aspect-video rounded-2xl overflow-hidden mb-12 shadow-2xl shadow-primary/10">
-                        <iframe src="https://www.youtube.com/embed/{{ $videoId }}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/{{ $videoId }}" class="w-full h-full" frameborder="0"
+                            allowfullscreen></iframe>
                     </div>
                 @endif
             @endif
 
-            <div class="prose prose-lg max-w-none prose-headings:font-tegas prose-headings:uppercase prose-headings:tracking-tight mb-16">
+            <div
+                class="prose prose-lg max-w-none prose-headings:font-tegas prose-headings:uppercase prose-headings:tracking-tight mb-16">
                 {!! $program->body !!}
             </div>
 
             {{-- PENTAGON ASET (DIKECILKAN) --}}
-            <div class="mt-12 bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-primary/5 border border-gray-100 animate-fade-in">
+            <div
+                class="mt-12 bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-primary/5 border border-gray-100 animate-fade-in">
                 <div class="text-center mb-6">
                     <h3 class="font-tegas text-xl font-black text-primary uppercase tracking-tight mb-1">
                         Pentagon Aset Ketangguhan
@@ -115,8 +137,8 @@
                             </div>
                             <div>
                                 <h4 class="font-tegas font-bold text-dark uppercase text-[10px] tracking-widest mb-0.5">
-                                    {{ $asset['label'] }} 
-                                    (<span class="asset-counter" data-target="{{ $val }}">0</span>%) 
+                                    {{ $asset['label'] }}
+                                    (<span class="asset-counter" data-target="{{ $val }}">0</span>%)
                                     <span class="text-primary italic">[{{ $statusLabel }}]</span>
                                 </h4>
                                 <p class="text-gray-500 text-[11px] leading-snug italic">
@@ -130,15 +152,18 @@
 
             {{-- PDF Section --}}
             @if ($program->pdf_file)
-                <div class="mt-12 p-6 bg-white rounded-2xl border-2 border-primary/10 flex items-center justify-between shadow-lg">
+                <div
+                    class="mt-12 p-6 bg-white rounded-2xl border-2 border-primary/10 flex items-center justify-between shadow-lg">
                     <div class="flex items-center space-x-4">
                         <span class="material-symbols-outlined text-3xl text-red-500">picture_as_pdf</span>
                         <div>
-                            <h4 class="font-tegas font-bold text-dark uppercase text-xs">{{ __('messages.program.download_title') }}</h4>
+                            <h4 class="font-tegas font-bold text-dark uppercase text-xs">
+                                {{ __('messages.program.download_title') }}</h4>
                             <p class="text-gray-400 text-[10px]">{{ __('messages.program.download_subtitle') }}</p>
                         </div>
                     </div>
-                    <a href="{{ asset('storage/' . $program->pdf_file) }}" target="_blank" class="bg-primary text-white px-5 py-2.5 rounded-xl font-tegas font-bold uppercase text-[10px] tracking-widest hover:bg-dark transition-all">
+                    <a href="{{ asset('storage/' . $program->pdf_file) }}" target="_blank"
+                        class="bg-primary text-white px-5 py-2.5 rounded-xl font-tegas font-bold uppercase text-[10px] tracking-widest hover:bg-dark transition-all">
                         {{ __('messages.program.download_btn') }}
                     </a>
                 </div>
@@ -147,85 +172,85 @@
     </article>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const chartElement = document.getElementById('pentagonChart');
-        const targetData = [
-            {{ $program->human_capital ?? 0 }},
-            {{ $program->social_capital ?? 0 }},
-            {{ $program->natural_capital ?? 0 }},
-            {{ $program->physical_capital ?? 0 }},
-            {{ $program->financial_capital ?? 0 }}
-        ];
+        document.addEventListener('DOMContentLoaded', function () {
+            const chartElement = document.getElementById('pentagonChart');
+            const targetData = [
+                {{ $program->human_capital ?? 0 }},
+                {{ $program->social_capital ?? 0 }},
+                {{ $program->natural_capital ?? 0 }},
+                {{ $program->physical_capital ?? 0 }},
+                {{ $program->financial_capital ?? 0 }}
+            ];
 
-        let chartRendered = false;
+            let chartRendered = false;
 
-        const animateValue = (obj, start, end, duration) => {
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                obj.innerHTML = Math.floor(progress * (end - start) + start);
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
+            const animateValue = (obj, start, end, duration) => {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
             };
-            window.requestAnimationFrame(step);
-        };
 
-        const initChart = () => {
-            new Chart(chartElement, {
-                type: 'radar',
-                data: {
-                    labels: ['Manusia', 'Sosial', 'Alam', 'Fisik', 'Finansial'],
-                    datasets: [{
-                        label: 'Skor Aset (%)',
-                        data: targetData,
-                        fill: true,
-                        backgroundColor: 'rgba(128, 0, 0, 0.12)',
-                        borderColor: '#800000',
-                        pointBackgroundColor: '#800000',
-                        borderWidth: 2, // Garis diperhalus
-                        pointRadius: 2, // Titik diperkecil
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 3000,
-                        easing: 'easeOutQuart'
+            const initChart = () => {
+                new Chart(chartElement, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Manusia', 'Sosial', 'Alam', 'Fisik', 'Finansial'],
+                        datasets: [{
+                            label: 'Skor Aset (%)',
+                            data: targetData,
+                            fill: true,
+                            backgroundColor: 'rgba(128, 0, 0, 0.12)',
+                            borderColor: '#800000',
+                            pointBackgroundColor: '#800000',
+                            borderWidth: 2, // Garis diperhalus
+                            pointRadius: 2, // Titik diperkecil
+                        }]
                     },
-                    scales: {
-                        r: {
-                            suggestedMin: 0,
-                            suggestedMax: 100,
-                            ticks: { stepSize: 25, display: false },
-                            pointLabels: {
-                                font: { family: 'Montserrat', size: 10, weight: 'bold' },
-                                color: '#800000'
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 3000,
+                            easing: 'easeOutQuart'
+                        },
+                        scales: {
+                            r: {
+                                suggestedMin: 0,
+                                suggestedMax: 100,
+                                ticks: { stepSize: 25, display: false },
+                                pointLabels: {
+                                    font: { family: 'Montserrat', size: 10, weight: 'bold' },
+                                    color: '#800000'
+                                }
                             }
-                        }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
+                        },
+                        plugins: { legend: { display: false } }
+                    }
+                });
 
-            document.querySelectorAll('.asset-counter').forEach((counter) => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                animateValue(counter, 0, target, 3000);
-            });
-        };
+                document.querySelectorAll('.asset-counter').forEach((counter) => {
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    animateValue(counter, 0, target, 3000);
+                });
+            };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !chartRendered) {
-                    initChart();
-                    chartRendered = true;
-                }
-            });
-        }, { threshold: 0.2 });
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !chartRendered) {
+                        initChart();
+                        chartRendered = true;
+                    }
+                });
+            }, { threshold: 0.2 });
 
-        observer.observe(chartElement);
-    });
+            observer.observe(chartElement);
+        });
     </script>
 @endsection

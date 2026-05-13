@@ -87,12 +87,8 @@
                 </div>
 
                 {{-- Sisi Kanan: Quote Card --}}
-                <div class="lg:col-span-5 bg-[#FFF5F3] rounded-[3rem] p-10 md:p-14 relative shadow-sm">
-                    <div class="opacity-20 mb-6">
-                        <span class="material-symbols-outlined text-6xl text-primary">
-                            format_quote
-                        </span>
-                    </div>
+                <div
+                    class="lg:col-span-5 bg-[#FFF5F3] rounded-[3rem] p-10 md:p-14 relative shadow-sm flex flex-col justify-center">
 
                     <blockquote class="text-xl md:text-2xl font-montserrat italic font-bold text-primary leading-snug mb-8">
                         "{!! __('messages.commitment.quote') !!}"
@@ -426,7 +422,7 @@
 
             {{-- 1. Header Section: Judul Tengah --}}
             <div class="text-center mb-16">
-                <h2 class="font-tegas text-4xl md:text-5xl font-black text-dark uppercase tracking-tighter">
+                <h2 class="font-tegas text-4xl md:text-5xl font-black text-dark uppercase tracking-normal mb-4">
                     {{ __('messages.articles.title') }}
                 </h2>
                 {{-- Garis dekorasi --}}
@@ -500,40 +496,6 @@
 
         </div>
     </section>
-
-    {{-- SECTION FAQ
-    <section class="pt-24 pb-32 bg-white overflow-hidden">
-        <div class="max-w-4xl mx-auto px-8 md:px-12">
-            <div class="text-center mb-16 animate-fade-up">
-                <h2 class="font-tegas text-4xl md:text-5xl font-black text-primary uppercase tracking-tighter">
-                    {{ __('messages.faq.title') }}
-                </h2>
-                <p class="mt-4 text-primary/60 font-body italic">{{ __('messages.faq.subtitle') }}</p>
-            </div>
-
-            <div class="space-y-6">
-                @foreach ($faqs as $index => $faq)
-                <div
-                    class="group bg-white border-2 border-gray-200 rounded-3xl overflow-hidden shadow-sm hover:border-primary/30 transition-all duration-300">
-                    <details class="group">
-                        <summary
-                            class="flex justify-between items-center p-6 md:p-8 cursor-pointer list-none group-open:bg-primary transition-all duration-500">
-                            <span class="font-tegas font-bold text-primary tracking-tight group-open:text-white">{{
-                                $faq->question }}</span>
-                            <span
-                                class="material-symbols-outlined text-primary group-open:text-white group-open:rotate-180 transition-all">expand_more</span>
-                        </summary>
-                        <div class="p-6 md:p-8 bg-white border-t border-gray-100">
-                            <div class="text-gray-600 font-body leading-relaxed prose max-w-none">
-                                {!! $faq->answer !!}
-                            </div>
-                        </div>
-                    </details>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section> --}}
 
     {{-- SECTION CTA --}}
     <section class="py-24 bg-primary relative overflow-hidden">
