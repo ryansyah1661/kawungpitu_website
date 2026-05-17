@@ -6,9 +6,10 @@
     <header class="bg-cream pt-40 pb-24 px-8 md:px-12 border-b border-gray-100 overflow-hidden">
         <div class="max-w-7xl mx-auto relative">
             <div class="relative z-10">
+                {{-- Ganti bagian <h1> di Header Artikel dengan ini Qi --}}
                 <h1 class="font-tegas text-5xl md:text-7xl font-black mb-10 uppercase tracking-normal animate-fade-in-left w-fit text-left">
-                    <span class="bg-white text-dark px-6 pr-16 py-2 block w-full shadow-xl shadow-primary/5">
-                        ARTIKEL
+                    <span class="bg-primary text-white px-6 pr-16 py-2 block w-full shadow-xl shadow-primary/20">
+                      ARTIKEL
                     </span>
                 </h1>
                 <div class="flex items-start space-x-6 animate-fade-in-left" style="animation-delay: 0.3s;">

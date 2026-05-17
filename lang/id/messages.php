@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'login' => [
+        'heading' => 'Selamat Datang di Panel Admin Kawungpitu Institute',
+        'subheading' => 'Masuk untuk mengelola konten dan program kami',
+    ],
     'navbar' => [
         'home' => 'Beranda',
         'about' => 'Tentang Kami',

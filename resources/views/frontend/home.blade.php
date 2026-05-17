@@ -196,8 +196,9 @@
                                 <h3
                                     class="font-tegas text-xl font-black text-primary uppercase mb-1 tracking-tighter leading-tight text-center">
                                     {!! $s['title'] !!}
-                                </h3> {{-- Description: Sekarang Rata Kiri (text-left) dan Full Width --}}
-                                <p class="text-primary text-justify px-4 leading-relaxed opacity-90 text-sm text-left w-full">
+                                </h3> 
+                                {{-- PERBAIKAN: text-justify dihapus agar sinkron rata kiri --}}
+                                <p class="text-primary px-4 leading-relaxed opacity-90 text-sm text-left w-full">
                                     {!! $s['desc'] !!}
                                 </p>
                             </div>
@@ -205,12 +206,10 @@
                             {{-- SISI BELAKANG --}}
                             <div
                                 class="absolute inset-0 h-full w-full rounded-3xl bg-[#d5a132] p-10 text-primary [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center border border-white/10 shadow-2xl">
-
-
                                 {{-- Deskripsi Belakang --}}
-                                {{-- Tanda kutip dihapus, pakai {!! !!}, dan ganti ke text-left --}}
+                                {{-- PERBAIKAN: text-justify dihapus agar sinkron rata kiri --}}
                                 <p
-                                    class="text-primary/90 font-light leading-relaxed text-justify text-sm text-left w-full px-2">
+                                    class="text-primary/90 font-light leading-relaxed text-sm text-left w-full px-2">
                                     {!! $s['back_desc'] !!}
                                 </p>
                             </div>
@@ -399,19 +398,16 @@
 
     <style>
         @keyframes pulse-slow {
-
             0%,
             100% {
                 transform: scale(1);
                 opacity: 0.7;
             }
-
             50% {
                 transform: scale(1.05);
                 opacity: 1;
             }
         }
-
         .animate-pulse-slow {
             animation: pulse-slow 4s ease-in-out infinite;
         }
@@ -488,8 +484,9 @@
 
             {{-- 2. Button Section: mt-28 untuk jarak & justify-center untuk posisi TENAH --}}
             <div class="mt-28 flex justify-center">
+                {{-- PERBAIKAN: Menghapus class 'transition-colors' yang bertabrakan dengan transition-all --}}
                 <a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
-                    class="inline-flex items-center space-x-2 text-dark hover:text-primary transition-colors font-tegas font-bold uppercase text-xs tracking-widest border border-gray-200 px-10 py-4 rounded-xl hover:border-primary shadow-sm hover:shadow-xl transition-all duration-300">
+                    class="inline-flex items-center space-x-2 text-dark hover:text-primary font-tegas font-bold uppercase text-xs tracking-widest border border-gray-200 px-10 py-4 rounded-xl hover:border-primary shadow-sm hover:shadow-xl transition-all duration-300">
                     <span>{{ __('messages.articles.view_all') }}</span>
                     <span class="material-symbols-outlined text-sm">arrow_outward</span>
                 </a>
