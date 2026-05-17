@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('title', $program->title)
 
 @section('content')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

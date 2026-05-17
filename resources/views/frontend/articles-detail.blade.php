@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('title', $artikel->title)
 
 @section('content')
     <article class="bg-cream pt-36 pb-24">

@@ -72,7 +72,6 @@ class ArticleResource extends Resource
                     ->schema([
                         Forms\Components\Section::make('Pengaturan')
                             ->schema([
-                                // Update Kategori menjadi Multiple Select
                                 Forms\Components\Select::make('categories')
                                     ->label('Kategori')
                                     ->multiple()

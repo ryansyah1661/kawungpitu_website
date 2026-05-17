@@ -7,6 +7,8 @@ use App\Filament\Resources\AlbumResource\RelationManagers;
 use App\Models\Album;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -30,16 +32,21 @@ class AlbumResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Informasi Album')
                     ->schema([
+                        // PERBAIKAN: Judul Album otomatis men-generate Slug saat kursor pindah kolom
                         Forms\Components\TextInput::make('title')
                             ->label('Judul Album')
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
+                        // PERBAIKAN: Slug otomatis terisi dari judul album
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug')
                             ->required()
                             ->unique(ignoreRecord: true)
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->helperText('Slug otomatis terisi dari judul album.'),
 
                         Forms\Components\Textarea::make('description')
                             ->label('Deskripsi')
@@ -62,7 +69,6 @@ class AlbumResource extends Resource
                         Forms\Components\Toggle::make('is_published')
                             ->label('Dipublikasikan')
                             ->default(false),
-                        // Input 'Urutan' sudah dihapus di sini
                     ]),
             ]);
     }
@@ -93,8 +99,6 @@ class AlbumResource extends Resource
                     ->trueColor('success')
                     ->falseColor('danger'),
 
-                // Kolom 'Urutan' sudah dihapus di sini
-
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime('d M Y')
@@ -114,7 +118,6 @@ class AlbumResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            // Default sort diubah ke 'created_at' terbaru
             ->defaultSort('created_at', 'desc');
     }
 

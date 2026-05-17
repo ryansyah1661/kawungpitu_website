@@ -20,12 +20,10 @@ class GaleriController extends Controller
         return view('frontend.gallery', compact('albums'));
     }
 
-    /**
-     * Halaman detail album.
-     * Menampilkan semua foto dalam album (masonry grid + lightbox).
-     */
-    public function show(string $locale, Album $album)
+    public function show(string $locale, string $slug)
     {
+        $album = Album::where('slug', '=', $slug)->firstOrFail();
+
         if (!$album->is_published) {
             abort(404);
         }

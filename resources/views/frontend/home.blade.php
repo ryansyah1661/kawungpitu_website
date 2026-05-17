@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('title', 'Beranda')
 
 @section('content')
     {{-- SECTION HERO --}}

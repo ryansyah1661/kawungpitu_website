@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('title', $album->title)
 
 @section('content')
     <header class="bg-cream pt-36 pb-16 px-8 md:px-12">

@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        @yield('title') - Kawung Pitu Institute
-    </title>
+    
+    {{-- PERBAIKAN FINAL: Judul Tab Browser Dinamis & Bebas Bug Tanda Hubung --}}
+    <title>@hasSection('title') @yield('title') - @endif Kawung Pitu Institute</title>
 
     <link rel="icon" type="image/png" href="{{ asset('kawung.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -114,25 +114,20 @@
                 transform: scale(1.1);
             }
 
-            /* Zoom In */
             55% {
                 opacity: 0;
                 transform: scale(1.1);
             }
 
-            /* Mulai memudar */
             95% {
                 opacity: 0;
                 transform: scale(1);
             }
 
-            /* Persiapan muncul lagi */
             100% {
                 opacity: 1;
                 transform: scale(1);
             }
-
-            /* Muncul tepat sebelum loop */
         }
 
         @keyframes hero-fade-2 {
@@ -141,31 +136,25 @@
                 transform: scale(1);
             }
 
-            /* Sembunyi di awal */
             45% {
                 opacity: 0;
                 transform: scale(1);
             }
 
-            /* Masih sembunyi */
             55% {
                 opacity: 1;
                 transform: scale(1);
             }
 
-            /* Muncul saat Gbr 1 hilang */
             95% {
                 opacity: 1;
                 transform: scale(1.1);
             }
 
-            /* Zoom In */
             100% {
                 opacity: 0;
                 transform: scale(1.1);
             }
-
-            /* Memudar buat balik ke Gbr 1 */
         }
 
         .animate-fade-in-left {
@@ -250,13 +239,12 @@
         </div>
     </nav>
 
-    <main> @yield('content')</main>
+    <main>@yield('content')</main>
 
     <footer class="bg-dark text-white pt-24 pb-12 border-t-[12px] border-primary">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
             {{-- Grid Menu Utama --}}
-            <div
-                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-5 border-b border-gray-800 pb-10 items-start">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-5 border-b border-gray-800 pb-10 items-start">
 
                 {{-- KOLOM 1: LOGO & DESKRIPSI --}}
                 <div class="lg:col-span-5 pr-0 lg:pr-16">
@@ -332,7 +320,7 @@
                 </div>
             </div>
 
-            {{-- COPYRIGHT: Apple Style (No Uppercase, No Letter Spacing, Normal Font) --}}
+            {{-- COPYRIGHT --}}
             <div class="text-sm text-gray-500 font-body font-medium">
                 Copyright © {{ date('Y') }} Kawungpitu Institute. All rights reserved.
             </div>
@@ -352,10 +340,8 @@
             }
         });
 
-        // Tambahkan ini di dalam tag script yang sudah ada
         const mobileMenuBtn = document.querySelector('button.lg:hidden');
         mobileMenuBtn.addEventListener('click', () => {
-            // Logika buka tutup menu mobile (kamu bisa buatkan div khusus menu mobile nanti)
             console.log('Menu Mobile Diklik!');
         });
     </script>
