@@ -9,7 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListTeamMembers extends ListRecords
 {
     use ListRecords\Concerns\Translatable;
-    
+
     protected static string $resource = TeamMemberResource::class;
 
     protected function getHeaderActions(): array
@@ -18,5 +18,11 @@ class ListTeamMembers extends ListRecords
             Actions\CreateAction::make(),
             Actions\LocaleSwitcher::make(),
         ];
+    }
+
+    public function getBreadcrumbs(): array
+    {
+        // Mengembalikan array kosong akan menghilangkan breadcrumb di halaman ini Qi
+        return [];
     }
 }

@@ -24,4 +24,10 @@ class EditAlbum extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    public function getBreadcrumbs(): array
+    {
+        // Mengembalikan array kosong akan menghilangkan breadcrumb di halaman ini Qi
+        return [];
+    }
 }

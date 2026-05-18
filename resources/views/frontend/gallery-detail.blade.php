@@ -5,17 +5,15 @@
     <header class="bg-cream pt-36 pb-16 px-8 md:px-12">
         <div class="max-w-7xl mx-auto">
             {{-- Breadcrumb --}}
-            <nav class="mb-8 flex items-center space-x-2 text-sm text-gray-400 font-body">
+            <nav class="mb-8 flex items-center space-x-3 text-[10px] uppercase tracking-normal font-tegas text-gray-400">
                 <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="hover:text-primary transition-colors">
                     {{ __('messages.navbar.home') }}
                 </a>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
+                <span class="text-gray-300">/</span>
                 <a href="{{ route('galeri.index', ['locale' => app()->getLocale()]) }}"
                     class="hover:text-primary transition-colors">
                     {{ __('messages.navbar.gallery') }}
                 </a>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-                <span class="text-primary font-medium">{{ $album->title }}</span>
             </nav>
 
             <h1 class="font-tegas text-4xl md:text-5xl font-black text-dark uppercase tracking-tighter mb-4">

@@ -31,4 +31,10 @@ class CreateArticle extends CreateRecord
 
         return $data;
     }
+
+    public function getBreadcrumbs(): array
+    {
+        // Mengembalikan array kosong akan menghilangkan breadcrumb di halaman ini Qi
+        return [];
+    }
 }
