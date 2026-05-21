@@ -12,7 +12,8 @@
                     <img src="{{ asset('storage/' . $material->featured_image) }}" alt="{{ $material->title }}"
                         class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
                 @else
-                    <div class="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                    <div
+                        class="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
                         <span class="material-symbols-outlined text-6xl text-primary/30">school</span>
                     </div>
                 @endif
@@ -47,14 +48,18 @@
             </a>
 
             <div class="p-8 flex flex-col flex-grow">
-                {{-- TAMBAHAN: Metadata (Tanggal, Penulis, Views) --}}
-                <div class="flex items-center space-x-3 text-[10px] text-gray-400 font-bold uppercase tracking-normal mb-3">
+                {{-- Metadata (Tanggal, Penulis, Views) --}}
+                <div
+                    class="flex items-center space-x-3 text-[10px] text-gray-400 font-bold uppercase tracking-normal mb-3">
                     <time>{{ $material->published_at ? $material->published_at->translatedFormat('d F Y') : '-' }}</time>
                     <span class="w-1 h-1 bg-gray-200 rounded-full"></span>
+
+                    {{-- PERBAIKAN: Mengganti teks ADMIN mentah menjadi variabel dinamis author_name Qi! --}}
                     <span class="flex items-center">
                         <span class="material-symbols-outlined text-[14px] mr-1.5 text-primary/30">person</span>
-                        ADMIN
+                        {{ $material->author_name ?? 'Tim Kawungpitu Institute' }}
                     </span>
+
                     <span class="w-1 h-1 bg-gray-200 rounded-full"></span>
                     <span class="flex items-center">
                         <span class="material-symbols-outlined text-[14px] mr-1 text-primary/30">visibility</span>

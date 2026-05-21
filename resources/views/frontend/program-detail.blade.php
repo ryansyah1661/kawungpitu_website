@@ -22,7 +22,14 @@
                 {{-- Group 1: Badges (Kategori & Status digabung di sini) --}}
                 <div class="flex flex-wrap gap-2">
                     @foreach ($program->categories as $category)
-                        <span class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg shadow-lg">
+                        <span
+                            class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 whitespace-nowrap">
+                            @if ($category->icon)
+                                <img src="{{ asset('storage/' . $category->icon) }}"
+                                    class="w-3.5 h-3.5 object-contain brightness-0 invert" alt="{{ $category->name }}">
+                            @else
+                                <span class="material-symbols-outlined text-[14px]">category</span>
+                            @endif
                             {{ $category->name }}
                         </span>
                     @endforeach
@@ -52,7 +59,7 @@
                     {{-- Penulis --}}
                     <span class="flex items-center text-xs text-gray-400 font-bold">
                         <span class="material-symbols-outlined text-[14px] mr-1.5 text-primary/40">person</span>
-                        ADMIN
+                        {{ $program->author_name ?? 'Tim Kawungpitu Institute' }}
                     </span>
 
                     {{-- Pemisah Titik --}}
@@ -81,19 +88,24 @@
 
             @if ($program->video_url)
                 @php
-                    preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $program->video_url, $match);
+                    preg_match(
+                        '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/',
+                        $program->video_url,
+                        $match,
+                    );
                     $videoId = $match[1] ?? null;
                 @endphp
                 @if ($videoId)
                     <div class="aspect-video rounded-2xl overflow-hidden mb-12 shadow-2xl shadow-primary/10">
-                        <iframe src="https://www.youtube.com/embed/{{ $videoId }}" class="w-full h-full" frameborder="0"
-                            allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/{{ $videoId }}" class="w-full h-full"
+                            frameborder="0" allowfullscreen></iframe>
                     </div>
                 @endif
             @endif
 
+            {{-- PERBAIKAN: Menambahkan class 'text-justify' agar isi detail program rata kanan-kiri --}}
             <div
-                class="prose prose-lg max-w-none prose-headings:font-tegas prose-headings:uppercase prose-headings:tracking-tight mb-16">
+                class="prose prose-lg max-w-none text-justify prose-headings:font-tegas prose-headings:uppercase prose-headings:tracking-tight mb-16">
                 {!! $program->body !!}
             </div>
 
@@ -126,12 +138,13 @@
                         ];
                     @endphp
 
-                    @foreach($assets as $asset)
+                    @foreach ($assets as $asset)
                         @php
                             $val = $program->{$asset['key']} ?? 0;
                             $statusLabel = $val >= 70 ? 'Tinggi' : ($val >= 35 ? 'Sedang' : 'Rendah');
                         @endphp
-                        <div class="flex gap-3 @if($loop->last) md:col-span-2 md:max-w-xs md:mx-auto @endif">
+                        <div
+                            class="flex gap-3 @if ($loop->last) md:col-span-2 md:max-w-xs md:mx-auto @endif">
                             {{-- Icon Dikecilkan ke w-9 h-9 --}}
                             <div class="w-9 h-9 bg-primary/5 rounded-lg flex items-center justify-center shrink-0">
                                 <span class="material-symbols-outlined text-primary text-lg">{{ $asset['icon'] }}</span>
@@ -173,7 +186,7 @@
     </article>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const chartElement = document.getElementById('pentagonChart');
             const targetData = [
                 {{ $program->human_capital ?? 0 }},
@@ -210,8 +223,8 @@
                             backgroundColor: 'rgba(128, 0, 0, 0.12)',
                             borderColor: '#800000',
                             pointBackgroundColor: '#800000',
-                            borderWidth: 2, // Garis diperhalus
-                            pointRadius: 2, // Titik diperkecil
+                            borderWidth: 2,
+                            pointRadius: 2,
                         }]
                     },
                     options: {
@@ -225,14 +238,25 @@
                             r: {
                                 suggestedMin: 0,
                                 suggestedMax: 100,
-                                ticks: { stepSize: 25, display: false },
+                                ticks: {
+                                    stepSize: 25,
+                                    display: false
+                                },
                                 pointLabels: {
-                                    font: { family: 'Montserrat', size: 10, weight: 'bold' },
+                                    font: {
+                                        family: 'Montserrat',
+                                        size: 10,
+                                        weight: 'bold'
+                                    },
                                     color: '#800000'
                                 }
                             }
                         },
-                        plugins: { legend: { display: false } }
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
                     }
                 });
 
@@ -249,7 +273,9 @@
                         chartRendered = true;
                     }
                 });
-            }, { threshold: 0.2 });
+            }, {
+                threshold: 0.2
+            });
 
             observer.observe(chartElement);
         });

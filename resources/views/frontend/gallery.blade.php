@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-@section('title', 'Galeri')
+@section('title', __('messages.navbar.gallery'))
 
 @section('content')
     <header class="bg-cream pt-40 pb-24 px-8 md:px-12 border-b border-gray-100 overflow-hidden">

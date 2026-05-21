@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-@section('title', 'Artikel')
+@section('title', __('messages.navbar.article'))
 
 @section('content')
     {{-- SECTION HEADER: Dibuat minimalis 1 baris dengan tracking-widest --}}

@@ -18,6 +18,7 @@ class TeamMemberResource extends Resource
     protected static ?string $model = TeamMember::class;
     protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?string $navigationLabel = 'Tim & Advisor';
+    protected static ?string $modelLabel = 'Tim & Advisor';
     protected static ?string $pluralModelLabel = 'Anggota Tim';
     protected static ?string $navigationGroup = 'Profil Lembaga';
     protected static ?int $navigationSort = 1;

@@ -4,9 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    {{-- PERBAIKAN FINAL: Judul Tab Browser Dinamis & Bebas Bug Tanda Hubung --}}
-    <title>@hasSection('title') @yield('title') - @endif Kawung Pitu Institute</title>
+
+    <title>
+        @hasSection('title')
+            @yield('title') -
+        @endif Kawung Pitu Institute
+    </title>
 
     <link rel="icon" type="image/png" href="{{ asset('kawung.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,7 +84,6 @@
             }
         }
 
-        /* --- PERBAIKAN FINAL: ANIMASI HERO TANPA JEDA ABU-ABU --- */
         .animate-hero-1,
         .animate-hero-2 {
             position: absolute;
@@ -244,7 +246,8 @@
     <footer class="bg-dark text-white pt-24 pb-12 border-t-[12px] border-primary">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
             {{-- Grid Menu Utama --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-5 border-b border-gray-800 pb-10 items-start">
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-5 border-b border-gray-800 pb-10 items-start">
 
                 {{-- KOLOM 1: LOGO & DESKRIPSI --}}
                 <div class="lg:col-span-5 pr-0 lg:pr-16">
@@ -258,11 +261,12 @@
                     </p>
 
                     <div class="flex space-x-5">
-                        <a href="#"
+                        <a href="https://id.linkedin.com/company/kawungpituinstitute" target="_blank"
+                            rel="noopener noreferrer"
                             class="w-12 h-12 rounded-full border border-gray-800 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group">
                             <i class="fa-brands fa-linkedin-in text-lg text-gray-500 group-hover:text-white"></i>
                         </a>
-                        <a href="#"
+                        <a href="https://www.instagram.com/kawungpitu_id/" target="_blank" rel="noopener noreferrer"
                             class="w-12 h-12 rounded-full border border-gray-800 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group">
                             <i class="fa-brands fa-instagram text-lg text-gray-500 group-hover:text-white"></i>
                         </a>
@@ -278,13 +282,16 @@
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.company') }}
                     </h4>
+                    {{-- PERBAIKAN: Melokalisasi isi menu link Kelembagaan --}}
                     <ul class="space-y-5 text-gray-400 font-light text-sm">
                         <li><a href="{{ route('tentang', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">Tentang Kami</a></li>
+                                class="hover:text-primary transition-colors">{{ __('messages.navbar.about') }}</a></li>
                         <li><a href="{{ route('galeri.index', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">Galeri</a></li>
+                                class="hover:text-primary transition-colors">{{ __('messages.navbar.gallery') }}</a>
+                        </li>
                         <li><a href="{{ route('kontak', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">Kontak</a></li>
+                                class="hover:text-primary transition-colors">{{ __('messages.navbar.contact') }}</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -293,23 +300,28 @@
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.program_title') }}
                     </h4>
+                    {{-- PERBAIKAN: Melokalisasi isi menu link Program --}}
                     <ul class="space-y-5 text-gray-400 font-light text-sm">
                         <li><a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">Artikel</a></li>
+                                class="hover:text-primary transition-colors">{{ __('messages.navbar.article') }}</a>
+                        </li>
                         <li><a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">Program Kami</a></li>
+                                class="hover:text-primary transition-colors">{{ __('messages.footer.our_program') }}</a>
+                        </li>
                     </ul>
                 </div>
 
                 {{-- KOLOM 4: HUBUNGI KAMI --}}
                 <div class="lg:col-span-3">
+                    {{-- PERBAIKAN: Mengganti judul menjadi dinamis mengikuti bahasa --}}
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
-                        Hubungi Kami
+                        {{ __('messages.footer.contact_us') }}
                     </h4>
                     <ul class="space-y-6 text-gray-400 font-light text-sm">
                         <li class="flex items-start space-x-4">
                             <span class="material-symbols-outlined text-primary mt-1">location_on</span>
-                            <span class="leading-relaxed">Jl. Mawar Raya No. 16, Kota Bogor, Jawa Barat 16113</span>
+                            <span class="leading-relaxed">Jl. Mawar Raya No.16, Lt 2, RT.08/RW.08, Curugmekar, Kec.
+                                Bogor Bar., Kota Bogor, Jawa Barat 16113</span>
                         </li>
                         <li class="flex items-center space-x-4">
                             <span class="material-symbols-outlined text-primary">mail</span>

@@ -35,7 +35,8 @@ class ArtikelController extends Controller
         $totalArticlesCount = Article::published()->count();
 
         if ($request->ajax()) {
-            return view('frontend.partials.article-grid', compact('articles'))->render();
+            // OPTIMASI: Cukup return view objeknya saja Qi, Laravel otomatis merendernya jadi HTML string
+            return view('frontend.partials.article-grid', compact('articles'));
         }
 
         // Ambil kategori khusus tipe artikel
@@ -50,7 +51,7 @@ class ArtikelController extends Controller
         $currentLocale = app()->getLocale();
         $kategori = Category::where("slug->{$currentLocale}", $kategoriSlug)->firstOrFail();
 
-        // DEFINISIKAN DATA: Mencari artikel yang memiliki kategori ini di tabel pivot
+        // Ambil artikel yang memiliki kategori ini di tabel pivot
         $articles = Article::with('categories')
             ->whereHas('categories', function ($q) use ($kategori) {
                 $q->where('categories.id', $kategori->id);
@@ -59,10 +60,11 @@ class ArtikelController extends Controller
             ->latest('published_at')
             ->paginate(6);
 
-        $totalArticlesCount = Article::published()->count();
+        // PERBAIKAN LOGIKA: Hitung total artikel HANYA yang ada di kategori ini, Qi!
+        $totalArticlesCount = $kategori->articles()->published()->count();
 
         if ($request->ajax()) {
-            return view('frontend.partials.article-grid', compact('articles'))->render();
+            return view('frontend.partials.article-grid', compact('articles'));
         }
 
         $categories = Category::where('type', 'article')->orderBy('sort_order')->get();
@@ -74,6 +76,7 @@ class ArtikelController extends Controller
 
     public function show(string $locale, $slug)
     {
+        // Karena di HeidiSQL kolom 'slug' bertipe VARCHAR (bukan JSON), query ini sudah 100% BENAR Qi!
         $artikel = Article::where('slug', $slug)->firstOrFail();
 
         if (!$artikel->is_published) {
@@ -83,8 +86,7 @@ class ArtikelController extends Controller
         $artikel->incrementViewCount();
         $artikel->load('categories');
 
-        // LOGIKA ARTIKEL TERKAIT: 
-        // Mencari artikel lain yang punya salah satu kategori yang sama dengan artikel ini
+        // LOGIKA ARTIKEL TERKAIT (Many-to-Many): 
         $categoryIds = $artikel->categories->pluck('id')->toArray();
 
         $relatedArticles = Article::with('categories')

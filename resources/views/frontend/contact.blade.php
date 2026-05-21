@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-@section('title', 'Kontak')
+@section('title', __('messages.navbar.contact'))
 
 @section('content')
     <header class="bg-cream pt-40 pb-24 px-8 md:px-12 border-b border-gray-100 overflow-hidden">
@@ -111,8 +111,7 @@
                             <h3 class="font-tegas text-xl font-black text-primary uppercase tracking-tight mb-2">
                                 {{ __('messages.contact.office_address') }}
                             </h3>
-                            <p class="text-gray-500 font-body leading-relaxed">Jl. Mawar Raya No. 16, Curugmekar, Kec. Bogor
-                                Bar., Kota Bogor, Jawa Barat 16113</p>
+                            <p class="text-gray-500 font-body leading-relaxed">Jl. Mawar Raya No.16, Lt 2, RT.08/RW.08, Curugmekar, Kec. Bogor Bar., Kota Bogor, Jawa Barat 16113</p>
                         </div>
                     </div>
 

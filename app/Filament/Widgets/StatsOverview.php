@@ -10,9 +10,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends BaseWidget
 {
-    /**
-     * Mengatur data statistik yang akan ditampilkan di Dashboard
-     */
+    protected static ?int $sort = 1;
     protected function getStats(): array
     {
        return [

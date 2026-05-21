@@ -14,7 +14,6 @@ class Program extends Model
     const STATUS_COMPLETED = 'completed';
 
     protected $fillable = [
-        'category_id',
         'title',
         'slug',
         'author_name',
@@ -51,7 +50,7 @@ class Program extends Model
     /**
      * Get the categories that own this program.
      */
-    public function categories()
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'category_program');
     }

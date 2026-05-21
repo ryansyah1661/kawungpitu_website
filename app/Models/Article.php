@@ -33,7 +33,7 @@ class Article extends Model
     /**
      * Relasi diubah menjadi Many-to-Many
      */
-    public function categories()
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany 
     {
         return $this->belongsToMany(Category::class, 'article_category');
     }
