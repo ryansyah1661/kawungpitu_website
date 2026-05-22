@@ -5,8 +5,9 @@
     <header class="bg-cream pt-40 pb-24 px-8 md:px-12 border-b border-gray-100 overflow-hidden">
         <div class="max-w-7xl mx-auto relative">
             <div class="relative z-10">
+                {{-- FIX RESPONSIVE FONT SIZE --}}
                 <h1
-                    class="font-tegas text-5xl md:text-7xl font-black mb-10 uppercase tracking-tighter animate-fade-in-left w-fit text-left">
+                    class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-10 uppercase tracking-tighter animate-fade-in-left w-fit text-left">
                     <span class="bg-white text-dark px-6 pr-20 py-2 block mb-2 w-full shadow-xl shadow-primary/5">
                         {{ __('messages.gallery.header_1') }}
                     </span>
@@ -28,7 +29,6 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             @forelse ($albums as $album)
                 @php
-                    // Pengaman: Jika slug bahasa yang aktif kosong, jangan bikin route-nya error
                     $albumUrl = $album->slug
                         ? route('galeri.show', ['locale' => app()->getLocale(), 'slug' => $album->slug])
                         : '#';

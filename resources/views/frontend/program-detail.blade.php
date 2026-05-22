@@ -73,8 +73,9 @@
                 </div>
             </div>
 
-            {{-- Judul Program --}}
-            <h1 class="font-tegas text-4xl md:text-5xl font-black text-dark uppercase tracking-normal leading-tight mb-10">
+            {{-- FIX RESPONSIVE: Judul Detail Program diturunkan jadi text-2xl di mobile --}}
+            <h1
+                class="font-tegas text-2xl sm:text-3xl md:text-5xl font-black text-dark uppercase tracking-normal leading-tight mb-10">
                 {{ $program->title }}
             </h1>
 
@@ -103,7 +104,7 @@
                 @endif
             @endif
 
-            {{-- PERBAIKAN: Menambahkan class 'text-justify' agar isi detail program rata kanan-kiri --}}
+            {{-- Isi detail program rata kanan-kiri --}}
             <div
                 class="prose prose-lg max-w-none text-justify prose-headings:font-tegas prose-headings:uppercase prose-headings:tracking-tight mb-16">
                 {!! $program->body !!}

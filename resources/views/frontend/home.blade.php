@@ -15,7 +15,7 @@
         <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
             <div class="max-w-3xl mt-6 md:mt-0">
                 <h1
-                    class="font-tegas text-5xl md:text-6xl lg:text-7xl font-black mb-8 uppercase tracking-tighter animate-fade-in-left w-fit">
+                    class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-8 uppercase tracking-tighter animate-fade-in-left w-fit">
                     <span
                         class="bg-white text-dark pl-6 pr-12 py-2 block mb-2 w-full shadow-xl">{{ __('messages.hero.title_1') }}</span>
                     <span
@@ -51,10 +51,10 @@
                 <div class="lg:col-span-7 space-y-8">
                     <h2
                         class="font-montserrat font-black text-[2rem] md:text-[2.6rem] leading-[1.15] uppercase tracking-tighter">
-                        <span class="block text-[#1a1a1a] whitespace-nowrap">
+                        <span class="block text-[#1a1a1a] md:whitespace-nowrap">
                             {{ __('messages.commitment.title_1') }}
                         </span>
-                        <span class="block text-primary whitespace-nowrap">
+                        <span class="block text-primary md:whitespace-nowrap">
                             {{ __('messages.commitment.title_2') }}
                         </span>
                         <span class="block text-[#1a1a1a]">
@@ -71,9 +71,10 @@
                         </p>
                     </div>
 
-                    <div class="pt-4">
+                    {{-- PERBAIKAN: Menyatukan link Learn More dan tombol PDF dalam flex-wrap responsif --}}
+                    <div class="pt-4 flex flex-col sm:flex-row sm:items-center gap-6 md:gap-8">
                         <a href="{{ route('tentang', ['locale' => app()->getLocale()]) }}"
-                            class="inline-flex items-center text-primary font-tegas font-bold text-xs uppercase tracking-widest group/link">
+                            class="inline-flex items-center text-primary font-tegas font-bold text-xs uppercase tracking-widest group/link shrink-0">
                             <span class="hover-underline">{{ __('messages.commitment.learn_more') }}</span>
                             <span
                                 class="material-symbols-outlined ml-1 text-[18px] group-hover/link:translate-x-1 transition-transform duration-300">
@@ -89,7 +90,6 @@
                     <blockquote class="text-xl md:text-2xl font-montserrat italic font-bold text-primary leading-snug mb-8">
                         "{!! __('messages.commitment.quote') !!}"
                     </blockquote>
-                    {{-- FIX MUTLAK: Tag duplikat sudah dihapus & panggil key dengan aman --}}
                     <footer
                         class="font-montserrat font-black text-xs uppercase tracking-[0.2em] text-primary/70 flex items-center">
                         <div class="w-8 h-px bg-primary/30 mr-3"></div>
@@ -106,7 +106,8 @@
         <div class="max-w-7xl mx-auto px-6 md:px-12">
             {{-- Header Section --}}
             <div class="text-center mb-12">
-                <h2 class="font-tegas text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-2">
+                <h2
+                    class="font-tegas text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-2">
                     {{ __('messages.strategy.title') }}
                 </h2>
                 <div class="max-w-3xl mx-auto mb-12">
@@ -207,7 +208,8 @@
 
         <div class="container mx-auto px-6 md:px-12 relative z-10">
             <div class="text-center mb-16">
-                <h2 class="font-tegas text-5xl md:text-6xl font-black text-primary uppercase tracking-tighter mb-6">
+                <h2
+                    class="font-tegas text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-primary uppercase tracking-tighter mb-6">
                     {{ __('messages.home_interactive.strategy_title') }}
                 </h2>
                 <div class="max-w-3xl mx-auto space-y-2">
@@ -268,7 +270,6 @@
                 }
             @endphp
 
-            {{-- Grid Kontainer Utama --}}
             <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch">
                 @foreach ($integratif as $item)
                     <div
@@ -280,7 +281,6 @@
                                 <span class="material-symbols-outlined text-2xl">{{ $item['icon'] }}</span>
                             </div>
 
-                            {{-- Radar Chart SVG --}}
                             <div class="w-24 h-24 relative shrink-0">
                                 <svg viewBox="0 0 100 100" class="w-full h-full overflow-visible">
                                     <polygon points="{{ getPointsStatic([50, 50, 50, 50, 50]) }}" fill="none"
@@ -350,7 +350,7 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const polygon = entry.target.querySelector('.radar-polygon');
-                        if (polygon.dataset.animated === "true") return;
+                        if (!polygon || polygon.dataset.animated === "true") return;
 
                         const values = JSON.parse(polygon.getAttribute('data-values'));
                         let startTimestamp = null;
@@ -399,13 +399,13 @@
     <section class="py-24 md:py-32 bg-gray-50">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
             <div class="text-center mb-16">
-                <h2 class="font-tegas text-4xl md:text-5xl font-black text-dark uppercase tracking-normal mb-4">
+                <h2
+                    class="font-tegas text-3xl sm:text-4xl md:text-5xl font-black text-dark uppercase tracking-normal mb-4">
                     {{ __('messages.articles.title') }}
                 </h2>
                 <div class="w-24 h-1.5 bg-primary/20 mx-auto rounded-full mt-6"></div>
             </div>
 
-            {{-- Grid Artikel --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
                 @forelse ($latestArticles as $article)
                     @php
@@ -493,7 +493,8 @@
             style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 40px 40px;">
         </div>
         <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
-            <h2 class="font-tegas text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8 tracking-tight uppercase">
+            <h2
+                class="font-tegas text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8 tracking-tight uppercase">
                 {{ __('messages.cta.title') }}
             </h2>
             <p class="text-xl text-white/80 font-light mb-12 max-w-2xl mx-auto leading-relaxed">

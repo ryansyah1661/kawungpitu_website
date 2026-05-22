@@ -33,6 +33,7 @@ return [
         'description_2' => '<strong>Kawungpitu Institute</strong> hadir untuk menjembatani potensi lokal dengan strategi pembangunan yang inklusif dan tangguh iklim, berfokus pada penguatan kapasitas masyarakat untuk mengelola sumber dayanya secara berdaulat.',
         'learn_more' => 'Cari tahu lebih lanjut',
         'tagline' => 'Prinsip Kawungpitu',
+        'download_cp' => 'Unduh Profil Lembaga',
     ],
     'strategy' => [
         'title' => 'Pilar Kerja',

@@ -16,7 +16,8 @@
                 </a>
             </nav>
 
-            <h1 class="font-tegas text-4xl md:text-5xl font-black text-dark uppercase tracking-tighter mb-4">
+            {{-- FIX RESPONSIVE: Judul Detail Album Foto diturunkan jadi text-2xl di mobile --}}
+            <h1 class="font-tegas text-2xl sm:text-3xl md:text-5xl font-black text-dark uppercase tracking-tighter mb-4">
                 {{ $album->title }}
             </h1>
             @if ($album->description)

@@ -5,8 +5,9 @@
     <header class="bg-cream pt-40 pb-24 px-8 md:px-12 border-b border-gray-100 overflow-hidden">
         <div class="max-w-7xl mx-auto relative">
             <div class="relative z-10">
+                {{-- PERBAIKAN DI SINI: Ukuran font judul diubah menjadi responsif (text-3xl di HP, membesar di desktop) --}}
                 <h1
-                    class="font-tegas text-5xl md:text-7xl font-black mb-10 uppercase tracking-normal animate-fade-in-left w-fit text-left">
+                    class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-10 uppercase tracking-normal animate-fade-in-left w-fit text-left">
                     <span class="bg-white text-dark px-6 pr-20 py-2 block mb-2 w-full shadow-xl shadow-primary/5">
                         {{ __('messages.program.header_1') }}
                     </span>
@@ -25,34 +26,34 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-8 md:px-12 py-16" x-data="{
-                loading: false,
-                activeStatus: '{{ request('status', 'all') }}',
-                activeCategory: '{{ request('kategori', 'all') }}',
-                fetchMaterials(url, type, value) {
-                    this.loading = true;
-
-                    // Update tracker state
-                    if (type === 'all') {
-                        this.activeStatus = 'all';
-                        this.activeCategory = 'all';
-                    } else if (type === 'status') {
-                        this.activeStatus = value;
-                        this.activeCategory = 'all';
-                    } else if (type === 'category') {
-                        this.activeCategory = value;
-                        this.activeStatus = 'all';
-                    }
-
-                    fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                        .then(res => res.text())
-                        .then(html => {
-                            document.getElementById('program-container').innerHTML = html;
-                            this.loading = false;
-                            window.history.pushState({}, '', url);
-                            window.scrollTo({ top: 400, behavior: 'smooth' });
-                        });
-                }
-            }">
+        loading: false,
+        activeStatus: '{{ request('status', 'all') }}',
+        activeCategory: '{{ request('kategori', 'all') }}',
+        fetchMaterials(url, type, value) {
+            this.loading = true;
+    
+            // Update tracker state
+            if (type === 'all') {
+                this.activeStatus = 'all';
+                this.activeCategory = 'all';
+            } else if (type === 'status') {
+                this.activeStatus = value;
+                this.activeCategory = 'all';
+            } else if (type === 'category') {
+                this.activeCategory = value;
+                this.activeStatus = 'all';
+            }
+    
+            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('program-container').innerHTML = html;
+                    this.loading = false;
+                    window.history.pushState({}, '', url);
+                    window.scrollTo({ top: 400, behavior: 'smooth' });
+                });
+        }
+    }">
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-16">
 
@@ -70,14 +71,16 @@
                             <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
                                 @click.prevent="fetchMaterials($el.href, 'all', 'all')"
                                 class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
-                                <span :class="(activeStatus === 'all' && activeCategory === 'all') ?
-                                            'font-bold text-primary' : 'font-medium group-hover:text-primary'"
+                                <span
+                                    :class="(activeStatus === 'all' && activeCategory === 'all') ?
+                                    'font-bold text-primary' : 'font-medium group-hover:text-primary'"
                                     class="transition-colors">
                                     {{ __('messages.program.all') }}
                                 </span>
-                                <span :class="(activeStatus === 'all' && activeCategory === 'all') ?
-                                            'bg-primary text-white' :
-                                            'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
+                                <span
+                                    :class="(activeStatus === 'all' && activeCategory === 'all') ?
+                                    'bg-primary text-white' :
+                                    'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
                                     class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
                                     {{ $totalMaterialsCount }}
                                 </span>
@@ -92,14 +95,16 @@
                                 <div class="flex items-center space-x-3">
                                     <span class="w-2 h-2 rounded-full bg-yellow-500 transition-all"
                                         :class="activeStatus === 'ongoing' ? 'ring-4 ring-yellow-100' : ''"></span>
-                                    <span :class="activeStatus === 'ongoing' ? 'font-bold text-primary' :
-                                                    'font-medium group-hover:text-primary'" class="transition-colors">
+                                    <span
+                                        :class="activeStatus === 'ongoing' ? 'font-bold text-primary' :
+                                            'font-medium group-hover:text-primary'"
+                                        class="transition-colors">
                                         {{ __('messages.program.ongoing') }}
                                     </span>
                                 </div>
                                 <span
                                     :class="activeStatus === 'ongoing' ? 'bg-yellow-100 text-yellow-700' :
-                                                'bg-gray-100 text-gray-500 group-hover:bg-yellow-50 group-hover:text-yellow-600'"
+                                        'bg-gray-100 text-gray-500 group-hover:bg-yellow-50 group-hover:text-yellow-600'"
                                     class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
                                     {{ \App\Models\Program::where('status', 'ongoing')->count() }}
                                 </span>
@@ -114,14 +119,16 @@
                                 <div class="flex items-center space-x-3">
                                     <span class="w-2 h-2 rounded-full bg-green-500 transition-all"
                                         :class="activeStatus === 'completed' ? 'ring-4 ring-green-100' : ''"></span>
-                                    <span :class="activeStatus === 'completed' ? 'font-bold text-primary' :
-                                                    'font-medium group-hover:text-primary'" class="transition-colors">
+                                    <span
+                                        :class="activeStatus === 'completed' ? 'font-bold text-primary' :
+                                            'font-medium group-hover:text-primary'"
+                                        class="transition-colors">
                                         {{ __('messages.program.completed') }}
                                     </span>
                                 </div>
                                 <span
                                     :class="activeStatus === 'completed' ? 'bg-green-100 text-green-700' :
-                                                'bg-gray-100 text-gray-500 group-hover:bg-green-50 group-hover:text-green-600'"
+                                        'bg-gray-100 text-gray-500 group-hover:bg-green-50 group-hover:text-green-600'"
                                     class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
                                     {{ \App\Models\Program::where('status', 'completed')->count() }}
                                 </span>
@@ -145,31 +152,34 @@
 
                                     <div class="flex items-center space-x-4">
                                         @if ($cat->icon)
-                                            <div class="p-2 rounded-xl transition-all duration-300" :class="activeCategory === '{{ $cat->slug }}' ?
-                                                                            'bg-primary shadow-lg shadow-primary/20' :
-                                                                            'bg-primary/5 group-hover:bg-primary'">
+                                            <div class="p-2 rounded-xl transition-all duration-300"
+                                                :class="activeCategory === '{{ $cat->slug }}' ?
+                                                    'bg-primary shadow-lg shadow-primary/20' :
+                                                    'bg-primary/5 group-hover:bg-primary'">
                                                 <img src="{{ asset('storage/' . $cat->icon) }}"
                                                     class="w-6 h-6 object-contain transition-all duration-300"
                                                     :class="activeCategory === '{{ $cat->slug }}' ? 'brightness-0 invert' :
-                                                                                'opacity-70 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert'"
+                                                        'opacity-70 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert'"
                                                     alt="{{ $cat->name }}">
                                             </div>
                                         @else
-                                            <span class="material-symbols-outlined text-lg transition-colors" :class="activeCategory === '{{ $cat->slug }}' ? 'text-primary' :
-                                                                            'text-primary/40 group-hover:text-primary'">
+                                            <span class="material-symbols-outlined text-lg transition-colors"
+                                                :class="activeCategory === '{{ $cat->slug }}' ? 'text-primary' :
+                                                    'text-primary/40 group-hover:text-primary'">
                                                 category
                                             </span>
                                         @endif
 
-                                        <span class="transition-colors" :class="activeCategory === '{{ $cat->slug }}' ? 'font-bold text-primary' :
-                                                                'font-medium group-hover:text-primary'">
+                                        <span class="transition-colors"
+                                            :class="activeCategory === '{{ $cat->slug }}' ? 'font-bold text-primary' :
+                                                'font-medium group-hover:text-primary'">
                                             {{ $cat->name }}
                                         </span>
                                     </div>
 
                                     <span class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold"
                                         :class="activeCategory === '{{ $cat->slug }}' ? 'bg-primary text-white' :
-                                                            'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'">
+                                            'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'">
                                         {{ $cat->programs()->published()->count() }}
                                     </span>
                                 </a>

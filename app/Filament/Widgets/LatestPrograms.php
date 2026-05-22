@@ -2,62 +2,59 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Article;
-use App\Filament\Resources\ArticleResource;
+use App\Models\Program;
+use App\Filament\Resources\ProgramResource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
-class LatestArticles extends BaseWidget
+class LatestPrograms extends BaseWidget
 {
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 3;
 
     // PERBAIKAN UI: Kita hapus 'full' agar ukurannya membagi dua (50% layar)
     protected int | string | array $columnSpan = 1;
 
-    protected static ?string $heading = 'Artikel Terbaru';
+    protected static ?string $heading = 'Program Terbaru';
 
     public function table(Table $table): Table
     {
         return $table
             ->query(
-                Article::query()->latest()->limit(5)
+                Program::query()->latest()->limit(5)
             )
             ->headerActions([
                 // PERBAIKAN UI: Menambah shortcut link langsung di bar judul tabel
                 Tables\Actions\Action::make('view_all')
                     ->label('Lihat Semua')
-                    ->url(ArticleResource::getUrl('index'))
+                    ->url(ProgramResource::getUrl('index'))
                     ->button()
                     ->size('xs')
                     ->color('gray'),
             ])
             ->columns([
-                // PERBAIKAN UI: Memunculkan thumbnail foto mini bulat di samping judul
-                Tables\Columns\ImageColumn::make('featured_image')
-                    ->label('')
-                    ->circular()
-                    ->disk('public'), // Sesuaikan filesystem disk kamu Qi
-
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Judul Artikel')
+                    ->label('Nama Program')
                     ->size('sm')
                     ->weight('medium')
                     ->wrap(),
 
-                Tables\Columns\TextColumn::make('views')
-                    ->label('Dilihat')
-                    ->icon('heroicon-m-eye')
-                    ->iconColor('gray')
-                    ->alignCenter(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'ongoing' => 'primary',
+                        'completed' => 'success',
+                        default => 'gray',
+                    }),
             ])
             ->actions([
                 Tables\Actions\Action::make('edit')
                     ->icon('heroicon-m-pencil-square')
                     ->iconButton()
                     ->color('gray')
-                    ->tooltip('Ubah Artikel')
-                    ->url(fn(Article $record): string => ArticleResource::getUrl('edit', ['record' => $record])),
+                    ->tooltip('Ubah Program')
+                    ->url(fn(Program $record): string => ProgramResource::getUrl('edit', ['record' => $record])),
             ])
             ->paginated(false);
     }

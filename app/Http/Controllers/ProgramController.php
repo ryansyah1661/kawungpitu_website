@@ -54,7 +54,11 @@ class ProgramController extends Controller
         // Program paling banyak dilihat
         $popularPrograms = Program::published()->orderBy('view_count', 'desc')->take(5)->get();
 
-        return view('frontend.program', compact('materials', 'categories', 'popularPrograms', 'totalMaterialsCount'));
+        // SAKTI: Kita gandakan variabelnya ke $programs biar aman dibaca oleh file program.blade.php kamu Qi!
+        $programs = $materials;
+
+        // Tambahkan 'programs' ke dalam compact()
+        return view('frontend.program', compact('programs', 'materials', 'categories', 'popularPrograms', 'totalMaterialsCount'));
     }
 
     /**
@@ -62,7 +66,7 @@ class ProgramController extends Controller
      */
     public function show(string $locale, $slug)
     {
-        // Cari program berdasarkan slug (biasanya slug program tidak translatable/tetap string)
+        // Cari program berdasarkan slug
         $program = Program::where('slug', $slug)->firstOrFail();
 
         if (!$program->is_published) {

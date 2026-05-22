@@ -5,8 +5,9 @@
     <header class="bg-cream pt-40 pb-24 px-8 md:px-12 border-b border-gray-100 overflow-hidden">
         <div class="max-w-7xl mx-auto relative">
             <div class="relative z-10">
+                {{-- FIX RESPONSIVE FONT SIZE --}}
                 <h1
-                    class="font-tegas text-5xl md:text-7xl font-black mb-10 uppercase tracking-tighter animate-fade-in-left w-fit text-left">
+                    class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-10 uppercase tracking-tighter animate-fade-in-left w-fit text-left">
                     <span class="bg-white text-dark px-6 pr-20 py-2 block mb-2 w-full shadow-xl shadow-primary/5">
                         {{ __('messages.contact.header_1') }}
                     </span>
@@ -111,7 +112,8 @@
                             <h3 class="font-tegas text-xl font-black text-primary uppercase tracking-tight mb-2">
                                 {{ __('messages.contact.office_address') }}
                             </h3>
-                            <p class="text-gray-500 font-body leading-relaxed">Jl. Mawar Raya No.16, Lt 2, RT.08/RW.08, Curugmekar, Kec. Bogor Bar., Kota Bogor, Jawa Barat 16113</p>
+                            <p class="text-gray-500 font-body leading-relaxed">Jl. Mawar Raya No.16, Lt 2, RT.08/RW.08,
+                                Curugmekar, Kec. Bogor Bar., Kota Bogor, Jawa Barat 16113</p>
                         </div>
                     </div>
 

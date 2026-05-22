@@ -171,8 +171,9 @@
 
 <body class="bg-cream text-dark font-body antialiased selection:bg-primary selection:text-white">
 
+    {{-- SINKRONISASI: Inisialisasi state menu mobile di pembungkus nav --}}
     <nav class="fixed w-full top-0 z-50 bg-cream/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300"
-        id="navbar">
+        id="navbar" x-data="{ mobileMenuOpen: false }">
         <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex justify-between items-center transition-all duration-300"
             id="navbar-inner">
 
@@ -181,6 +182,7 @@
                     class="h-12 w-auto">
             </a>
 
+            {{-- MENU UTAMA VERSION DESKTOP --}}
             <div class="hidden lg:flex flex-1 justify-center items-center space-x-10">
                 <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
                     class="{{ request()->routeIs('home') ? 'text-primary font-semibold' : 'text-gray-dark hover:text-primary font-medium' }} text-sm tracking-wide transition-colors hover-underline">
@@ -213,6 +215,8 @@
                 $otherLocale = $currentLocale === 'id' ? 'en' : 'id';
                 $switchUrl = str_replace('/' . $currentLocale, '/' . $otherLocale, request()->getRequestUri());
             @endphp
+
+            {{-- BAHASA & KONTAK VERSION DESKTOP --}}
             <div class="hidden lg:flex items-center space-x-8">
                 <div class="flex items-center bg-gray-100 border border-gray-200 p-1 rounded-full shadow-sm">
                     <a href="{{ $currentLocale === 'id' ? '#' : $switchUrl }}"
@@ -235,9 +239,57 @@
                 </a>
             </div>
 
-            <button class="lg:hidden text-dark p-2 focus:outline-none">
-                <span class="material-symbols-outlined text-3xl">menu</span>
+            {{-- SINKRONISASI: Tombol hamburger mobile terhubung ke Alpine.js --}}
+            <button class="lg:hidden text-dark p-2 focus:outline-none z-50" @click="mobileMenuOpen = !mobileMenuOpen">
+                <span class="material-symbols-outlined text-3xl" x-text="mobileMenuOpen ? 'close' : 'menu'">menu</span>
             </button>
+        </div>
+
+        {{-- SINKRONISASI: Wadah lipat menu Dropdown Mobile --}}
+        <div class="lg:hidden bg-cream border-b border-gray-200 absolute w-full left-0 px-6 py-6 space-y-4 shadow-xl transition-all duration-300"
+            x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-4" x-cloak>
+
+            {{-- FIX RESPONSIVE ACTIVE MENU DROPDOWN MOBILE (SUDAH AKTIF DINAMIS QI!) --}}
+            <div class="flex flex-col space-y-4 font-tegas font-bold text-sm uppercase tracking-wide">
+                <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
+                    class="py-2 border-b border-gray-100/50 {{ request()->routeIs('home') ? 'text-primary' : 'hover:text-primary' }}">{{ __('messages.navbar.home') }}</a>
+
+                <a href="{{ route('tentang', ['locale' => app()->getLocale()]) }}"
+                    class="py-2 border-b border-gray-100/50 {{ request()->routeIs('tentang') ? 'text-primary' : 'hover:text-primary' }}">{{ __('messages.navbar.about') }}</a>
+
+                <a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
+                    class="py-2 border-b border-gray-100/50 {{ request()->routeIs('artikel.*') ? 'text-primary' : 'hover:text-primary' }}">{{ __('messages.navbar.article') }}</a>
+
+                <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
+                    class="py-2 border-b border-gray-100/50 {{ request()->routeIs('program.*') ? 'text-primary' : 'hover:text-primary' }}">{{ __('messages.navbar.program') }}</a>
+
+                <a href="{{ route('galeri.index', ['locale' => app()->getLocale()]) }}"
+                    class="py-2 border-b border-gray-100/50 {{ request()->routeIs('galeri.*') ? 'text-primary' : 'hover:text-primary' }}">{{ __('messages.navbar.gallery') }}</a>
+
+                <a href="{{ route('kontak', ['locale' => app()->getLocale()]) }}"
+                    class="py-2 {{ request()->routeIs('kontak') ? 'text-primary' : 'hover:text-primary' }}">{{ __('messages.navbar.contact') }}</a>
+            </div>
+
+            <div class="pt-4 border-t border-gray-200 flex items-center justify-between">
+                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Language / Bahasa</span>
+                <div class="flex items-center bg-gray-100 border border-gray-200 p-1 rounded-full shadow-sm">
+                    <a href="{{ $currentLocale === 'id' ? '#' : $switchUrl }}"
+                        class="flex items-center space-x-1.5 {{ $currentLocale === 'id' ? 'bg-primary text-white shadow-md' : 'text-gray-500' }} px-3 py-1 rounded-full text-xs">
+                        <img src="https://flagcdn.com/w40/id.png" alt="ID"
+                            class="w-3.5 h-3.5 object-cover rounded-full">
+                        <span class="text-[9px] font-black">ID</span>
+                    </a>
+                    <a href="{{ $currentLocale === 'en' ? '#' : $switchUrl }}"
+                        class="flex items-center space-x-1.5 {{ $currentLocale === 'en' ? 'bg-primary text-white shadow-md' : 'text-gray-500' }} px-3 py-1 rounded-full text-xs">
+                        <img src="https://flagcdn.com/w40/gb.png" alt="EN"
+                            class="w-3.5 h-3.5 object-cover rounded-full">
+                        <span class="text-[9px] font-black">EN</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -282,10 +334,10 @@
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.company') }}
                     </h4>
-                    {{-- PERBAIKAN: Melokalisasi isi menu link Kelembagaan --}}
                     <ul class="space-y-5 text-gray-400 font-light text-sm">
                         <li><a href="{{ route('tentang', ['locale' => app()->getLocale()]) }}"
-                                class="hover:text-primary transition-colors">{{ __('messages.navbar.about') }}</a></li>
+                                class="hover:text-primary transition-colors">{{ __('messages.navbar.about') }}</a>
+                        </li>
                         <li><a href="{{ route('galeri.index', ['locale' => app()->getLocale()]) }}"
                                 class="hover:text-primary transition-colors">{{ __('messages.navbar.gallery') }}</a>
                         </li>
@@ -300,7 +352,6 @@
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.program_title') }}
                     </h4>
-                    {{-- PERBAIKAN: Melokalisasi isi menu link Program --}}
                     <ul class="space-y-5 text-gray-400 font-light text-sm">
                         <li><a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
                                 class="hover:text-primary transition-colors">{{ __('messages.navbar.article') }}</a>
@@ -313,7 +364,6 @@
 
                 {{-- KOLOM 4: HUBUNGI KAMI --}}
                 <div class="lg:col-span-3">
-                    {{-- PERBAIKAN: Mengganti judul menjadi dinamis mengikuti bahasa --}}
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.contact_us') }}
                     </h4>
@@ -350,11 +400,6 @@
                 navbar.classList.remove('shadow-lg');
                 inner.classList.replace('py-3', 'py-5');
             }
-        });
-
-        const mobileMenuBtn = document.querySelector('button.lg:hidden');
-        mobileMenuBtn.addEventListener('click', () => {
-            console.log('Menu Mobile Diklik!');
         });
     </script>
     @stack('scripts')
