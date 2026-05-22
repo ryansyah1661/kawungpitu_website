@@ -115,7 +115,7 @@
                 class="mt-12 bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-primary/5 border border-gray-100 animate-fade-in">
                 <div class="text-center mb-6">
                     <h3 class="font-tegas text-xl font-black text-primary uppercase tracking-tight mb-1">
-                        Pentagon Aset Ketangguhan
+                        Pentagon Aset
                     </h3>
                     <p class="text-gray-400 text-[10px] font-body italic">
                         Visualisasi dampak program (Skala 0-100%)

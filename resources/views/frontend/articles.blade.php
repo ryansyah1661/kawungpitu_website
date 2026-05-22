@@ -14,7 +14,7 @@
                     </span>
                 </h1>
                 <div class="flex items-start space-x-6 animate-fade-in-left" style="animation-delay: 0.3s;">
-                    <div class="w-1.5 h-20 bg-primary/20 rounded-full hidden md:block"></div>
+                    <div class="w-1.5 h-16 bg-primary/20 rounded-full hidden md:block"></div>
                     <p class="text-lg md:text-xl text-primary font-medium max-w-2xl leading-relaxed italic opacity-90">
                         {{ __('messages.articles.description') }}
                     </p>

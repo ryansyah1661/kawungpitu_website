@@ -114,7 +114,7 @@ return [
         'view_all' => 'Lihat Semua',
         'header_1' => 'Artikel',
         'header_2' => '& Berita',
-        'description' => 'Cerita dari lapangan, wawasan mendalam tentang konservasi, dan kabar terbaru dari upaya kami menjaga warisan bumi.',
+        'description' => 'Cerita lapangan, wawasan berkaitan dengan penghidupan, dan kabar terbaru dari upaya kami mendorong penghidupan berkelanjutan.',
         'search_placeholder' => 'Cari artikel...',
         'category_title' => 'Kategori',
         'all_articles' => 'Semua Artikel',
@@ -127,7 +127,7 @@ return [
     'program' => [
         'header_1' => 'Program',
         'header_2' => 'Kawungpitu',
-        'header_description' => 'Program edukasi, pelatihan, dan pendampingan bagi petani hutan dan masyarakat sekitar hutan untuk membangun kapasitas dan kemandirian.',
+        'header_description' => 'Beragam upaya kami dalam menguatkan ketahanan komunitas untuk mewujudkan penghidupan berkelanjutan.',
         'status_title' => 'Status Program',
         'all' => 'Semua Program',
         'ongoing' => 'Sedang Berjalan',
@@ -146,7 +146,7 @@ return [
     'gallery' => [
         'header_1' => 'Galeri',
         'header_2' => 'Dokumentasi',
-        'description' => 'Momen-momen kegiatan lapangan, pelatihan, dan kolaborasi Kawungpitu bersama masyarakat.',
+        'description' => 'Momen-momen kegiatan lapangan dan kolaborasi Kawungpitu bersama masyarakat.',
         'photo_unit' => 'Foto',
         'empty' => 'Belum ada album',
         'empty_photos' => 'Belum ada foto di album ini',

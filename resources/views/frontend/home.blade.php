@@ -71,7 +71,6 @@
                         </p>
                     </div>
 
-                    {{-- PERBAIKAN: Menyatukan link Learn More dan tombol PDF dalam flex-wrap responsif --}}
                     <div class="pt-4 flex flex-col sm:flex-row sm:items-center gap-6 md:gap-8">
                         <a href="{{ route('tentang', ['locale' => app()->getLocale()]) }}"
                             class="inline-flex items-center text-primary font-tegas font-bold text-xs uppercase tracking-widest group/link shrink-0">
@@ -121,44 +120,48 @@
             {{-- Grid Pilar Kerja --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
                 @php
+                    // SINKRONISASI: Konsep gambar dari user dipetakan ke Ikon Vektor Free agar konsisten dan mendukung CSS Hover.
                     $strategi = [
                         [
-                            'icon' => 'hub',
+                            'icon' => 'fa-solid fa-user-tie', // Manusia (Orang berjas)
                             'title' => __('messages.strategy.items.organizing.title'),
                             'desc' => __('messages.strategy.items.organizing.desc'),
                             'back_icon' => 'groups',
                             'back_desc' => __('messages.strategy_back.organizing'),
                         ],
                         [
-                            'icon' => 'handshake',
+                            'icon' => 'handshake', // Sosial (Salaman)
                             'title' => __('messages.strategy.items.development.title'),
                             'desc' => __('messages.strategy.items.development.desc'),
                             'back_icon' => 'volunteer_activism',
                             'back_desc' => __('messages.strategy_back.development'),
                         ],
                         [
-                            'icon' => 'school',
+                            // UPDATE: Alam -> fa-water diganti 'eco' (Material) berdasarkan konsep natural-resources.png (daun)
+                            'icon' => 'nature', // Alam (Gunung dan Matahari)
                             'title' => __('messages.strategy.items.capacity.title'),
                             'desc' => __('messages.strategy.items.capacity.desc'),
                             'back_icon' => 'psychology',
                             'back_desc' => __('messages.strategy_back.capacity'),
                         ],
                         [
-                            'icon' => 'analytics',
+                            // UPDATE: Finansial -> payments diganti 'savings' (Material) berdasarkan konsep bell-curve.png (celengan)
+                            'icon' => 'fa-solid fa-chart-line', // Ekonomi (Grafik naik)
                             'title' => __('messages.strategy.items.research.title'),
                             'desc' => __('messages.strategy.items.research.desc'),
                             'back_icon' => 'find_in_page',
                             'back_desc' => __('messages.strategy_back.research'),
                         ],
                         [
-                            'icon' => 'campaign',
+                            'icon' => 'fa-solid fa-bridge', // Fisik (Jembatan)
                             'title' => __('messages.strategy.items.advocacy.title'),
                             'desc' => __('messages.strategy.items.advocacy.desc'),
                             'back_icon' => 'record_voice_over',
                             'back_desc' => __('messages.strategy_back.advocacy'),
                         ],
                         [
-                            'icon' => 'architecture',
+                            // UPDATE: Lintas Pilar -> shield diganti 'sync_alt' (Material) berdasarkan konsep loop.png (panah melingkar)
+                            'icon' => 'cycle', // Lintas Pilar (Dua panah melingkar)
                             'title' => __('messages.strategy.items.modelling.title'),
                             'desc' => __('messages.strategy.items.modelling.desc'),
                             'bg_custom' => '#d5a132',
@@ -177,7 +180,12 @@
                                 class="absolute inset-0 bg-[#F2E7DF] p-10 rounded-3xl shadow-xl flex flex-col items-center border border-primary/5 [backface-visibility:hidden]">
                                 <div
                                     class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 text-primary border border-primary/10">
-                                    <span class="material-symbols-outlined text-4xl">{{ $s['icon'] }}</span>
+                                    {{-- DYNAMIC LOGIC: Jika ikon berawalan 'fa-', render sebagai icon FontAwesome Qi! --}}
+                                    @if (str_starts_with($s['icon'], 'fa-'))
+                                        <i class="{{ $s['icon'] }} text-3xl"></i>
+                                    @else
+                                        <span class="material-symbols-outlined text-4xl">{{ $s['icon'] }}</span>
+                                    @endif
                                 </div>
                                 <h3
                                     class="font-tegas text-xl font-black text-primary uppercase mb-1 tracking-tighter leading-tight text-center">
