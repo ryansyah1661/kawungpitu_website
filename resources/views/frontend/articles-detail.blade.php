@@ -85,21 +85,22 @@
                     <span class="flex items-center text-xs text-gray-400 font-bold">
                         <span class="material-symbols-outlined text-[14px] mr-1 text-primary/40">visibility</span>
                         <span class="ml-1">{{ number_format($artikel->view_count) }} VIEWS</span>
-                    </span </div>
+                    </span>
                 </div>
+            </div> {{-- 👈 Pembatas Metadata Utama yang sudah terkunci rapi --}}
 
-                {{-- FIX RESPONSIVE: Judul Detail Artikel diturunkan jadi text-2xl di mobile --}}
-                <h1
-                    class="font-tegas text-2xl sm:text-3xl md:text-5xl font-black text-dark uppercase tracking-normal leading-tight mb-12">
-                    {{ $artikel->title }}
-                </h1>
+            {{-- FIX RESPONSIVE: Judul Detail Artikel diturunkan jadi text-2xl di mobile --}}
+            <h1
+                class="font-tegas text-2xl sm:text-3xl md:text-5xl font-black text-dark uppercase tracking-normal leading-tight mb-12">
+                {{ $artikel->title }}
+            </h1>
 
-                {{-- Isi Konten Artikel --}}
-                <div
-                    class="prose prose-lg max-w-none text-justify prose-figcaption:text-center prose-figcaption:italic prose-a:no-underline hover:prose-a:text-primary mb-16">
-                    {!! $artikel->body !!}
-                </div>
+            {{-- Isi Konten Artikel --}}
+            <div
+                class="prose prose-lg max-w-none text-justify prose-figcaption:text-center prose-figcaption:italic prose-a:no-underline hover:prose-a:text-primary mb-16">
+                {!! $artikel->body !!}
             </div>
+        </div>
     </article>
 
     {{-- Related Articles --}}
