@@ -27,7 +27,6 @@
         loading: false,
         activeId: {{ isset($currentCategory) ? $currentCategory->id : "'all'" }},
         showAllCategories: false,
-        {{-- 👈 State baru untuk mengontrol buka-tutup kategori sidebar --}}
         fetchArticles(url, id) {
             this.loading = true;
             this.activeId = id;
@@ -82,9 +81,8 @@
                                 </span>
                             </a>
                         </li>
-                        {{-- Loop Kategori --}}
-                        @foreach ($categories as $cat)
-                            {{-- JURUS ALPINE: Sembunyikan kategori ke-6 (setelah Pesisir) ke bawah jika showAllCategories masih false --}}
+                        {{-- Loop Kategori (SUDAH DIURUTKAN SESUAI ABJAD A-Z) --}}
+                        @foreach ($categories->sortBy('name') as $cat)
                             <li x-show="showAllCategories || {{ $loop->iteration <= 5 ? 'true' : 'false' }}"
                                 x-transition.duration.300ms>
                                 <a class="flex justify-between items-center group hover:translate-x-1 transition-all cursor-pointer"
