@@ -41,7 +41,7 @@
                     <span class="w-1 h-1 bg-primary/30 rounded-full"></span>
                     <span class="flex items-center">
                         <span class="material-symbols-outlined text-[14px] mr-1 text-primary/30">visibility</span>
-                        <span class="ml-1">{{ number_format($article->view_count) }}</span>
+                        <span class="ml-1">{{ number_format($article->view_count) }} VIEWS</span>
                     </span>
                 </div>
 
