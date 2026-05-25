@@ -3,7 +3,8 @@
 
 @section('content')
     {{-- SECTION HERO --}}
-    <section class="relative w-full h-[600px] flex items-center bg-dark overflow-hidden pt-24">
+    {{-- FIX RESPONSIVE HEIGHT: Mengubah h-[600px] menjadi h-auto di mobile dengan padding bawah aman agar tombol unduh tidak terpotong --}}
+    <section class="relative w-full h-auto lg:h-[600px] flex items-center bg-dark overflow-hidden pt-36 pb-20 lg:py-0">
         <div class="absolute inset-0 z-0 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2000"
                 alt="{{ __('messages.about.header.img_alt') }}"
