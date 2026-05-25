@@ -26,14 +26,31 @@
     <main class="max-w-7xl mx-auto px-8 md:px-12 py-16 -mt-12 relative z-10" x-data="{
         loading: false,
         activeId: {{ isset($currentCategory) ? $currentCategory->id : "'all'" }},
+        showAll: false,
+        {{-- 👈 Status untuk tracking tombol Lihat Selengkapnya --}}
+        articleCount: 0,
+        {{-- 👈 Menghitung jumlah elemen artikel asli di dalam grid --}}
+        init() {
+            this.updateArticleCount();
+        },
+        updateArticleCount() {
+            this.$nextTick(() => {
+                const grid = document.querySelector('#article-container > div');
+                this.articleCount = grid ? grid.children.length : 0;
+            });
+        },
         fetchArticles(url, id) {
             this.loading = true;
             this.activeId = id;
+            this.showAll = false;
+            {{-- Reset ke mode limit 5 tiap kali ganti kategori --}}
             fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('article-container').innerHTML = html;
                     this.loading = false;
+                    this.updateArticleCount();
+                    {{-- Hitung ulang jumlah artikel baru hasil filter --}}
                     window.history.pushState({}, '', url);
                     window.scrollTo({ top: 400, behavior: 'smooth' });
                 });
@@ -52,95 +69,94 @@
                                 value="{{ request('search') }}" />
                         </div>
                     </div>
-                    </< /form>
+                </form>
 
-                    {{-- Kategori Sidebar --}}
-                    <div>
-                        <h3
-                            class="font-tegas text-xl font-black text-primary mb-6 border-b-2 border-primary/10 pb-2 uppercase tracking-tight">
-                            {{ __('messages.articles.category_title') }}
-                        </h3>
-                        <ul class="space-y-4 font-body">
-                            {{-- Semua Artikel --}}
+                {{-- Kategori Sidebar --}}
+                <div>
+                    <h3
+                        class="font-tegas text-xl font-black text-primary mb-6 border-b-2 border-primary/10 pb-2 uppercase tracking-tight">
+                        {{ __('messages.articles.category_title') }}
+                    </h3>
+                    <ul class="space-y-4 font-body">
+                        {{-- Semua Artikel --}}
+                        <li>
+                            <a class="flex justify-between items-center group cursor-pointer"
+                                @click.prevent="fetchArticles($el.href, 'all')"
+                                href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}">
+                                <span
+                                    :class="activeId === 'all' ? 'font-bold text-primary' :
+                                        'font-medium text-gray-600 group-hover:text-primary'"
+                                    class="transition-colors">
+                                    {{ __('messages.articles.all_articles') }}
+                                </span>
+                                <span
+                                    :class="activeId === 'all' ? 'bg-primary text-white' :
+                                        'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
+                                    class="text-xs py-1 px-2.5 rounded-lg font-bold transition-colors">
+                                    {{ $totalArticlesCount }}
+                                </span>
+                            </a>
+                        </li>
+                        {{-- Loop Kategori --}}
+                        @foreach ($categories as $cat)
                             <li>
-                                <a class="flex justify-between items-center group cursor-pointer"
-                                    @click.prevent="fetchArticles($el.href, 'all')"
-                                    href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}">
+                                <a class="flex justify-between items-center group hover:translate-x-1 transition-all cursor-pointer"
+                                    @click.prevent="fetchArticles($el.href, {{ $cat->id }})"
+                                    href="{{ route('artikel.kategori', ['locale' => app()->getLocale(), 'slug' => $cat->slug]) }}">
                                     <span
-                                        :class="activeId === 'all' ? 'font-bold text-primary' :
+                                        :class="activeId === {{ $cat->id }} ? 'font-bold text-primary' :
                                             'font-medium text-gray-600 group-hover:text-primary'"
                                         class="transition-colors">
-                                        {{ __('messages.articles.all_articles') }}
+                                        {{ $cat->name }}
                                     </span>
                                     <span
-                                        :class="activeId === 'all' ? 'bg-primary text-white' :
+                                        :class="activeId === {{ $cat->id }} ? 'bg-primary text-white' :
                                             'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
                                         class="text-xs py-1 px-2.5 rounded-lg font-bold transition-colors">
-                                        {{ $totalArticlesCount }}
+                                        {{ $cat->articles()->published()->count() }}
                                     </span>
                                 </a>
                             </li>
-                            {{-- Loop Kategori --}}
-                            @foreach ($categories as $cat)
-                                <li>
-                                    <a class="flex justify-between items-center group hover:translate-x-1 transition-all cursor-pointer"
-                                        @click.prevent="fetchArticles($el.href, {{ $cat->id }})"
-                                        href="{{ route('artikel.kategori', ['locale' => app()->getLocale(), 'slug' => $cat->slug]) }}">
-                                        <span
-                                            :class="activeId === {{ $cat->id }} ? 'font-bold text-primary' :
-                                                'font-medium text-gray-600 group-hover:text-primary'"
-                                            class="transition-colors">
-                                            {{ $cat->name }}
-                                        </span>
-                                        <span
-                                            :class="activeId === {{ $cat->id }} ? 'bg-primary text-white' :
-                                                'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
-                                            class="text-xs py-1 px-2.5 rounded-lg font-bold transition-colors">
-                                            {{ $cat->articles()->published()->count() }}
-                                        </span>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                        @endforeach
+                    </ul>
+                </div>
 
-                    {{-- Popular --}}
-                    <div class="pt-10">
-                        <h3
-                            class="font-tegas text-xl font-black text-primary mb-6 border-b-2 border-primary/10 pb-2 uppercase tracking-tight">
-                            {{ __('messages.articles.popular_title') }}
-                        </h3>
-                        <div class="space-y-6">
-                            @foreach ($popularArticles as $popular)
-                                @php $popularUrl = route('artikel.show', ['locale' => app()->getLocale(), 'slug' => $popular->slug]); @endphp
-                                <a href="{{ $popularUrl }}" class="flex items-center gap-4 group">
-                                    <div
-                                        class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 border-gray-100 group-hover:border-primary/30 transition-all">
-                                        @if ($popular->featured_image)
-                                            <img src="{{ asset('storage/' . $popular->featured_image) }}"
-                                                class="w-full h-full object-cover group-hover:scale-110 transition-all duration-500">
-                                        @else
-                                            <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                                                <span
-                                                    class="material-symbols-outlined text-2xl text-gray-400">article</span>
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div class="flex-grow">
-                                        <h4
-                                            class="font-tegas text-xs font-bold text-dark group-hover:text-primary transition-colors leading-tight mb-1 uppercase line-clamp-2">
-                                            {{ $popular->title }}
-                                        </h4>
-                                        <div class="flex items-center text-[10px] text-gray-400 font-body">
-                                            <span class="material-symbols-outlined text-[12px] mr-1">visibility</span>
-                                            {{ number_format($popular->view_count) }}
-                                            {{ __('messages.articles.visited') }}
+                {{-- Popular --}}
+                <div class="pt-10">
+                    <h3
+                        class="font-tegas text-xl font-black text-primary mb-6 border-b-2 border-primary/10 pb-2 uppercase tracking-tight">
+                        {{ __('messages.articles.popular_title') }}
+                    </h3>
+                    <div class="space-y-6">
+                        @foreach ($popularArticles as $popular)
+                            @php $popularUrl = route('artikel.show', ['locale' => app()->getLocale(), 'slug' => $popular->slug]); @endphp
+                            <a href="{{ $popularUrl }}" class="flex items-center gap-4 group">
+                                <div
+                                    class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 border-gray-100 group-hover:border-primary/30 transition-all">
+                                    @if ($popular->featured_image)
+                                        <img src="{{ asset('storage/' . $popular->featured_image) }}"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-all duration-500">
+                                    @else
+                                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-2xl text-gray-400">article</span>
                                         </div>
+                                    @endif
+                                </div>
+                                <div class="flex-grow">
+                                    <h4
+                                        class="font-tegas text-xs font-bold text-dark group-hover:text-primary transition-colors leading-tight mb-1 uppercase line-clamp-2">
+                                        {{ $popular->title }}
+                                    </h4>
+                                    <div class="flex items-center text-[10px] text-gray-400 font-body">
+                                        <span class="material-symbols-outlined text-[12px] mr-1">visibility</span>
+                                        {{ number_format($popular->view_count) }}
+                                        {{ __('messages.articles.visited') }}
                                     </div>
-                                </a>
-                            @endforeach
-                        </div>
+                                </div>
+                            </a>
+                        @endforeach
                     </div>
+                </div>
             </aside>
 
             {{-- Container Utama Artikel --}}
@@ -150,9 +166,19 @@
                     <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                 </div>
 
-                <div id="article-container" :class="loading ? 'opacity-30' : 'opacity-100'"
+                {{-- BIND CLASS LIMIT-5: Otomatis membatasi tampilan grid jika showAll bernilai false & jumlah item > 5 --}}
+                <div id="article-container"
+                    :class="{ 'opacity-30': loading, 'opacity-100': !loading, 'limit-5': !showAll && articleCount > 5 }"
                     class="transition-all duration-500">
                     @include('frontend.partials.article-grid')
+                </div>
+
+                {{-- BUTTON LIHAT SELENGKAPNYA --}}
+                <div x-show="!showAll && articleCount > 5" x-transition.duration.500ms class="text-center mt-12">
+                    <button @click="showAll = true"
+                        class="bg-primary text-white font-tegas font-black px-8 py-3 rounded-xl uppercase tracking-wider shadow-xl shadow-primary/20 hover:bg-primary/95 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-xs">
+                        Lihat Selengkapnya
+                    </button>
                 </div>
             </div>
         </div>
@@ -173,6 +199,11 @@
 
         .animate-fade-in {
             animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* JURUS PAMUNGKAS CSS: Sembunyikan anak elemen (card artikel) ke-6 dan seterusnya */
+        .limit-5>div>*:nth-child(n+6) {
+            display: none !important;
         }
     </style>
 @endsection

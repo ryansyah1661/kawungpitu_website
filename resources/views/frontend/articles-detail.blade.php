@@ -87,7 +87,7 @@
                         <span class="ml-1">{{ number_format($artikel->view_count) }} VIEWS</span>
                     </span>
                 </div>
-            </div> {{-- 👈 Pembatas Metadata Utama yang sudah terkunci rapi --}}
+            </div>
 
             {{-- FIX RESPONSIVE: Judul Detail Artikel diturunkan jadi text-2xl di mobile --}}
             <h1
