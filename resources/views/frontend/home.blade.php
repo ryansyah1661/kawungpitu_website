@@ -86,7 +86,8 @@
                 {{-- Sisi Kanan: Quote Card --}}
                 <div
                     class="lg:col-span-5 bg-[#FFF5F3] rounded-[3rem] p-10 md:p-14 relative shadow-sm flex flex-col justify-center">
-                    <blockquote class="text-xl md:text-2xl font-montserrat italic font-bold text-primary leading-snug mb-8">
+                    <blockquote
+                        class="text-xl md:text-2xl font-montserrat italic font-bold text-primary text-left leading-snug mb-8">
                         "{!! __('messages.commitment.quote') !!}"
                     </blockquote>
                     <footer
@@ -120,7 +121,6 @@
             {{-- Grid Pilar Kerja --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
                 @php
-                    // SINKRONISASI: Konsep gambar dari user dipetakan ke Ikon Vektor Free agar konsisten dan mendukung CSS Hover.
                     $strategi = [
                         [
                             'icon' => 'fa-solid fa-user-tie',
@@ -169,10 +169,12 @@
                 @endphp
 
                 @foreach ($strategi as $s)
-                    {{-- FIX IOS: Ditambahkan class ios-pilar-wrapper, ios-pilar-card, dan ios-pilar-face agar efek 3D tidak rata di iPhone --}}
-                    <div class="group h-[360px] [perspective:1000px] ios-pilar-wrapper">
-                        <div
-                            class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] ios-pilar-card">
+                    {{-- FIX MOBILE TAP: Menggunakan Alpine x-data biar di HP sekali tap ringan langsung muter sempurna tanpa ganjal sistem iOS --}}
+                    <div x-data="{ flipped: false }" @click="flipped = !flipped" @click.away="flipped = false"
+                        class="group h-[360px] [perspective:1000px] ios-pilar-wrapper cursor-pointer select-none">
+                        <div class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] ios-pilar-card"
+                            :class="flipped ? 'is-flipped' : ''">
+
                             {{-- SISI DEPAN --}}
                             <div
                                 class="absolute inset-0 bg-[#F2E7DF] p-10 rounded-3xl shadow-xl flex flex-col items-center border border-primary/5 [backface-visibility:hidden] ios-pilar-face">
@@ -192,6 +194,7 @@
                                     {!! $s['desc'] !!}
                                 </p>
                             </div>
+
                             {{-- SISI BELAKANG --}}
                             <div
                                 class="absolute inset-0 h-full w-full rounded-3xl bg-[#d5a132] p-10 text-primary [transform:rotateY(180deg)] [backface-visibility:hidden] ios-pilar-face flex flex-col items-center justify-center border border-white/10 shadow-2xl">
@@ -399,7 +402,7 @@
             animation: pulse-slow 4s ease-in-out infinite;
         }
 
-        /* 🔥 FIX SAKTI FOR iOS SAFARI (WEBKIT 3D ENGINE COEXISTENCE) */
+        /* 🔥 FIX FOR iOS SAFARI (WEBKIT 3D ENGINE ECOSYSTEM) */
         .ios-pilar-wrapper {
             -webkit-perspective: 1000px !important;
             perspective: 1000px !important;
@@ -415,11 +418,18 @@
         .ios-pilar-face {
             -webkit-backface-visibility: hidden !important;
             backface-visibility: hidden !important;
-            backface-visibility: hidden;
         }
 
-        /* Memaksa transisi rotasi sumbu Y diproses secara native oleh iOS WebKit Core Layer */
-        .group:hover .ios-pilar-card {
+        /* 1. KONDISI LAPTOP (Desktop Hover): Efek putar hanya aktif via hover jika resolusi layar lebar */
+        @media (min-width: 1024px) {
+            .group:hover .ios-pilar-card {
+                transform: rotateY(180deg) !important;
+                -webkit-transform: rotateY(180deg) !important;
+            }
+        }
+
+        /* 2. KONDISI MOBILE (HP Tap): Dipaksa berputar lancar menggunakan bantuan class Alpine.js */
+        .ios-pilar-card.is-flipped {
             transform: rotateY(180deg) !important;
             -webkit-transform: rotateY(180deg) !important;
         }
