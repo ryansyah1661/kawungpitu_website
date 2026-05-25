@@ -13,8 +13,8 @@
         </div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
-            {{-- PERBAIKAN UTAMA: Mengubah dari max-w-3xl menjadi max-w-4xl agar tombol bahasa Inggris muat satu baris Qi! --}}
-            <div class="max-w-4xl mt-12 md:mt-0">
+            {{-- PERBAIKAN UTAMA: Ditambahkan lg:pt-16 agar di laptop posisi teks sedikit turun ke bawah dan tidak mepet navbar --}}
+            <div class="max-w-4xl mt-12 md:mt-0 lg:pt-16">
                 {{-- FIX RESPONSIVE FONT SIZE --}}
                 <h1
                     class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-10 uppercase tracking-tighter animate-fade-in-left w-fit text-left">
