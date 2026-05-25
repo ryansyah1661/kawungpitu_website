@@ -44,6 +44,22 @@
             /* Berubah gelap saat di-hover pembaca */
         }
 
+        /* 5. Otomatis membuat semua gambar rata tengah, melengkung estetik, & soft shadow */
+        .prose img {
+            display: block;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            border-radius: 12px !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 6. Memastikan elemen pembungkus (figure) rata tengah agar teks caption ikut di tengah */
+        .prose figure {
+            margin-left: auto !important;
+            margin-right: auto !important;
+            text-align: center !important;
+        }
+
         /* Target padding jarak agar saat loncat skrol, teks referensi tidak terhalang navbar header */
         :target {
             scroll-margin-top: 140px;
