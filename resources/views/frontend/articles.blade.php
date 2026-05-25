@@ -26,28 +26,16 @@
     <main class="max-w-7xl mx-auto px-8 md:px-12 py-16 -mt-12 relative z-10" x-data="{
         loading: false,
         activeId: {{ isset($currentCategory) ? $currentCategory->id : "'all'" }},
-        showAll: false,
-        articleCount: 0,
-        init() {
-            this.updateArticleCount();
-        },
-        updateArticleCount() {
-            this.$nextTick(() => {
-                {{-- FIX SELECTOR JS: Deteksi element class .grid langsung di dalam container --}}
-                const grid = document.querySelector('#article-container .grid');
-                this.articleCount = grid ? grid.children.length : 0;
-            });
-        },
+        showAllCategories: false,
+        {{-- 👈 State baru untuk mengontrol buka-tutup kategori sidebar --}}
         fetchArticles(url, id) {
             this.loading = true;
             this.activeId = id;
-            this.showAll = false;
             fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('article-container').innerHTML = html;
                     this.loading = false;
-                    this.updateArticleCount();
                     window.history.pushState({}, '', url);
                     window.scrollTo({ top: 400, behavior: 'smooth' });
                 });
@@ -96,7 +84,9 @@
                         </li>
                         {{-- Loop Kategori --}}
                         @foreach ($categories as $cat)
-                            <li>
+                            {{-- JURUS ALPINE: Sembunyikan kategori ke-6 (setelah Pesisir) ke bawah jika showAllCategories masih false --}}
+                            <li x-show="showAllCategories || {{ $loop->iteration <= 5 ? 'true' : 'false' }}"
+                                x-transition.duration.300ms>
                                 <a class="flex justify-between items-center group hover:translate-x-1 transition-all cursor-pointer"
                                     @click.prevent="fetchArticles($el.href, {{ $cat->id }})"
                                     href="{{ route('artikel.kategori', ['locale' => app()->getLocale(), 'slug' => $cat->slug]) }}">
@@ -116,6 +106,19 @@
                             </li>
                         @endforeach
                     </ul>
+
+                    {{-- LINK TEKS UTK LIHAT SELENGKAPNYA KATEGORI --}}
+                    @if (count($categories) > 5)
+                        <div class="mt-5 pt-2 border-t border-dashed border-gray-100">
+                            <button @click="showAllCategories = !showAllCategories"
+                                class="text-primary hover:text-dark text-xs font-bold transition-colors flex items-center gap-1 focus:outline-none cursor-pointer tracking-wide uppercase">
+                                <span x-text="showAllCategories ? 'Lihat Sedikit' : 'Lihat Selengkapnya'"></span>
+                                <span
+                                    class="material-symbols-outlined text-[16px] transform transition-transform duration-300"
+                                    :class="showAllCategories ? 'rotate-180' : ''">expand_more</span>
+                            </button>
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Popular --}}
@@ -135,8 +138,7 @@
                                             class="w-full h-full object-cover group-hover:scale-110 transition-all duration-500">
                                     @else
                                         <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                                            <span
-                                                class="material-symbols-outlined text-2xl text-gray-400">article</span>
+                                            <span class="material-symbols-outlined text-2xl text-gray-400">article</span>
                                         </div>
                                     @endif
                                 </div>
@@ -164,18 +166,9 @@
                     <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                 </div>
 
-                <div id="article-container" 
-                    :class="{ 'opacity-30': loading, 'opacity-100': !loading, 'limit-5': !showAll && articleCount > 5 }"
+                <div id="article-container" :class="loading ? 'opacity-30' : 'opacity-100'"
                     class="transition-all duration-500">
                     @include('frontend.partials.article-grid')
-                </div>
-
-                {{-- BUTTON LIHAT SELENGKAPNYA --}}
-                <div x-show="!showAll && articleCount > 5" x-transition.duration.500ms class="text-center mt-12">
-                    <button @click="showAll = true" 
-                        class="bg-primary text-white font-tegas font-black px-8 py-3 rounded-xl uppercase tracking-wider shadow-xl shadow-primary/20 hover:bg-primary/95 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-xs">
-                        Lihat Selengkapnya
-                    </button>
                 </div>
             </div>
         </div>
@@ -187,6 +180,7 @@
                 opacity: 0;
                 transform: translateY(15px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -196,10 +190,5 @@
         .animate-fade-in {
             animation: fadeIn 0.6s ease-out forwards;
         }
-
-        {{-- FIX SELECTOR CSS: Target langsung anak dari element pembawa class .grid --}}
-        .limit-5 .grid > *:nth-child(n+6) {
-            display: none !important;
-        }
     </style>
-@endsectionF
+@endsection
