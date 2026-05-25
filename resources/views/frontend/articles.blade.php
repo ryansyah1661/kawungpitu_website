@@ -27,15 +27,14 @@
         loading: false,
         activeId: {{ isset($currentCategory) ? $currentCategory->id : "'all'" }},
         showAll: false,
-        {{-- 👈 Status untuk tracking tombol Lihat Selengkapnya --}}
         articleCount: 0,
-        {{-- 👈 Menghitung jumlah elemen artikel asli di dalam grid --}}
         init() {
             this.updateArticleCount();
         },
         updateArticleCount() {
             this.$nextTick(() => {
-                const grid = document.querySelector('#article-container > div');
+                {{-- FIX SELECTOR JS: Deteksi element class .grid langsung di dalam container --}}
+                const grid = document.querySelector('#article-container .grid');
                 this.articleCount = grid ? grid.children.length : 0;
             });
         },
@@ -43,14 +42,12 @@
             this.loading = true;
             this.activeId = id;
             this.showAll = false;
-            {{-- Reset ke mode limit 5 tiap kali ganti kategori --}}
             fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('article-container').innerHTML = html;
                     this.loading = false;
                     this.updateArticleCount();
-                    {{-- Hitung ulang jumlah artikel baru hasil filter --}}
                     window.history.pushState({}, '', url);
                     window.scrollTo({ top: 400, behavior: 'smooth' });
                 });
@@ -138,7 +135,8 @@
                                             class="w-full h-full object-cover group-hover:scale-110 transition-all duration-500">
                                     @else
                                         <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-2xl text-gray-400">article</span>
+                                            <span
+                                                class="material-symbols-outlined text-2xl text-gray-400">article</span>
                                         </div>
                                     @endif
                                 </div>
@@ -166,8 +164,7 @@
                     <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                 </div>
 
-                {{-- BIND CLASS LIMIT-5: Otomatis membatasi tampilan grid jika showAll bernilai false & jumlah item > 5 --}}
-                <div id="article-container"
+                <div id="article-container" 
                     :class="{ 'opacity-30': loading, 'opacity-100': !loading, 'limit-5': !showAll && articleCount > 5 }"
                     class="transition-all duration-500">
                     @include('frontend.partials.article-grid')
@@ -175,7 +172,7 @@
 
                 {{-- BUTTON LIHAT SELENGKAPNYA --}}
                 <div x-show="!showAll && articleCount > 5" x-transition.duration.500ms class="text-center mt-12">
-                    <button @click="showAll = true"
+                    <button @click="showAll = true" 
                         class="bg-primary text-white font-tegas font-black px-8 py-3 rounded-xl uppercase tracking-wider shadow-xl shadow-primary/20 hover:bg-primary/95 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-xs">
                         Lihat Selengkapnya
                     </button>
@@ -190,7 +187,6 @@
                 opacity: 0;
                 transform: translateY(15px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -201,9 +197,9 @@
             animation: fadeIn 0.6s ease-out forwards;
         }
 
-        /* JURUS PAMUNGKAS CSS: Sembunyikan anak elemen (card artikel) ke-6 dan seterusnya */
-        .limit-5>div>*:nth-child(n+6) {
+        {{-- FIX SELECTOR CSS: Target langsung anak dari element pembawa class .grid --}}
+        .limit-5 .grid > *:nth-child(n+6) {
             display: none !important;
         }
     </style>
-@endsection
+@endsectionF
