@@ -123,45 +123,42 @@
                     // SINKRONISASI: Konsep gambar dari user dipetakan ke Ikon Vektor Free agar konsisten dan mendukung CSS Hover.
                     $strategi = [
                         [
-                            'icon' => 'fa-solid fa-user-tie', // Manusia (Orang berjas)
+                            'icon' => 'fa-solid fa-user-tie',
                             'title' => __('messages.strategy.items.organizing.title'),
                             'desc' => __('messages.strategy.items.organizing.desc'),
                             'back_icon' => 'groups',
                             'back_desc' => __('messages.strategy_back.organizing'),
                         ],
                         [
-                            'icon' => 'handshake', // Sosial (Salaman)
+                            'icon' => 'handshake',
                             'title' => __('messages.strategy.items.development.title'),
                             'desc' => __('messages.strategy.items.development.desc'),
                             'back_icon' => 'volunteer_activism',
                             'back_desc' => __('messages.strategy_back.development'),
                         ],
                         [
-                            // UPDATE: Alam -> fa-water diganti 'eco' (Material) berdasarkan konsep natural-resources.png (daun)
-                            'icon' => 'nature', // Alam (Gunung dan Matahari)
+                            'icon' => 'nature',
                             'title' => __('messages.strategy.items.capacity.title'),
                             'desc' => __('messages.strategy.items.capacity.desc'),
                             'back_icon' => 'psychology',
                             'back_desc' => __('messages.strategy_back.capacity'),
                         ],
                         [
-                            // UPDATE: Finansial -> payments diganti 'savings' (Material) berdasarkan konsep bell-curve.png (celengan)
-                            'icon' => 'fa-solid fa-chart-line', // Ekonomi (Grafik naik)
+                            'icon' => 'fa-solid fa-chart-line',
                             'title' => __('messages.strategy.items.research.title'),
                             'desc' => __('messages.strategy.items.research.desc'),
                             'back_icon' => 'find_in_page',
                             'back_desc' => __('messages.strategy_back.research'),
                         ],
                         [
-                            'icon' => 'fa-solid fa-bridge', // Fisik (Jembatan)
+                            'icon' => 'fa-solid fa-bridge',
                             'title' => __('messages.strategy.items.advocacy.title'),
                             'desc' => __('messages.strategy.items.advocacy.desc'),
                             'back_icon' => 'record_voice_over',
                             'back_desc' => __('messages.strategy_back.advocacy'),
                         ],
                         [
-                            // UPDATE: Lintas Pilar -> shield diganti 'sync_alt' (Material) berdasarkan konsep loop.png (panah melingkar)
-                            'icon' => 'cycle', // Lintas Pilar (Dua panah melingkar)
+                            'icon' => 'cycle',
                             'title' => __('messages.strategy.items.modelling.title'),
                             'desc' => __('messages.strategy.items.modelling.desc'),
                             'bg_custom' => '#d5a132',
@@ -172,15 +169,15 @@
                 @endphp
 
                 @foreach ($strategi as $s)
-                    <div class="group h-[360px] [perspective:1000px]">
+                    {{-- FIX IOS: Ditambahkan class ios-pilar-wrapper, ios-pilar-card, dan ios-pilar-face agar efek 3D tidak rata di iPhone --}}
+                    <div class="group h-[360px] [perspective:1000px] ios-pilar-wrapper">
                         <div
-                            class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                            class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] ios-pilar-card">
                             {{-- SISI DEPAN --}}
                             <div
-                                class="absolute inset-0 bg-[#F2E7DF] p-10 rounded-3xl shadow-xl flex flex-col items-center border border-primary/5 [backface-visibility:hidden]">
+                                class="absolute inset-0 bg-[#F2E7DF] p-10 rounded-3xl shadow-xl flex flex-col items-center border border-primary/5 [backface-visibility:hidden] ios-pilar-face">
                                 <div
                                     class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 text-primary border border-primary/10">
-                                    {{-- DYNAMIC LOGIC: Jika ikon berawalan 'fa-', render sebagai icon FontAwesome Qi! --}}
                                     @if (str_starts_with($s['icon'], 'fa-'))
                                         <i class="{{ $s['icon'] }} text-3xl"></i>
                                     @else
@@ -197,7 +194,7 @@
                             </div>
                             {{-- SISI BELAKANG --}}
                             <div
-                                class="absolute inset-0 h-full w-full rounded-3xl bg-[#d5a132] p-10 text-primary [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center border border-white/10 shadow-2xl">
+                                class="absolute inset-0 h-full w-full rounded-3xl bg-[#d5a132] p-10 text-primary [transform:rotateY(180deg)] [backface-visibility:hidden] ios-pilar-face flex flex-col items-center justify-center border border-white/10 shadow-2xl">
                                 <p class="text-primary/90 font-light leading-relaxed text-sm text-left w-full px-2">
                                     {!! $s['back_desc'] !!}
                                 </p>
@@ -400,6 +397,31 @@
 
         .animate-pulse-slow {
             animation: pulse-slow 4s ease-in-out infinite;
+        }
+
+        /* 🔥 FIX SAKTI FOR iOS SAFARI (WEBKIT 3D ENGINE COEXISTENCE) */
+        .ios-pilar-wrapper {
+            -webkit-perspective: 1000px !important;
+            perspective: 1000px !important;
+            -webkit-transform-style: preserve-3d !important;
+            transform-style: preserve-3d !important;
+        }
+
+        .ios-pilar-card {
+            -webkit-transform-style: preserve-3d !important;
+            transform-style: preserve-3d !important;
+        }
+
+        .ios-pilar-face {
+            -webkit-backface-visibility: hidden !important;
+            backface-visibility: hidden !important;
+            backface-visibility: hidden;
+        }
+
+        /* Memaksa transisi rotasi sumbu Y diproses secara native oleh iOS WebKit Core Layer */
+        .group:hover .ios-pilar-card {
+            transform: rotateY(180deg) !important;
+            -webkit-transform: rotateY(180deg) !important;
         }
     </style>
 
