@@ -16,7 +16,7 @@ class CustomLogin extends BaseLogin
     public function getTitle(): string
     {
         // Mengubah tulisan "Masuk" di tab atas menjadi "Admin"
-        return 'Admin'; 
+        return 'Admin';
     }
 
     public function getSubheading(): string | Htmlable | null

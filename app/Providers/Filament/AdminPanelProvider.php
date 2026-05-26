@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(CustomLogin::class)
+            ->passwordReset() // 🚀 AKSI SAKTI: Otomatis memunculkan fitur & link Lupa Kata Sandi di halaman login
             ->brandName('Kawungpitu Institute')
             ->brandLogo(asset('images/logo-kawung-ori.png'))
             ->brandLogoHeight('2.5rem')

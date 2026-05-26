@@ -26,17 +26,35 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Lengkap')
                             ->required(),
+
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->required()
                             ->unique(ignoreRecord: true),
+
+                        // Kolom Password Utama
                         Forms\Components\TextInput::make('password')
                             ->password()
                             ->label('Password')
-                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                            // Password hanya di-update kalau diisi (buat pas edit)
+                            ->maxLength(255)
+                            ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                            // Password hanya di-update ke database jika kolom ini diisi Qi!
                             ->dehydrated(fn($state) => filled($state))
-                            ->required(fn(string $context): bool => $context === 'create'),
+                            // Hanya wajib diisi saat membuat user baru (create context)
+                            ->required(fn(string $context): bool => $context === 'create')
+                            // Memastikan input harus sama dengan kolom password_confirmation
+                            ->confirmed(),
+
+                        // Kolom Konfirmasi Password Baru
+                        Forms\Components\TextInput::make('password_confirmation')
+                            ->password()
+                            ->label('Konfirmasi Password')
+                            ->maxLength(255)
+                            // Mengikuti aturan kolom utama, hanya wajib diisi saat create
+                            ->required(fn(string $context): bool => $context === 'create')
+                            // Dikunci false agar data konfirmasi tidak ikut dikirim merusak database
+                            ->dehydrated(false),
+
                         Forms\Components\Select::make('role')
                             ->label('Level Akses')
                             ->options([

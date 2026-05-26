@@ -18,29 +18,37 @@ use Illuminate\Support\Facades\Route;
 // Redirect root ke /id (default locale)
 Route::redirect('/', '/id');
 
-// Route group dengan locale prefix + middleware
-Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function () {
+// 🚀 FIX TOTAL: Menggunakan Fluent API agar VS Code + Intelephense gak protes eror array lagi, Qi!
+Route::prefix('{locale}')
+    ->middleware('setlocale')
+    ->where(['locale' => 'id|en']) // Pakai format array murni standar Laravel modern
+    ->group(function () {
 
-    // Beranda
-    Route::get('/', [LandingPageController::class, 'index'])->name('home');
+        // Beranda
+        Route::get('/', [LandingPageController::class, 'index'])->name('home');
 
-    // Tentang Kami (URI diubah ke /about agar universal)
-    Route::get('/about', [AboutController::class, 'index'])->name('tentang');
+        // Tentang Kami (URI diubah ke /about agar universal)
+        Route::get('/about', [AboutController::class, 'index'])->name('tentang');
 
-    // Artikel (URI menggunakan /articles agar universal)
-    Route::get('/articles', [ArtikelController::class, 'index'])->name('artikel.index');
-    Route::get('/articles/category/{slug}', [ArtikelController::class, 'byKategori'])->name('artikel.kategori');
-    Route::get('/articles/{slug}', [ArtikelController::class, 'show'])->name('artikel.show');
+        // Artikel (URI menggunakan /articles agar universal)
+        Route::get('/articles', [ArtikelController::class, 'index'])->name('artikel.index');
+        Route::get('/articles/category/{slug}', [ArtikelController::class, 'byKategori'])->name('artikel.kategori');
+        Route::get('/articles/{slug}', [ArtikelController::class, 'show'])->name('artikel.show');
 
-    // Programs (Sudah sesuai permintaanmu ke /program)
-    Route::get('/programs', [ProgramController::class, 'index'])->name('program.index');
-    Route::get('/programs/{slug}', [ProgramController::class, 'show'])->name('program.show');
+        // Programs (Sudah sesuai permintaanmu ke /program)
+        Route::get('/programs', [ProgramController::class, 'index'])->name('program.index');
+        Route::get('/programs/{slug}', [ProgramController::class, 'show'])->name('program.show');
 
-    // Galeri (URI menggunakan /gallery agar universal)
-    Route::get('/gallery', [GaleriController::class, 'index'])->name('galeri.index');
-    Route::get('/gallery/{slug}', [GaleriController::class, 'show'])->name('galeri.show');
+        // Galeri (URI menggunakan /gallery agar universal)
+        Route::get('/gallery', [GaleriController::class, 'index'])->name('galeri.index');
+        Route::get('/gallery/{slug}', [GaleriController::class, 'show'])->name('galeri.show');
 
-    // Kontak (URI menggunakan /contact agar universal)
-    Route::get('/contact', [KontakController::class, 'index'])->name('kontak');
-    Route::post('/contact', [KontakController::class, 'store'])->name('kontak.store');
-});
+        // Kontak (URI menggunakan /contact agar universal)
+        Route::get('/contact', [KontakController::class, 'index'])->name('kontak');
+        Route::post('/contact', [KontakController::class, 'store'])->name('kontak.store');
+    });
+
+// 🚀 JARING PENGAMAN GLOBAL: Sekarang rute ini terpanggil sempurna tanpa tertabrak parameter bahasa
+Route::get('/login', function () {
+    return redirect()->route('filament.admin.auth.login');
+})->name('login');
