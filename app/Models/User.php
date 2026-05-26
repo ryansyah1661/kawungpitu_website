@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+// 🚀 IMPORT: Dua baris sakti wajib dari Filament v3
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+// 🔥 FIX: Wajib menambahkan 'implements FilamentUser' di ujung class
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -43,4 +46,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * 🔐 GERBANG UTAMA production: Menentukan siapa saja yang boleh login ke /admin
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Opsi 1 (Paling Aman): Hanya user dengan kolom role bernilai 'admin' yang boleh masuk
+        return $this->role === 'admin';
+
+        // Opsi 2 (Darurat): Kalau di database VPS kamu kolom role-nya masih kosong/belum diisi, 
+        // hapus baris Opsi 1 di atas lalu gunakan baris di bawah ini biar bisa tembus login dulu:
+        // return true;
+    }
 }
