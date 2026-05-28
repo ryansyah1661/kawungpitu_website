@@ -8,7 +8,7 @@
     <title>
         @hasSection('title')
             @yield('title') -
-        @endif Kawung Pitu Institute
+        @endif Kawungpitu Institute
     </title>
 
     <link rel="icon" type="image/png" href="{{ asset('kawung.png') }}">

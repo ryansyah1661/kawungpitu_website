@@ -1,5 +1,4 @@
 @extends('frontend.layouts.app')
-@section('title', __('messages.navbar.home'))
 
 @section('content')
     {{-- SECTION HERO --}}
