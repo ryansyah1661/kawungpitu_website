@@ -11,6 +11,8 @@
         @endif Kawungpitu Institute
     </title>
 
+    <meta name="google-site-verification" content="o-kp93k0jiZpdiaAoKVm8PmhCIwf1sr4rP-kSkG4PIo" />
+
     <link rel="icon" type="image/png" href="{{ asset('kawung.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
