@@ -8,7 +8,7 @@
     <title>
         @hasSection('title')
             @yield('title') -
-        @endif Kawungpitu Institute
+        @endif Kawungpitu Institute - Promote Sustainable Livelihood
     </title>
 
     <meta name="google-site-verification" content="o-kp93k0jiZpdiaAoKVm8PmhCIwf1sr4rP-kSkG4PIo" />
