@@ -53,7 +53,7 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         // Opsi 1 (Paling Aman): Hanya user dengan kolom role bernilai 'admin' yang boleh masuk
-        return $this->role === 'admin';
+        return in_array($this->role, ['admin', 'contributor']);
 
         // Opsi 2 (Darurat): Kalau di database VPS kamu kolom role-nya masih kosong/belum diisi, 
         // hapus baris Opsi 1 di atas lalu gunakan baris di bawah ini biar bisa tembus login dulu:
