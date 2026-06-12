@@ -239,6 +239,7 @@ class ProgramResource extends Resource
                                     ->label('Dipublikasikan')
                                     ->default(false)
                                     ->live()
+                                    ->visible(fn () => auth()->user()->role === 'admin')
                                     ->afterStateUpdated(function ($state, Set $set) {
                                         if ($state) {
                                             $set('published_at', now()->format('Y-m-d H:i:s'));
@@ -249,7 +250,8 @@ class ProgramResource extends Resource
 
                                 DateTimePicker::make('published_at')
                                     ->label('Tanggal Publish')
-                                    ->displayFormat('d/m/Y H:i'),
+                                    ->displayFormat('d/m/Y H:i')
+                                    ->visible(fn () => auth()->user()->role === 'admin')
                             ]),
 
                         Section::make('Gambar')
@@ -354,7 +356,7 @@ class ProgramResource extends Resource
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->visible(fn () => auth()->user()->role === 'admin')
-                    ->hidden(fn ($record) => $record->approval_status === 'rejected')
+                    ->hidden(fn ($record) => $record->approval_status === 'approved')
                     ->form([
                         Forms\Components\Textarea::make('rejection_note')
                             ->label('Alasan Penolakan / Catatan Evaluasi')

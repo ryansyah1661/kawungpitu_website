@@ -44,7 +44,7 @@ class ArticleResource extends Resource
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                                 Forms\Components\TextInput::make('slug')
                                     ->label('Slug')
@@ -101,7 +101,7 @@ class ArticleResource extends Resource
                                     ])
                                     ->default('pending')
                                     ->required()
-                                    ->disabled(fn () => auth()->user()->role !== 'admin')
+                                    ->disabled(fn() => auth()->user()->role !== 'admin')
                                     ->live()
                                     ->dehydrated(),
 
@@ -112,14 +112,15 @@ class ArticleResource extends Resource
                                     ->rows(3)
                                     ->placeholder('Belum ada catatan evaluasi.')
                                     ->helperText('Catatan dari admin jika artikel ini perlu diperbaiki.')
-                                    ->visible(fn ($get) => $get('status') === 'rejected')
-                                    ->disabled(fn () => auth()->user()->role !== 'admin')
+                                    ->visible(fn($get) => $get('status') === 'rejected')
+                                    ->disabled(fn() => auth()->user()->role !== 'admin')
                                     ->dehydrated(),
 
                                 Forms\Components\Toggle::make('is_published')
                                     ->label('Dipublikasikan')
                                     ->default(false)
                                     ->live()
+                                    ->visible(fn() => auth()->user()->role === 'admin')
                                     ->afterStateUpdated(function ($state, Set $set) {
                                         if ($state) {
                                             $set('published_at', now()->format('Y-m-d H:i:s'));
@@ -130,7 +131,8 @@ class ArticleResource extends Resource
 
                                 Forms\Components\DateTimePicker::make('published_at')
                                     ->label('Tanggal Publish')
-                                    ->displayFormat('d/m/Y H:i'),
+                                    ->displayFormat('d/m/Y H:i')
+                                    ->visible(fn() => auth()->user()->role === 'admin')
                             ]),
 
                         Forms\Components\Section::make('Gambar')
@@ -169,7 +171,7 @@ class ArticleResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Persetujuan')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'approved' => 'success',
                         'pending' => 'warning',
                         'rejected' => 'danger',
@@ -217,8 +219,8 @@ class ArticleResource extends Resource
                     ->label('Approve')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
-                    ->visible(fn () => auth()->user()->role === 'admin')
-                    ->hidden(fn ($record) => $record->status === 'approved')
+                    ->visible(fn() => auth()->user()->role === 'admin')
+                    ->hidden(fn($record) => $record->status === 'approved')
                     ->requiresConfirmation()
                     ->action(function ($record) {
                         $record->update([
@@ -232,13 +234,13 @@ class ArticleResource extends Resource
                     ->label('Tolak')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
-                    ->visible(fn () => auth()->user()->role === 'admin')
-                    ->hidden(fn ($record) => $record->status === 'rejected')
+                    ->visible(fn() => auth()->user()->role === 'admin')
+                    ->hidden(fn($record) => $record->status === 'approved')
                     ->form([
                         Forms\Components\Textarea::make('rejection_note')
                             ->label('Alasan Penolakan / Catatan Evaluasi')
                             ->required()
-                            ->placeholder('Tulis bagian kodingan/artikel yang salah agar kontributor bisa memperbaikinya...'),
+                            ->placeholder('Tulis bagian artikel yang salah agar kontributor dapat memperbaikinya...'),
                     ])
                     ->action(function ($record, array $data) {
                         $record->update([

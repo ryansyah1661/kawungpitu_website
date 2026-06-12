@@ -92,7 +92,8 @@ class AlbumResource extends Resource
 
                         Forms\Components\Toggle::make('is_published')
                             ->label('Dipublikasikan')
-                            ->default(false),
+                            ->default(false)
+                            ->visible(fn () => auth()->user()->role === 'admin')
                     ]),
             ]);
     }
@@ -169,7 +170,7 @@ class AlbumResource extends Resource
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->visible(fn () => auth()->user()->role === 'admin')
-                    ->hidden(fn ($record) => $record->status === 'rejected')
+                    ->hidden(fn ($record) => $record->status === 'approved')
                     ->form([
                         Forms\Components\Textarea::make('rejection_note')
                             ->label('Alasan Penolakan / Catatan Evaluasi')
