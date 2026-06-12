@@ -37,7 +37,7 @@ class CategoryResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug')
@@ -137,5 +137,11 @@ class CategoryResource extends Resource
             'create' => Pages\CreateCategory::route('/create'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        // 🔐 HANYA ADMIN yang bisa melihat dan mengakses menu User ini
+        return auth()->user()->role === 'admin';
     }
 }

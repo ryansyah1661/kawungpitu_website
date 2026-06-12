@@ -53,7 +53,7 @@ class TeamMemberResource extends Resource
                         ->rows(4)
                         ->maxLength(500)
                         ->hidden(fn(Forms\Get $get) => $get('type') !== 'advisor'),
-                        ])->columnSpan(2),
+                ])->columnSpan(2),
 
                 Forms\Components\Section::make('Media & Pengaturan')->schema([
                     Forms\Components\FileUpload::make('photo')
@@ -146,5 +146,11 @@ class TeamMemberResource extends Resource
             'create' => Pages\CreateTeamMember::route('/create'),
             'edit' => Pages\EditTeamMember::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        // 🔐 HANYA ADMIN yang bisa melihat dan mengakses menu User ini
+        return auth()->user()->role === 'admin';
     }
 }

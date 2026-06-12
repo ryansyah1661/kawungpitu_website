@@ -143,4 +143,10 @@ class MessageResource extends Resource
     {
         return false;
     }
+
+    public static function canViewAny(): bool
+    {
+        // 🔐 HANYA ADMIN yang bisa melihat dan mengakses menu User ini
+        return auth()->user()->role === 'admin';
+    }
 }

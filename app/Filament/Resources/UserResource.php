@@ -128,4 +128,10 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        // 🔐 HANYA ADMIN yang bisa melihat dan mengakses menu User ini
+        return auth()->user()->role === 'admin';
+    }
 }
