@@ -25,6 +25,12 @@ class ArticleResource extends Resource
     protected static ?string $modelLabel = 'Artikel';
     protected static ?string $pluralModelLabel = 'Artikel';
 
+    // 🔐 HAK AKSES MENU: Admin & Kontributor bisa lihat menu ini, tapi menu User dikunci khusus admin
+    public static function canViewAny(): bool
+    {
+        return in_array(auth()->user()->role, ['admin', 'contributor']);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -85,6 +91,31 @@ class ArticleResource extends Resource
                                     ->preload()
                                     ->searchable(),
 
+                                // 🔥 FIX: Input status (3 pilihan). Hanya admin yang bisa ubah lewat form
+                                Forms\Components\Select::make('status')
+                                    ->label('Status Persetujuan')
+                                    ->options([
+                                        'pending' => 'Pending (Menunggu)',
+                                        'approved' => 'Approved (Disetujui)',
+                                        'rejected' => 'Rejected (Ditolak)',
+                                    ])
+                                    ->default('pending')
+                                    ->required()
+                                    ->disabled(fn () => auth()->user()->role !== 'admin')
+                                    ->live()
+                                    ->dehydrated(),
+
+                                // 🔥 FIX: Catatan penolakan. Muncul otomatis kalau statusnya 'rejected'
+                                // Jadi kontributor bisa tahu alasan artikelnya ditolak pas buka halaman edit
+                                Forms\Components\Textarea::make('rejection_note')
+                                    ->label('Catatan Penolakan / Evaluasi')
+                                    ->rows(3)
+                                    ->placeholder('Belum ada catatan evaluasi.')
+                                    ->helperText('Catatan dari admin jika artikel ini perlu diperbaiki.')
+                                    ->visible(fn ($get) => $get('status') === 'rejected')
+                                    ->disabled(fn () => auth()->user()->role !== 'admin')
+                                    ->dehydrated(),
+
                                 Forms\Components\Toggle::make('is_published')
                                     ->label('Dipublikasikan')
                                     ->default(false)
@@ -129,10 +160,21 @@ class ArticleResource extends Resource
                     ->sortable()
                     ->limit(40),
 
-                // Menampilkan badge untuk banyak kategori
                 Tables\Columns\TextColumn::make('categories.name')
                     ->label('Kategori')
                     ->badge()
+                    ->sortable(),
+
+                // 🔥 FIX: Menampilkan Badge Status Persetujuan di Tabel (Kuning, Hijau, Merah)
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Persetujuan')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'approved' => 'success',
+                        'pending' => 'warning',
+                        'rejected' => 'danger',
+                        default => 'gray',
+                    })
                     ->sortable(),
 
                 Tables\Columns\IconColumn::make('is_published')
@@ -152,7 +194,6 @@ class ArticleResource extends Resource
                     ->alignCenter(),
             ])
             ->filters([
-                // Filter kategori diubah menjadi multiple
                 Tables\Filters\SelectFilter::make('categories')
                     ->label('Kategori')
                     ->multiple()
@@ -161,8 +202,51 @@ class ArticleResource extends Resource
 
                 Tables\Filters\TernaryFilter::make('is_published')
                     ->label('Status Publish'),
+
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status Persetujuan')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
+                    ])
             ])
             ->actions([
+                // 🔥 FIX: Tombol Approve khusus Admin (Sembunyi jika sudah di-approve)
+                Tables\Actions\Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn () => auth()->user()->role === 'admin')
+                    ->hidden(fn ($record) => $record->status === 'approved')
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+                        $record->update([
+                            'status' => 'approved',
+                            'rejection_note' => null, // Hapus catatan penolakan lama jika akhirnya disetujui
+                        ]);
+                    }),
+
+                // 🔥 FIX: TomBOL Tolak khusus Admin (Akan memunculkan pop-up modal untuk mengisi alasan ditolak)
+                Tables\Actions\Action::make('reject')
+                    ->label('Tolak')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->visible(fn () => auth()->user()->role === 'admin')
+                    ->hidden(fn ($record) => $record->status === 'rejected')
+                    ->form([
+                        Forms\Components\Textarea::make('rejection_note')
+                            ->label('Alasan Penolakan / Catatan Evaluasi')
+                            ->required()
+                            ->placeholder('Tulis bagian kodingan/artikel yang salah agar kontributor bisa memperbaikinya...'),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $record->update([
+                            'status' => 'rejected',
+                            'rejection_note' => $data['rejection_note'],
+                        ]);
+                    }),
+
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

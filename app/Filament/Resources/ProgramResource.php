@@ -35,6 +35,12 @@ class ProgramResource extends Resource
     protected static ?string $modelLabel = 'Program';
     protected static ?string $pluralModelLabel = 'Program';
 
+    // 🔐 HAK AKSES MENU: Admin & Kontributor bisa lihat menu ini
+    public static function canViewAny(): bool
+    {
+        return in_array(auth()->user()->role, ['admin', 'contributor']);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -205,6 +211,30 @@ class ProgramResource extends Resource
                                     ->default('ongoing')
                                     ->required(),
 
+                                // Status Persetujuan (3 Opsi)
+                                Select::make('approval_status')
+                                    ->label('Status Persetujuan Admin')
+                                    ->options([
+                                        'pending' => 'Pending (Menunggu)',
+                                        'approved' => 'Approved (Disetujui)',
+                                        'rejected' => 'Rejected (Ditolak)',
+                                    ])
+                                    ->default('pending')
+                                    ->required()
+                                    ->disabled(fn () => auth()->user()->role !== 'admin')
+                                    ->live()
+                                    ->dehydrated(),
+
+                                // Catatan Penolakan (Sudah difix tanpa koma nyasar)
+                                Textarea::make('rejection_note')
+                                    ->label('Catatan Penolakan / Evaluasi')
+                                    ->rows(3)
+                                    ->placeholder('Belum ada catatan evaluasi.')
+                                    ->helperText('Catatan dari admin jika materi program ini perlu direvisi.')
+                                    ->visible(fn ($get) => $get('approval_status') === 'rejected')
+                                    ->disabled(fn () => auth()->user()->role !== 'admin')
+                                    ->dehydrated(),
+
                                 Toggle::make('is_published')
                                     ->label('Dipublikasikan')
                                     ->default(false)
@@ -271,6 +301,18 @@ class ProgramResource extends Resource
                         default => 'gray',
                     }),
 
+                // Badge Status Persetujuan di Tabel (Kuning, Hijau, Merah)
+                Tables\Columns\TextColumn::make('approval_status')
+                    ->label('Persetujuan')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'approved' => 'success',
+                        'pending' => 'warning',
+                        'rejected' => 'danger',
+                        default => 'gray',
+                    })
+                    ->sortable(),
+
                 Tables\Columns\IconColumn::make('is_published')
                     ->label('Publish')
                     ->boolean(),
@@ -281,8 +323,51 @@ class ProgramResource extends Resource
                     ->multiple()
                     ->relationship('categories', 'name', fn($query) => $query->where('type', 'program'))
                     ->preload(),
+                
+                Tables\Filters\SelectFilter::make('approval_status')
+                    ->label('Status Persetujuan')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
+                    ])
             ])
             ->actions([
+                // Tombol Approve khusus Admin
+                Tables\Actions\Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn () => auth()->user()->role === 'admin')
+                    ->hidden(fn ($record) => $record->approval_status === 'approved')
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+                        $record->update([
+                            'approval_status' => 'approved',
+                            'rejection_note' => null,
+                        ]);
+                    }),
+
+                // Tombol Tolak khusus Admin + Alasan Penolakan
+                Tables\Actions\Action::make('reject')
+                    ->label('Tolak')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->visible(fn () => auth()->user()->role === 'admin')
+                    ->hidden(fn ($record) => $record->approval_status === 'rejected')
+                    ->form([
+                        Forms\Components\Textarea::make('rejection_note')
+                            ->label('Alasan Penolakan / Catatan Evaluasi')
+                            ->required()
+                            ->placeholder('Tulis alasan kenapa program ini belum layak di-approve...'),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $record->update([
+                            'approval_status' => 'rejected',
+                            'rejection_note' => $data['rejection_note'],
+                        ]);
+                    }),
+
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

@@ -26,13 +26,18 @@ class AlbumResource extends Resource
     protected static ?string $modelLabel = 'Album';
     protected static ?string $pluralModelLabel = 'Album';
 
+    // 🔐 HAK AKSES MENU: Admin & Kontributor bisa lihat menu ini
+    public static function canViewAny(): bool
+    {
+        return in_array(auth()->user()->role, ['admin', 'contributor']);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Section::make('Informasi Album')
                     ->schema([
-                        // PERBAIKAN: Judul Album otomatis men-generate Slug saat kursor pindah kolom
                         Forms\Components\TextInput::make('title')
                             ->label('Judul Album')
                             ->required()
@@ -40,7 +45,6 @@ class AlbumResource extends Resource
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
-                        // PERBAIKAN: Slug otomatis terisi dari judul album
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug')
                             ->required()
@@ -56,16 +60,36 @@ class AlbumResource extends Resource
                         Forms\Components\FileUpload::make('cover_image')
                             ->label('Gambar Cover')
                             ->image()
-                            ->imageResizeMode('cover')
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('800')
-                            ->imageResizeTargetHeight('450')
                             ->directory('albums/covers')
                             ->visibility('public'),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Pengaturan')
                     ->schema([
+                        // Input status (3 pilihan). Hanya admin yang bisa ubah lewat form
+                        Forms\Components\Select::make('status')
+                            ->label('Status Persetujuan')
+                            ->options([
+                                'pending' => 'Pending (Menunggu)',
+                                'approved' => 'Approved (Disetujui)',
+                                'rejected' => 'Rejected (Ditolak)',
+                            ])
+                            ->default('pending')
+                            ->required()
+                            ->disabled(fn () => auth()->user()->role !== 'admin')
+                            ->live()
+                            ->dehydrated(),
+
+                        // Catatan penolakan album. Muncul otomatis kalau statusnya 'rejected'
+                        Forms\Components\Textarea::make('rejection_note')
+                            ->label('Catatan Penolakan / Evaluasi')
+                            ->rows(3)
+                            ->placeholder('Belum ada catatan evaluasi.')
+                            ->helperText('Catatan dari admin jika album foto ini butuh revisi.')
+                            ->visible(fn ($get) => $get('status') === 'rejected')
+                            ->disabled(fn () => auth()->user()->role !== 'admin')
+                            ->dehydrated(),
+
                         Forms\Components\Toggle::make('is_published')
                             ->label('Dipublikasikan')
                             ->default(false),
@@ -93,23 +117,72 @@ class AlbumResource extends Resource
                     ->sortable()
                     ->alignCenter(),
 
+                // Menampilkan Badge Status Persetujuan di Tabel (Kuning, Hijau, Merah)
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Persetujuan')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'approved' => 'success',
+                        'pending' => 'warning',
+                        'rejected' => 'danger',
+                        default => 'gray',
+                    })
+                    ->sortable(),
+
                 Tables\Columns\IconColumn::make('is_published')
                     ->label('Status')
                     ->boolean()
                     ->trueColor('success')
                     ->falseColor('danger'),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Dibuat')
-                    ->dateTime('d M Y')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_published')
                     ->label('Status Publish'),
+
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status Persetujuan')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
+                    ])
             ])
             ->actions([
+                // Tombol Approve khusus Admin
+                Tables\Actions\Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn () => auth()->user()->role === 'admin')
+                    ->hidden(fn ($record) => $record->status === 'approved')
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+                        $record->update([
+                            'status' => 'approved',
+                            'rejection_note' => null,
+                        ]);
+                    }),
+
+                // Tombol Tolak khusus Admin + Alasan Penolakan
+                Tables\Actions\Action::make('reject')
+                    ->label('Tolak')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->visible(fn () => auth()->user()->role === 'admin')
+                    ->hidden(fn ($record) => $record->status === 'rejected')
+                    ->form([
+                        Forms\Components\Textarea::make('rejection_note')
+                            ->label('Alasan Penolakan / Catatan Evaluasi')
+                            ->required()
+                            ->placeholder('Tulis alasan penolakan album foto agar kontributor mengetahuinya...'),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $record->update([
+                            'status' => 'rejected',
+                            'rejection_note' => $data['rejection_note'],
+                        ]);
+                    }),
+
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
