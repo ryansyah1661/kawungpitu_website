@@ -38,6 +38,8 @@ class Program extends Model
         'natural_capital_note',
         'physical_capital_note',
         'financial_capital_note',
+        'approval_status',
+        'rejection_note',
     ];
 
     public $translatable = ['title', 'excerpt', 'body'];

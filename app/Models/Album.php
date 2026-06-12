@@ -10,7 +10,16 @@ class Album extends Model
 {
     use HasFactory, HasTranslations;
 
-    protected $fillable = ['title', 'slug', 'description', 'cover_image', 'is_published', 'sort_order'];
+    protected $fillable = [
+        'title',
+        'slug',
+        'description',
+        'cover_image',
+        'is_published',
+        'sort_order',
+        'approval_status',
+        'rejection_note',
+    ];
 
     public $translatable = ['title', 'description'];
 

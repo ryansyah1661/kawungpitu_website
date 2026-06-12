@@ -21,6 +21,8 @@ class Article extends Model
         'is_published',
         'published_at',
         'view_count',
+        'status',
+        'rejection_note',
     ];
 
     public $translatable = ['title', 'excerpt', 'body'];
@@ -33,7 +35,7 @@ class Article extends Model
     /**
      * Relasi diubah menjadi Many-to-Many
      */
-    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany 
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'article_category');
     }
