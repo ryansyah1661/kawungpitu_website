@@ -71,6 +71,11 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('profile_photo')
+                ->label('Foto')
+                ->circular()
+                ->disk('public'),
+
                 // Menampilkan Nama
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Pengguna')
@@ -132,6 +137,12 @@ class UserResource extends Resource
     public static function canViewAny(): bool
     {
         // 🔐 HANYA ADMIN yang bisa melihat dan mengakses menu User ini
+        return auth()->user()->role === 'admin';
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // 🔐 Sembunyikan menu "User" dari sidebar kalau bukan admin
         return auth()->user()->role === 'admin';
     }
 }
