@@ -6,6 +6,7 @@ use App\Filament\Pages\Auth\CustomLogin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -32,7 +33,15 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('db')
             ->login(CustomLogin::class)
-            ->passwordReset() // 🚀 AKSI SAKTI: Otomatis memunculkan fitur & link Lupa Kata Sandi di halaman login
+            
+            ->userMenuItems([
+                'profile' => MenuItem::make()
+                    ->label('Edit Profile')
+                    ->icon('heroicon-o-user-circle')
+                    ->url(fn () => \App\Filament\Pages\Profile::getUrl()),
+            ])
+            ->passwordReset()
+            ->defaultAvatarProvider(\App\Filament\AvatarProviders\CustomAvatarProvider::class)
             ->brandName('Kawungpitu Institute')
             ->brandLogo(asset('images/logo-kawung-ori.png'))
             ->brandLogoHeight('2.5rem')
@@ -73,7 +82,6 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            // 🚀 CLONE IDENTIK 100% MODAL NATIVE FILAMENT V3 (TOMBOL FIX KUNCI WARNA MERAH)
             ->renderHook(
                 'panels::body.end',
                 fn(): string => Blade::render('

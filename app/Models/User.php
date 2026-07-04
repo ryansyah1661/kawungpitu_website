@@ -7,6 +7,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -24,7 +25,8 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
-        'role', // admin atau contributor
+        'role',
+        'profile_photo',
     ];
 
     /**
@@ -54,9 +56,11 @@ class User extends Authenticatable implements FilamentUser
     {
         // Opsi 1 (Paling Aman): Hanya user dengan kolom role bernilai 'admin' yang boleh masuk
         return in_array($this->role, ['admin', 'contributor']);
+    }
 
-        // Opsi 2 (Darurat): Kalau di database VPS kamu kolom role-nya masih kosong/belum diisi, 
-        // hapus baris Opsi 1 di atas lalu gunakan baris di bawah ini biar bisa tembus login dulu:
-        // return true;
+    public function getFilamentAvatarUrl(): ?string
+    {
+        Log::info('avatar check', ['photo' => $this->profile_photo]);
+        return $this->profile_photo ? asset('storage/' . $this->profile_photo) : null;
     }
 }
