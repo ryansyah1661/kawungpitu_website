@@ -4,6 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="@yield('og_title', 'Kawungpitu Institute')">
+    <meta property="og:description" content="@yield('og_description', 'Promote Sustainable Livelihood')">
+    <meta property="og:image" content="@yield('og_image', asset('images/logo-kawung-ori.png'))">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
 
     <title>
         @hasSection('title')

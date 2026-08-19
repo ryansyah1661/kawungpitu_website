@@ -1,5 +1,8 @@
 @extends('frontend.layouts.app')
 @section('title', $program->title)
+@section('og_title', $program->title)
+@section('og_description', Str::limit(strip_tags($program->body), 150))
+@section('og_image', $program->featured_image ? asset('storage/' . $program->featured_image) : asset('images/logo-kawung-ori.png'))
 
 @section('content')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
