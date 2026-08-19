@@ -1,8 +1,8 @@
 @extends('frontend.layouts.app')
 @section('title', $artikel->title)
-@section('og_title', $article->title)
-@section('og_description', $article->excerpt ?? Str::limit(strip_tags($article->body), 150))
-@section('og_image', $article->featured_image ? asset('storage/' . $article->featured_image) : asset('images/logo-kawung-ori.png'))
+@section('og_title', $artikel->title)
+@section('og_description', $artikel->excerpt ?? Str::limit(strip_tags($artikel->body), 150))
+@section('og_image', $artikel->featured_image ? asset('storage/' . $artikel->featured_image) : asset('images/logo-kawung-ori.png'))
 
 
 @section('content')
