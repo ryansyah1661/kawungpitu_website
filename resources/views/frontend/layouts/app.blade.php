@@ -378,8 +378,7 @@
                     <ul class="space-y-6 text-gray-400 font-light text-sm">
                         <li class="flex items-start space-x-4">
                             <span class="material-symbols-outlined text-primary mt-1">location_on</span>
-                            <span class="leading-relaxed">Jl. Mawar Raya No.16, Lt 2, RT.08/RW.08, Curugmekar, Kec.
-                                Bogor Bar., Kota Bogor, Jawa Barat 16113</span>
+                            <span class="leading-relaxed">Bumi Menteng Asri Jl. Terapi Raya No.13, RT.01/RW.20, Menteng, Kec. Bogor Barat, Kota Bogor, Jawa Barat 16111</span>
                         </li>
                         <li class="flex items-center space-x-4">
                             <span class="material-symbols-outlined text-primary">mail</span>

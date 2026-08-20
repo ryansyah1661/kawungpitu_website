@@ -42,6 +42,7 @@ Route::prefix('{locale}')
         // Galeri
         Route::get('/gallery', [GaleriController::class, 'index'])->name('galeri.index');
         Route::get('/gallery/{slug}', [GaleriController::class, 'show'])->name('galeri.show');
+        Route::post('/gallery/photo/{id}/view', [GaleriController::class, 'incrementView'])->name('galeri.photo.view');
 
         // Kontak
         Route::get('/contact', [KontakController::class, 'index'])->name('kontak');

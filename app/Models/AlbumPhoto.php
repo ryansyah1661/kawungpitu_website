@@ -10,7 +10,7 @@ class AlbumPhoto extends Model
 {
     use HasFactory, HasTranslations;
 
-    protected $fillable = ['album_id', 'image_path', 'caption', 'sort_order'];
+    protected $fillable = ['album_id', 'image_path', 'caption', 'sort_order', 'views'];
 
     public $translatable = ['caption'];
 

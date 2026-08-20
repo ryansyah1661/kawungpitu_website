@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\AlbumPhoto;
+use Illuminate\Http\Request;
 
 class GaleriController extends Controller
 {
@@ -33,5 +35,16 @@ class GaleriController extends Controller
         }]);
 
         return view('frontend.gallery-detail', compact('album'));
+    }
+
+    public function incrementView(string $locale, int $id)
+    {
+        $photo = AlbumPhoto::findOrFail($id);
+        $photo->increment('views');
+
+        return response()->json([
+            'success' => true,
+            'views' => $photo->views
+        ]);
     }
 }
