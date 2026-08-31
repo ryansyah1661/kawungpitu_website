@@ -105,7 +105,7 @@
             </div>
 
             {{-- KANAN: SIDEBAR --}}
-            <aside class="lg:col-span-1">
+            <aside class="lg:col-span-1 sticky top-28 self-start">
                 <div class="bg-white p-6 lg:p-8 rounded-3xl shadow-xl shadow-primary/5 border border-gray-100 flex flex-col gap-8">
                     
                     {{-- Author Box --}}
