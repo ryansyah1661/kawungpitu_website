@@ -29,7 +29,6 @@ class EditProgram extends EditRecord
     {
         $data['is_published'] = (bool) ($data['is_published'] ?? false);
         $data['sort_order'] = (int) ($data['sort_order'] ?? 0);
-        $data['view_count'] = (int) ($data['view_count'] ?? 0);
 
         return $data;
     }

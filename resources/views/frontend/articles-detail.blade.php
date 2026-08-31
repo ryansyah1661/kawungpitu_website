@@ -115,9 +115,9 @@
                         </h3>
                         <div class="flex items-center gap-4 mb-5">
                             @if ($artikel->user && $artikel->user->profile_photo)
-                                <img src="{{ asset('storage/' . $artikel->user->profile_photo) }}" alt="{{ $artikel->author_name }}" class="w-12 h-12 rounded-full object-cover shadow-sm">
+                                <img src="{{ asset('storage/' . $artikel->user->profile_photo) }}" alt="{{ $artikel->author_name }}" class="shrink-0 w-12 h-12 rounded-full object-cover shadow-sm">
                             @else
-                                <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shadow-sm">
+                                <div class="shrink-0 w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shadow-sm">
                                     <span class="material-symbols-outlined text-2xl">person</span>
                                 </div>
                             @endif

@@ -28,7 +28,6 @@ class EditArticle extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $data['is_published'] = (bool) ($data['is_published'] ?? false);
-        $data['view_count'] = (int) ($data['view_count'] ?? 0);
 
         return $data;
     }
