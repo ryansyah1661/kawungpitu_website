@@ -3,7 +3,6 @@
 
 @section('content')
     {{-- SECTION HERO --}}
-    {{-- FIX RESPONSIVE HEIGHT: Mengubah h-[600px] menjadi h-auto di mobile dengan padding bawah aman agar tombol unduh tidak terpotong --}}
     <section class="relative w-full h-auto lg:h-[600px] flex items-center bg-dark overflow-hidden pt-36 pb-20 lg:py-0">
         <div class="absolute inset-0 z-0 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2000"
@@ -13,9 +12,7 @@
         </div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
-            {{-- PERBAIKAN UTAMA: Ditambahkan lg:pt-16 agar di laptop posisi teks sedikit turun ke bawah dan tidak mepet navbar --}}
             <div class="max-w-4xl mt-12 md:mt-0 lg:pt-16">
-                {{-- FIX RESPONSIVE FONT SIZE --}}
                 <h1
                     class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-10 uppercase tracking-tighter animate-fade-in-left w-fit text-left">
                     <span class="bg-white text-dark px-6 pr-12 py-2 block mb-2 w-full">
@@ -71,11 +68,10 @@
                         {!! __('messages.about.intro.p2') !!}
                     </p>
                 </div>
-                <div class="relative group">
-                    <div class="absolute -top-6 -left-6 w-full h-full bg-primary/10 rounded-2xl"></div>
-                    <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1000"
+                <div class="relative group flex justify-center">
+                    <img src="{{ asset('images/Kawungpitu.png') }}"
                         alt="{{ __('messages.about.intro.img_alt') }}"
-                        class="relative z-10 rounded-2xl shadow-2xl object-cover h-[500px] w-full group-hover:scale-[1.02] transition-transform duration-500">
+                        class="relative z-10 mix-blend-multiply object-contain max-h-[500px] w-full group-hover:scale-[1.02] transition-transform duration-500">
                 </div>
             </div>
         </div>
