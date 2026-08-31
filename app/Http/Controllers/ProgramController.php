@@ -89,7 +89,14 @@ class ProgramController extends Controller
             ->orderBy('published_at', 'desc')
             ->first();
 
+        // Program Terkait
+        $relatedPrograms = Program::published()
+            ->where('id', '!=', $program->id)
+            ->orderBy('published_at', 'desc')
+            ->take(3)
+            ->get();
+
         // Pastikan nama view ini sesuai dengan file blade kamu
-        return view('frontend.program-detail', compact('program', 'previousMaterial', 'nextMaterial'));
+        return view('frontend.program-detail', compact('program', 'previousMaterial', 'nextMaterial', 'relatedPrograms'));
     }
 }

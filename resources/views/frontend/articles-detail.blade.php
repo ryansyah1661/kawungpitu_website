@@ -71,98 +71,111 @@
     </style>
 
     <article class="bg-cream pt-36 pb-24">
-        <div class="max-w-4xl mx-auto px-8 md:px-12">
-            {{-- Breadcrumb --}}
-            <nav class="mb-8 flex items-center space-x-3 text-[10px] uppercase tracking-normal font-tegas text-gray-400">
-                <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
-                    class="hover:text-primary transition-colors">{{ __('messages.navbar.home') }}</a>
-                <span class="text-gray-300">/</span>
-                <a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
-                    class="hover:text-primary transition-colors">{{ __('messages.navbar.article') }}</a>
-            </nav>
+        <div class="max-w-7xl mx-auto px-8 md:px-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
+            
+            {{-- KIRI: KONTEN UTAMA --}}
+            <div class="lg:col-span-2">
+                {{-- Breadcrumb --}}
+                <nav class="mb-8 flex items-center space-x-3 text-[10px] uppercase tracking-normal font-tegas text-gray-400">
+                    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
+                        class="hover:text-primary transition-colors">{{ __('messages.navbar.home') }}</a>
+                    <span class="text-gray-300">/</span>
+                    <a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
+                        class="hover:text-primary transition-colors">{{ __('messages.navbar.article') }}</a>
+                </nav>
 
-            {{-- Metadata --}}
-            <div class="flex flex-wrap items-center gap-y-4 gap-x-6 mb-6">
-                <div class="flex flex-wrap gap-2">
+                {{-- Kategori --}}
+                <div class="flex flex-wrap gap-2 mb-8">
                     @foreach ($artikel->categories as $category)
-                        <span
-                            class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-normal shadow-lg">
+                        <span class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-normal shadow-lg">
                             {{ $category->name }}
                         </span>
                     @endforeach
                 </div>
 
-                <div class="flex items-center space-x-4 uppercase tracking-normal">
-                    <time class="text-xs text-gray-400 font-bold">
-                        {{ $artikel->published_at ? $artikel->published_at->translatedFormat('d F Y') : '-' }}
-                    </time>
-                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                    <span class="flex items-center text-xs text-gray-400 font-bold">
-                        <span class="material-symbols-outlined text-[14px] mr-1.5 text-primary/40">person</span>
-                        {{ $artikel->author_name ?? 'Tim Kawungpitu Institute' }}
-                    </span>
-                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                    <span class="flex items-center text-xs text-gray-400 font-bold">
-                        <span class="material-symbols-outlined text-[14px] mr-1 text-primary/40">visibility</span>
-                        <span class="ml-1">{{ number_format($artikel->view_count) }} VIEWS</span>
-                    </span>
+                {{-- FIX RESPONSIVE: Judul Detail Artikel diturunkan jadi text-2xl di mobile --}}
+                <h1 class="font-tegas text-2xl sm:text-3xl md:text-5xl font-black text-dark uppercase tracking-normal leading-tight mb-12">
+                    {{ $artikel->title }}
+                </h1>
+
+                {{-- Isi Konten Artikel --}}
+                <div class="prose prose-lg max-w-none text-justify prose-figcaption:text-center prose-figcaption:italic prose-a:no-underline hover:prose-a:text-primary mb-16">
+                    {!! $artikel->body !!}
                 </div>
             </div>
 
-            {{-- FIX RESPONSIVE: Judul Detail Artikel diturunkan jadi text-2xl di mobile --}}
-            <h1
-                class="font-tegas text-2xl sm:text-3xl md:text-5xl font-black text-dark uppercase tracking-normal leading-tight mb-12">
-                {{ $artikel->title }}
-            </h1>
+            {{-- KANAN: SIDEBAR --}}
+            <aside class="lg:col-span-1">
+                <div class="bg-white p-6 lg:p-8 rounded-3xl shadow-xl shadow-primary/5 border border-gray-100 flex flex-col gap-8">
+                    
+                    {{-- Author Box --}}
+                    <div>
+                        <h3 class="font-tegas text-sm font-black text-dark uppercase tracking-widest mb-5 border-b border-gray-100 pb-3">
+                            Penulis Artikel
+                        </h3>
+                        <div class="flex items-center gap-4 mb-5">
+                            @if ($artikel->user && $artikel->user->profile_photo)
+                                <img src="{{ asset('storage/' . $artikel->user->profile_photo) }}" alt="{{ $artikel->author_name }}" class="w-12 h-12 rounded-full object-cover shadow-sm">
+                            @else
+                                <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shadow-sm">
+                                    <span class="material-symbols-outlined text-2xl">person</span>
+                                </div>
+                            @endif
+                            <div>
+                                <h4 class="font-tegas text-base font-black text-dark uppercase leading-tight">{{ $artikel->author_name ?? 'Tim Kawungpitu' }}</h4>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3 text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                            <div class="flex items-center justify-between">
+                                <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-primary/60">calendar_today</span> Dipublikasikan</span>
+                                <span class="text-dark">{{ $artikel->published_at ? $artikel->published_at->translatedFormat('d M Y') : '-' }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-primary/60">visibility</span> Total Tayangan</span>
+                                <span class="text-dark">{{ number_format($artikel->view_count) }} Kali</span>
+                            </div>
+                        </div>
+                    </div>
 
-            {{-- Isi Konten Artikel --}}
-            <div
-                class="prose prose-lg max-w-none text-justify prose-figcaption:text-center prose-figcaption:italic prose-a:no-underline hover:prose-a:text-primary mb-16">
-                {!! $artikel->body !!}
-            </div>
+                    {{-- Related Articles --}}
+                    @if ($relatedArticles->isNotEmpty())
+                        <div>
+                            <h3 class="font-tegas text-sm font-black text-dark uppercase tracking-widest mb-5 border-b border-gray-100 pb-3">
+                                {{ __('messages.articles.related_title') }}
+                            </h3>
+                            <div class="space-y-5">
+                                @foreach ($relatedArticles as $related)
+                                    @php
+                                        $relatedUrl = $related->slug ? route('artikel.show', ['locale' => app()->getLocale(), 'slug' => $related->slug]) : '#';
+                                    @endphp
+                                    <article class="group flex gap-3">
+                                        <a href="{{ $relatedUrl }}" class="shrink-0 w-20 h-16 rounded-xl overflow-hidden shadow-sm">
+                                            @if ($related->featured_image)
+                                                <img src="{{ asset('storage/' . $related->featured_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                                            @else
+                                                <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                                                    <span class="material-symbols-outlined text-gray-400">article</span>
+                                                </div>
+                                            @endif
+                                        </a>
+                                        <div class="flex flex-col justify-center">
+                                            <h4 class="font-tegas text-xs font-black text-dark group-hover:text-primary transition-colors leading-tight uppercase line-clamp-2 mb-1.5">
+                                                <a href="{{ $relatedUrl }}">{{ $related->title }}</a>
+                                            </h4>
+                                            <time class="text-[9px] text-gray-400 font-bold uppercase tracking-widest block">
+                                                {{ $related->published_at ? $related->published_at->translatedFormat('d M Y') : '-' }}
+                                            </time>
+                                        </div>
+                                    </article>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </aside>
         </div>
     </article>
-
-    {{-- Related Articles --}}
-    @if ($relatedArticles->isNotEmpty())
-        <section class="py-20 bg-white border-t border-gray-100">
-            <div class="max-w-7xl mx-auto px-8 md:px-12">
-                <h2 class="font-tegas text-3xl font-black text-dark uppercase tracking-tighter mb-12">
-                    {{ __('messages.articles.related_title') }}
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    @foreach ($relatedArticles as $related)
-                        @php
-                            $relatedUrl = $related->slug
-                                ? route('artikel.show', ['locale' => app()->getLocale(), 'slug' => $related->slug])
-                                : '#';
-                        @endphp
-                        <article class="group flex flex-col h-full">
-                            <a href="{{ $relatedUrl }}"
-                                class="relative overflow-hidden rounded-none aspect-[4/3] mb-6 block border border-gray-100">
-                                @if ($related->featured_image)
-                                    <img src="{{ asset('storage/' . $related->featured_image) }}"
-                                        alt="{{ $related->title }}"
-                                        class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                                @else
-                                    <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-5xl text-gray-400">article</span>
-                                    </div>
-                                @endif
-                            </a>
-                            <time class="text-xs text-gray-400 font-bold uppercase tracking-widest mb-2 block">
-                                {{ $related->published_at ? $related->published_at->translatedFormat('d M Y') : '-' }}
-                            </time>
-                            <h3
-                                class="font-tegas text-lg font-black text-dark group-hover:text-primary transition-colors leading-tight uppercase">
-                                <a href="{{ $relatedUrl }}">{{ $related->title }}</a>
-                            </h3>
-                        </article>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    @endif
 
     {{-- AUTOMATION JAVASCRIPT --}}
     <script>
