@@ -98,6 +98,23 @@ class UserResource extends Resource
                     })
                     ->sortable(),
 
+                // Menampilkan Status Online
+                Tables\Columns\IconColumn::make('is_online')
+                    ->label('Status')
+                    ->getStateUsing(fn (\App\Models\User $record): bool => $record->last_seen_at && \Carbon\Carbon::parse($record->last_seen_at)->diffInMinutes(now()) <= 2)
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-minus-circle')
+                    ->trueColor('success')
+                    ->falseColor('gray'),
+
+                // Menampilkan waktu terakhir aktif
+                Tables\Columns\TextColumn::make('last_seen_at')
+                    ->label('Terakhir Aktif')
+                    ->dateTime('d M Y, H:i')
+                    ->sortable()
+                    ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->diffForHumans() : 'Belum pernah login'),
+
                 // Menampilkan kapan akun dibuat
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Daftar Sejak')
