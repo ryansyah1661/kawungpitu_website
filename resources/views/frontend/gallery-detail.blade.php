@@ -16,13 +16,37 @@
                 </a>
             </nav>
 
-            {{-- FIX RESPONSIVE: Judul Detail Album Foto diturunkan jadi text-2xl di mobile --}}
-            <h1 class="font-tegas text-2xl sm:text-3xl md:text-5xl font-black text-dark uppercase tracking-tighter mb-4">
-                {{ $album->title }}
-            </h1>
-            @if ($album->description)
-                <p class="text-lg text-primary/70 italic max-w-2xl">{{ $album->description }}</p>
-            @endif
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                {{-- Kolom Kiri: Judul --}}
+                <div class="lg:col-span-5">
+                    <div class="w-12 h-1 bg-primary rounded-full mb-6"></div>
+                    <h1 class="font-tegas text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-dark uppercase tracking-tighter leading-[1.1]">
+                        {{ $album->title }}
+                    </h1>
+                </div>
+
+                {{-- Kolom Kanan: Deskripsi & Meta --}}
+                @if ($album->description)
+                    <div class="lg:col-span-7 lg:pt-7">
+                        <div class="border-l-4 border-primary/20 pl-6 md:pl-8">
+                            <p class="text-base md:text-lg text-gray-600 font-body leading-relaxed">
+                                {{ $album->description }}
+                            </p>
+                            <div class="flex flex-wrap items-center gap-4 mt-5">
+                                <span class="inline-flex items-center gap-1.5 text-xs font-tegas uppercase tracking-wider text-gray-400">
+                                    <span class="material-symbols-outlined text-[16px]">photo_library</span>
+                                    {{ $album->photos->count() }} {{ __('Foto') }}
+                                </span>
+                                <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                <span class="inline-flex items-center gap-1.5 text-xs font-tegas uppercase tracking-wider text-gray-400">
+                                    <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                    {{ $album->created_at->translatedFormat('d F Y') }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
     </header>
 
