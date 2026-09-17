@@ -29,7 +29,7 @@
                 @if ($album->description)
                     <div class="lg:col-span-7 lg:pt-7">
                         <div class="border-l-4 border-primary/20 pl-6 md:pl-8">
-                            <p class="text-base md:text-lg text-gray-600 font-body leading-relaxed">
+                            <p class="text-sm md:text-base text-gray-500 font-body leading-relaxed font-normal">
                                 {{ $album->description }}
                             </p>
                             <div class="flex flex-wrap items-center gap-4 mt-5">
