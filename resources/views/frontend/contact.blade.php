@@ -112,8 +112,7 @@
                             <h3 class="font-tegas text-xl font-black text-primary uppercase tracking-tight mb-2">
                                 {{ __('messages.contact.office_address') }}
                             </h3>
-                            <p class="text-gray-500 font-body leading-relaxed">Jl. Mawar Raya No.16, Lt 2, RT.08/RW.08,
-                                Curugmekar, Kec. Bogor Bar., Kota Bogor, Jawa Barat 16113</p>
+                            <p class="text-gray-500 font-body leading-relaxed">Bumi Menteng Asri Jl.Terapi Raya No.13, RT.01/RW.20, Menteng, Kec. Bogor Barat, Kota Bogor, Jawa Barat 16111</p>
                         </div>
                     </div>
 
@@ -126,8 +125,8 @@
                             <h3 class="font-tegas text-xl font-black text-primary uppercase tracking-tight mb-2">
                                 {{ __('messages.contact.official_email') }}
                             </h3>
-                            <a href="mailto:info@kawungpitu.com"
-                                class="text-gray-500 font-body hover:text-primary transition-colors block">info@kawungpitu.com</a>
+                            <a href="mailto:info@kawungpitu.org"
+                                class="text-gray-500 font-body hover:text-primary transition-colors block">info@kawungpitu.org</a>
                         </div>
                     </div>
 
@@ -149,7 +148,7 @@
                                     class="w-10 h-10 bg-white border-2 border-gray-100 rounded-xl flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm">
                                     <i class="fa-brands fa-instagram"></i>
                                 </a>
-                                <a href="mailto:info@kawungpitu.com" title="Kirim Email"
+                                <a href="mailto:info@kawungpitu.org" title="Kirim Email"
                                     class="w-10 h-10 bg-white border-2 border-gray-100 rounded-xl flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm">
                                     <i class="fa-solid fa-envelope"></i>
                                 </a>
@@ -161,11 +160,7 @@
                 <a href="http://maps.google.com/maps?q=Kawung+Pitu+Institute" target="_blank" rel="noopener noreferrer"
                     class="flex-grow rounded-[40px] overflow-hidden border-4 border-gray-100 shadow-xl shadow-primary/5 min-h-[300px] relative group cursor-pointer block">
 
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.535817290632!2d106.75629167448574!3d-6.580092493413348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c5123d45595d%3A0xc38d8d73b061d4a0!2sJl.%20Mawar%20Raya%20No.16%2C%20Curugmekar%2C%20Kec.%20Bogor%20Bar.%2C%20Kota%20Bogor%2C%20Jawa%20Barat%2016113!5e0!3m2!1sid!2sid!4v1714280000000!5m2!1sid!2sid"
-                        class="w-full h-full absolute inset-0 border-0 grayscale group-hover:grayscale-0 transition-all duration-700 pointer-events-none"
-                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.555003245391!2d106.77626287504073!3d-6.577704793415742!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c5006eda8a77%3A0xf0c714b3925caaad!2sKawungpitu%20Institute!5e0!3m2!1sid!2sid!4v1790312190447!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
                     <div
                         class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-all duration-500 flex items-center justify-center">
