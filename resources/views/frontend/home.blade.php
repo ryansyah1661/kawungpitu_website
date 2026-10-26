@@ -4,7 +4,7 @@
     {{-- SECTION HERO --}}
     <section class="relative min-h-[90vh] flex items-center pt-32 pb-16 overflow-hidden bg-dark">
         <div class="absolute inset-0 z-0 overflow-hidden">
-            <img src="{{ asset('images/rempah.webp') }}" alt="Rempah"
+            <img src="{{ asset('images/rempah.jpg') }}" alt="Rempah"
                 class="animate-hero-1 absolute inset-0 object-cover object-center w-full h-full filter brightness-[0.6]" loading="eager">
             <img src="{{ asset('images/lahan.jpg') }}" alt="Lahan"
                 class="animate-hero-2 absolute inset-0 object-cover object-center w-full h-full filter brightness-[0.6]" loading="eager">
