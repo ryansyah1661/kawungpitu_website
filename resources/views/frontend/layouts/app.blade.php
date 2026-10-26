@@ -21,6 +21,11 @@
 
     <link rel="icon" type="image/png" href="{{ asset('kawung.png') }}">
 
+    {{-- ⚡ OPTIMASI LCP: PRELOAD GAMBAR HERO UTAMA HANYA DI HALAMAN BERANDA --}}
+    @if(request()->routeIs('home'))
+        <link rel="preload" as="image" href="{{ asset('images/rempah.jpg') }}" fetchpriority="high">
+    @endif
+
     <!-- Preconnect ke Domain Eksternal Utama -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,10 +38,8 @@
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 
-    <!-- Panggil Vite Asset (Jika Tailwind sudah disetup via Vite) / Jika belum, gunakan Tailwind CLI -->
+    <!-- Panggil Vite Asset (Tailwind CSS v4 & Alpine.js JS) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
         /* Paksa font swap untuk FontAwesome & Material Symbols agar teks tidak tertahan */
@@ -112,7 +115,7 @@
         @keyframes hero-fade-2 {
             0% { opacity: 0; transform: scale(1); }
             45% { opacity: 0; transform: scale(1); }
-            55% { opacity: 1; transform: scale(1); }
+            55% { opacity: 1; transform: scale(1.1); }
             95% { opacity: 1; transform: scale(1.1); }
             100% { opacity: 0; transform: scale(1.1); }
         }
@@ -129,7 +132,7 @@
 
 <body class="bg-cream text-dark font-body antialiased selection:bg-primary selection:text-white">
 
-    {{-- SINKRONISASI: Inisialisasi state menu mobile di pembungkus nav --}}
+    {{-- NAV BAR --}}
     <nav class="fixed w-full top-0 z-50 bg-cream/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300"
         id="navbar" x-data="{ mobileMenuOpen: false }">
         <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex justify-between items-center transition-all duration-300"
@@ -197,20 +200,19 @@
                 </a>
             </div>
 
-            {{-- SINKRONISASI: Tombol hamburger mobile terhubung ke Alpine.js --}}
+            {{-- Tombol hamburger mobile --}}
             <button class="lg:hidden text-dark p-2 focus:outline-none z-50" @click="mobileMenuOpen = !mobileMenuOpen">
                 <span class="material-symbols-outlined text-3xl" x-text="mobileMenuOpen ? 'close' : 'menu'">menu</span>
             </button>
         </div>
 
-        {{-- SINKRONISASI: Wadah lipat menu Dropdown Mobile --}}
+        {{-- Dropdown Mobile --}}
         <div class="lg:hidden bg-cream border-b border-gray-200 absolute w-full left-0 px-6 py-6 space-y-4 shadow-xl transition-all duration-300"
             x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 -translate-y-4" x-cloak>
 
-            {{-- FIX RESPONSIVE ACTIVE MENU DROPDOWN MOBILE (SUDAH AKTIF DINAMIS QI!) --}}
             <div class="flex flex-col space-y-4 font-tegas font-bold text-sm uppercase tracking-wide">
                 <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
                     class="py-2 border-b border-gray-100/50 {{ request()->routeIs('home') ? 'text-primary' : 'hover:text-primary' }}">{{ __('messages.navbar.home') }}</a>
@@ -253,13 +255,13 @@
 
     <main>@yield('content')</main>
 
+    {{-- FOOTER --}}
     <footer class="bg-dark text-white pt-24 pb-12 border-t-[12px] border-primary">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
-            {{-- Grid Menu Utama --}}
             <div
                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-5 border-b border-gray-800 pb-10 items-start">
 
-                {{-- KOLOM 1: LOGO & DESKRIPSI --}}
+                {{-- LOGO & DESKRIPSI --}}
                 <div class="lg:col-span-5 pr-0 lg:pr-16">
                     <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="mb-8 block group">
                         <img src="{{ asset('images/logo-kawung-ori.png') }}" alt="Logo Kawungpitu"
@@ -287,7 +289,7 @@
                     </div>
                 </div>
 
-                {{-- KOLOM 2: KELEMBAGAAN --}}
+                {{-- KELEMBAGAAN --}}
                 <div class="lg:col-span-2">
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.company') }}
@@ -305,7 +307,7 @@
                     </ul>
                 </div>
 
-                {{-- KOLOM 3: PROGRAM --}}
+                {{-- PROGRAM --}}
                 <div class="lg:col-span-2">
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.program_title') }}
@@ -320,7 +322,7 @@
                     </ul>
                 </div>
 
-                {{-- KOLOM 4: HUBUNGI KAMI --}}
+                {{-- HUBUNGI KAMI --}}
                 <div class="lg:col-span-3">
                     <h4 class="font-bold mb-8 uppercase tracking-widest text-sm text-gray-200 font-tegas">
                         {{ __('messages.footer.contact_us') }}
@@ -328,7 +330,7 @@
                     <ul class="space-y-6 text-gray-400 font-light text-sm">
                         <li class="flex items-start space-x-4">
                             <span class="material-symbols-outlined text-primary mt-1">location_on</span>
-                            <span class="leading-relaxed">Bumi Menteng Asri Jl. Terapi Raya No.13, RT.01/RW.20, Menteng, Kec. Bogor Baratl, Kota Bogor, Jawa Barat 16111</span>
+                            <span class="leading-relaxed">Bumi Menteng Asri Jl. Terapi Raya No.13, RT.01/RW.20, Menteng, Kec. Bogor Barat, Kota Bogor, Jawa Barat 16111</span>
                         </li>
                         <li class="flex items-center space-x-4">
                             <span class="material-symbols-outlined text-primary">mail</span>
