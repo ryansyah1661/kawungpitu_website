@@ -5,9 +5,9 @@
     <section class="relative min-h-[90vh] flex items-center pt-32 pb-16 overflow-hidden bg-dark">
         <div class="absolute inset-0 z-0 overflow-hidden">
             <img src="{{ asset('images/rempah.jpg') }}" alt="Rempah"
-                class="animate-hero-1 absolute inset-0 object-cover object-center w-full h-full filter brightness-[0.6]">
+                class="animate-hero-1 absolute inset-0 object-cover object-center w-full h-full filter brightness-[0.6]" loading="eager">
             <img src="{{ asset('images/lahan.jpg') }}" alt="Lahan"
-                class="animate-hero-2 absolute inset-0 object-cover object-center w-full h-full filter brightness-[0.6]">
+                class="animate-hero-2 absolute inset-0 object-cover object-center w-full h-full filter brightness-[0.6]" loading="eager">
             <div class="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/60 to-transparent z-10"></div>
         </div>
 
@@ -168,7 +168,6 @@
                 @endphp
 
                 @foreach ($strategi as $s)
-                    {{-- FIX MOBILE TAP: Menggunakan Alpine x-data biar di HP sekali tap ringan langsung muter sempurna tanpa ganjal sistem iOS --}}
                     <div x-data="{ flipped: false }" @click="flipped = !flipped" @click.away="flipped = false"
                         class="group h-[360px] [perspective:1000px] ios-pilar-wrapper cursor-pointer select-none">
                         <div class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] ios-pilar-card"
@@ -284,8 +283,8 @@
 
                         <div class="flex justify-between items-center mb-6">
                             <div
-                                class="w-14 h-14 bg-[#FDF2EA] rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shrink-0">
-                                <span class="material-symbols-outlined text-2xl">{{ $item['icon'] }}</span>
+                                class="w-14 h-14 bg-[#FDF2EA] rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary transition-all duration-500 shrink-0">
+                                <span class="material-symbols-outlined text-2xl transition-colors duration-500 group-hover:text-white">{{ $item['icon'] }}</span>
                             </div>
 
                             <div class="w-24 h-24 relative shrink-0">
@@ -336,7 +335,7 @@
         </div>
     </section>
 
-    {{-- Script Animasi --}}
+    {{-- Script Animasi Radar --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const center = 50;
@@ -366,8 +365,7 @@
                             const elapsed = timestamp - startTimestamp;
                             const progress = Math.min(elapsed / duration, 1);
                             const easedProgress = 1 - Math.pow(1 - progress, 4);
-                            polygon.setAttribute('points', calculateAnimatedPoints(values,
-                                easedProgress));
+                            polygon.setAttribute('points', calculateAnimatedPoints(values, easedProgress));
                             if (progress < 1) requestAnimationFrame(animate);
                             else polygon.dataset.animated = "true";
                         };
@@ -384,13 +382,10 @@
 
     <style>
         @keyframes pulse-slow {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: scale(1);
                 opacity: 0.7;
             }
-
             50% {
                 transform: scale(1.05);
                 opacity: 1;
@@ -401,7 +396,6 @@
             animation: pulse-slow 4s ease-in-out infinite;
         }
 
-        /* 🔥 FIX FOR iOS SAFARI (WEBKIT 3D ENGINE ECOSYSTEM) */
         .ios-pilar-wrapper {
             -webkit-perspective: 1000px !important;
             perspective: 1000px !important;
@@ -419,7 +413,6 @@
             backface-visibility: hidden !important;
         }
 
-        /* 1. KONDISI LAPTOP (Desktop Hover): Efek putar hanya aktif via hover jika resolusi layar lebar */
         @media (min-width: 1024px) {
             .group:hover .ios-pilar-card {
                 transform: rotateY(180deg) !important;
@@ -427,7 +420,6 @@
             }
         }
 
-        /* 2. KONDISI MOBILE (HP Tap): Dipaksa berputar lancar menggunakan bantuan class Alpine.js */
         .ios-pilar-card.is-flipped {
             transform: rotateY(180deg) !important;
             -webkit-transform: rotateY(180deg) !important;
@@ -458,7 +450,7 @@
                             @if ($article->featured_image)
                                 <img src="{{ asset('storage/' . $article->featured_image) }}"
                                     alt="{{ $article->title }}"
-                                    class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                                    class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" loading="lazy">
                             @else
                                 <div
                                     class="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">

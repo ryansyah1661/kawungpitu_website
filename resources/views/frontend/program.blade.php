@@ -5,7 +5,6 @@
     <header class="bg-cream pt-40 pb-24 px-8 md:px-12 border-b border-gray-100 overflow-hidden">
         <div class="max-w-7xl mx-auto relative">
             <div class="relative z-10">
-                {{-- PERBAIKAN DI SINI: Ukuran font judul diubah menjadi responsif (text-3xl di HP, membesar di desktop) --}}
                 <h1
                     class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-10 uppercase tracking-normal animate-fade-in-left w-fit text-left">
                     <span class="bg-white text-dark px-6 pr-20 py-2 block mb-2 w-full shadow-xl shadow-primary/5">
@@ -32,7 +31,6 @@
         fetchMaterials(url, type, value) {
             this.loading = true;
     
-            // Update tracker state
             if (type === 'all') {
                 this.activeStatus = 'all';
                 this.activeCategory = 'all';
@@ -160,7 +158,7 @@
                                                     class="w-6 h-6 object-contain transition-all duration-300"
                                                     :class="activeCategory === '{{ $cat->slug }}' ? 'brightness-0 invert' :
                                                         'opacity-70 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-0 group-hover:invert'"
-                                                    alt="{{ $cat->name }}">
+                                                    alt="{{ $cat->name }}" loading="lazy">
                                             </div>
                                         @else
                                             <span class="material-symbols-outlined text-lg transition-colors"
@@ -201,7 +199,7 @@
                                 <div
                                     class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 border-gray-100 group-hover:border-primary/30 transition-all">
                                     <img src="{{ asset('storage/' . $popular->featured_image) }}"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
                                 </div>
                                 <div class="flex-grow">
                                     <h4
@@ -227,15 +225,35 @@
 
             {{-- Main Content Area --}}
             <div class="lg:col-span-3 relative">
-                <div x-show="loading" x-transition.opacity
-                    class="absolute inset-0 bg-cream/50 z-20 flex justify-center pt-20 backdrop-blur-[1px]">
-                    <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                
+                {{-- SKELETON LOADING STATE --}}
+                <div x-show="loading" x-cloak x-transition.opacity
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <template x-for="i in 6" :key="i">
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 animate-pulse flex flex-col h-full">
+                            <div class="h-48 bg-gray-200 w-full"></div>
+                            <div class="p-6 space-y-4 flex-grow flex flex-col justify-between">
+                                <div class="space-y-2">
+                                    <div class="h-3 bg-gray-200 rounded w-1/3"></div>
+                                    <div class="h-5 bg-gray-200 rounded w-5/6"></div>
+                                    <div class="h-5 bg-gray-200 rounded w-2/3"></div>
+                                </div>
+                                <div class="space-y-2 pt-4">
+                                    <div class="h-3 bg-gray-200 rounded w-full"></div>
+                                    <div class="h-3 bg-gray-200 rounded w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </div>
 
-                <div id="program-container" :class="loading ? 'opacity-30' : 'opacity-100'"
-                    class="transition-all duration-500">
+                {{-- KONTEN ASLI PROGRAM --}}
+                <div id="program-container" x-show="!loading" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform translate-y-2"
+                    x-transition:enter-end="opacity-100 transform translate-y-0">
                     @include('frontend.partials.program-grid')
                 </div>
+
             </div>
         </div>
     </main>
@@ -246,7 +264,6 @@
                 opacity: 0;
                 transform: translateY(15px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);

@@ -7,7 +7,7 @@
         <div class="absolute inset-0 z-0 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2000"
                 alt="{{ __('messages.about.header.img_alt') }}"
-                class="w-full h-full object-cover opacity-60 animate-slow-zoom">
+                class="w-full h-full object-cover opacity-60 animate-slow-zoom" loading="eager" decoding="async">
             <div class="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/70 to-transparent"></div>
         </div>
 
@@ -15,10 +15,10 @@
             <div class="max-w-4xl mt-12 md:mt-0 lg:pt-16">
                 <h1
                     class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-10 uppercase tracking-tighter animate-fade-in-left w-fit text-left">
-                    <span class="bg-white text-dark px-6 pr-12 py-2 block mb-2 w-full">
+                    <span class="bg-white text-dark px-6 pr-12 py-2 block mb-2 w-full shadow-xl">
                         {{ __('messages.about.header.title_1') }}
                     </span>
-                    <span class="bg-primary text-white px-6 pr-12 py-2 block w-full">
+                    <span class="bg-primary text-white px-6 pr-12 py-2 block w-full shadow-xl">
                         {{ __('messages.about.header.title_2') }}
                     </span>
                 </h1>
@@ -38,7 +38,6 @@
                         {{ __('messages.about.header.btn_pillars') }}
                     </a>
 
-                    {{-- TOMBOL PDF COMPANY PROFILE UNTUK HALAMAN ABOUT --}}
                     <a href="{{ asset('pdf/company-profile-kawungpitu.pdf') }}" target="_blank"
                         class="bg-transparent text-white px-8 py-3 font-tegas font-black uppercase tracking-widest hover:bg-white hover:text-primary transition-all duration-300 border-2 border-white flex items-center justify-center gap-2.5 whitespace-nowrap group/pdf">
                         <span
@@ -56,7 +55,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div class="space-y-6 animate-fade-in-left">
                     <div class="flex items-center space-x-4">
-                        <div class="w-12 bg-primary"></div>
+                        <div class="w-12 h-1 bg-primary"></div>
                     </div>
                     <h2 class="font-tegas text-4xl font-black text-dark uppercase tracking-tight leading-tight">
                         {!! __('messages.about.intro.title') !!}
@@ -71,7 +70,7 @@
                 <div class="relative group flex justify-center">
                     <img src="{{ asset('images/Kawungpitu.png') }}"
                         alt="{{ __('messages.about.intro.img_alt') }}"
-                        class="relative z-10 mix-blend-multiply object-contain max-h-[500px] w-full group-hover:scale-[1.02] transition-transform duration-500">
+                        class="relative z-10 mix-blend-multiply object-contain max-h-[500px] w-full group-hover:scale-[1.02] transition-transform duration-500" loading="lazy">
                 </div>
             </div>
         </div>
@@ -87,8 +86,8 @@
                     class="group p-10 bg-[#F2E7DF] text-dark rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:-translate-y-2 transition-all duration-500 flex flex-col">
                     <div>
                         <div
-                            class="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 text-primary">
-                            <span class="material-symbols-outlined text-4xl">visibility</span>
+                            class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary transition-all duration-500 text-primary">
+                            <span class="material-symbols-outlined text-4xl transition-colors duration-500 group-hover:text-white">visibility</span>
                         </div>
                         <h2 class="font-tegas text-4xl font-black text-primary mb-6 uppercase tracking-tighter">
                             {{ __('messages.about.vmn.vision_title') }}
@@ -106,8 +105,8 @@
                 <div
                     class="group p-10 bg-[#F2E7DF] text-dark rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:-translate-y-2 transition-all duration-500 flex flex-col">
                     <div
-                        class="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 text-primary">
-                        <span class="material-symbols-outlined text-4xl">flag</span>
+                        class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary transition-all duration-500 text-primary">
+                        <span class="material-symbols-outlined text-4xl transition-colors duration-500 group-hover:text-white">flag</span>
                     </div>
                     <h2 class="font-tegas text-3xl font-black text-primary mb-8 uppercase tracking-tighter">
                         {{ __('messages.about.vmn.mission_title') }}</h2>
@@ -129,8 +128,8 @@
                 <div
                     class="group p-10 bg-[#F2E7DF] text-dark rounded-3xl border border-primary/5 shadow-xl shadow-primary/5 hover:-translate-y-2 transition-all duration-500 flex flex-col">
                     <div
-                        class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 text-primary">
-                        <span class="material-symbols-outlined text-4xl">diamond</span>
+                        class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary transition-all duration-500 text-primary">
+                        <span class="material-symbols-outlined text-4xl transition-colors duration-500 group-hover:text-white">diamond</span>
                     </div>
                     <h2 class="font-tegas text-3xl font-black text-primary mb-8 uppercase tracking-tighter">
                         {{ __('messages.about.vmn.values_title') }}</h2>
@@ -174,8 +173,8 @@
                 <div
                     class="group bg-[#F2E7DF] p-10 rounded-3xl shadow-xl shadow-gray-200/50 border border-primary/5 hover:-translate-y-2 transition-all duration-500 flex flex-col h-full">
                     <div
-                        class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 text-primary border border-primary/10">
-                        <span class="material-symbols-outlined text-5xl">eco</span>
+                        class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary transition-all duration-500 text-primary border border-primary/10">
+                        <span class="material-symbols-outlined text-5xl transition-colors duration-500 group-hover:text-white">eco</span>
                     </div>
                     <h3 class="font-tegas text-2xl font-black uppercase text-primary mb-4 tracking-tighter leading-tight">
                         {!! __('messages.about.pillars.p1_title') !!}
@@ -192,8 +191,8 @@
                 <div
                     class="group bg-[#F2E7DF] p-10 rounded-3xl shadow-xl shadow-gray-200/50 border border-primary/5 hover:-translate-y-2 transition-all duration-500 flex flex-col h-full">
                     <div
-                        class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 text-primary border border-primary/10">
-                        <span class="material-symbols-outlined text-5xl">groups</span>
+                        class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary transition-all duration-500 text-primary border border-primary/10">
+                        <span class="material-symbols-outlined text-5xl transition-colors duration-500 group-hover:text-white">groups</span>
                     </div>
                     <h3 class="font-tegas text-2xl font-black uppercase text-primary mb-4 tracking-tighter leading-tight">
                         {!! __('messages.about.pillars.p2_title') !!}
@@ -210,8 +209,8 @@
                 <div
                     class="group bg-[#F2E7DF] p-10 rounded-3xl shadow-xl shadow-gray-200/50 border border-primary/5 hover:-translate-y-2 transition-all duration-500 flex flex-col h-full">
                     <div
-                        class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 text-primary border border-primary/10">
-                        <span class="material-symbols-outlined text-5xl">trending_up</span>
+                        class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary transition-all duration-500 text-primary border border-primary/10">
+                        <span class="material-symbols-outlined text-5xl transition-colors duration-500 group-hover:text-white">trending_up</span>
                     </div>
                     <h3 class="font-tegas text-2xl font-black uppercase text-primary mb-4 tracking-tighter leading-tight">
                         {!! __('messages.about.pillars.p3_title') !!}
@@ -260,7 +259,7 @@
                         <div
                             class="relative overflow-hidden rounded-3xl bg-cream aspect-[3/4] mb-6 shadow-xl shadow-primary/5 border border-gray-100">
                             <img alt="{{ $advisor->name }}"
-                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
+                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" loading="lazy"
                                 src="{{ $advisor->photo
                                     ? asset('storage/' . $advisor->photo)
                                     : ($advisor->gender === 'female'
@@ -293,7 +292,7 @@
                         <div
                             class="relative overflow-hidden rounded-2xl bg-cream aspect-[3/4] mb-4 shadow-lg shadow-primary/5 border border-gray-100">
                             <img alt="{{ $structure->name }}"
-                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
+                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" loading="lazy"
                                 src="{{ $structure->photo
                                     ? asset('storage/' . $structure->photo)
                                     : ($structure->gender === 'female'

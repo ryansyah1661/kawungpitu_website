@@ -20,46 +20,35 @@
     <meta name="google-site-verification" content="o-kp93k0jiZpdiaAoKVm8PmhCIwf1sr4rP-kSkG4PIo" />
 
     <link rel="icon" type="image/png" href="{{ asset('kawung.png') }}">
+
+    <!-- Preconnect ke Domain Eksternal Utama -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Montserrat:wght@700;900&display=swap"
-        rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet" />
+    <!-- Google Fonts (Ditambahkan display=swap) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- FontAwesome (Load Non-Blocking) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <!-- Panggil Vite Asset (Jika Tailwind sudah disetup via Vite) / Jika belum, gunakan Tailwind CLI -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            DEFAULT: '#70080B',
-                            hover: '#8A0A0E',
-                            light: '#F8E9EA',
-                        },
-                        cream: {
-                            DEFAULT: '#fdfbf7',
-                            dark: '#F3EFE6',
-                        },
-                        dark: '#1a1a1a',
-                    },
-                    fontFamily: {
-                        headline: ['"Playfair Display"', 'serif'],
-                        body: ['"Inter"', 'sans-serif'],
-                        tegas: ['"Montserrat"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
 
     <style>
+        /* Paksa font swap untuk FontAwesome & Material Symbols agar teks tidak tertahan */
+        @font-face {
+            font-family: 'Font Awesome 6 Free';
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-display: swap;
+        }
+
         .hover-underline {
             position: relative;
             text-decoration: none;
@@ -85,7 +74,6 @@
                 opacity: 0;
                 transform: translateX(-50px);
             }
-
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -114,57 +102,19 @@
         }
 
         @keyframes hero-fade-1 {
-            0% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            45% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
-
-            55% {
-                opacity: 0;
-                transform: scale(1.1);
-            }
-
-            95% {
-                opacity: 0;
-                transform: scale(1);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+            0% { opacity: 1; transform: scale(1); }
+            45% { opacity: 1; transform: scale(1.1); }
+            55% { opacity: 0; transform: scale(1.1); }
+            95% { opacity: 0; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         @keyframes hero-fade-2 {
-            0% {
-                opacity: 0;
-                transform: scale(1);
-            }
-
-            45% {
-                opacity: 0;
-                transform: scale(1);
-            }
-
-            55% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            95% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(1.1);
-            }
+            0% { opacity: 0; transform: scale(1); }
+            45% { opacity: 0; transform: scale(1); }
+            55% { opacity: 1; transform: scale(1); }
+            95% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0; transform: scale(1.1); }
         }
 
         .animate-fade-in-left {

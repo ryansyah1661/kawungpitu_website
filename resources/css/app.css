@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #70080B;
+  --color-primary-hover: #8A0A0E;
+  --color-primary-light: #F8E9EA;
+
+  --color-cream: #fdfbf7;
+  --color-cream-dark: #F3EFE6;
+
+  --color-dark: #1a1a1a;
+
+  --font-headline: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+  --font-tegas: "Montserrat", sans-serif;
+}
+
+/* Fallback class untuk memastikan warna primary selalu terdeteksi sempurna */
+.bg-primary {
+  background-color: #70080B !important;
+}
+.text-primary {
+  color: #70080B !important;
+}
+.border-primary {
+  border-color: #70080B !important;
+}

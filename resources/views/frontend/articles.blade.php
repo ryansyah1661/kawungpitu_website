@@ -6,7 +6,6 @@
     <header class="bg-cream pt-40 pb-24 px-8 md:px-12 border-b border-gray-100 overflow-hidden">
         <div class="max-w-7xl mx-auto relative">
             <div class="relative z-10">
-                {{-- FIX RESPONSIVE FONT SIZE --}}
                 <h1
                     class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-10 uppercase tracking-normal animate-fade-in-left w-fit text-left">
                     <span class="bg-primary text-white px-6 pr-16 py-2 block w-full shadow-xl shadow-primary/20">
@@ -81,7 +80,7 @@
                                 </span>
                             </a>
                         </li>
-                        {{-- Loop Kategori (SUDAH DIURUTKAN SESUAI ABJAD A-Z) --}}
+                        {{-- Loop Kategori --}}
                         @foreach ($categories->sortBy('name') as $cat)
                             <li x-show="showAllCategories || {{ $loop->iteration <= 5 ? 'true' : 'false' }}"
                                 x-transition.duration.300ms>
@@ -105,7 +104,6 @@
                         @endforeach
                     </ul>
 
-                    {{-- LINK TEKS UTK LIHAT SELENGKAPNYA KATEGORI --}}
                     @if (count($categories) > 5)
                         <div class="mt-5 pt-2 border-t border-dashed border-gray-100">
                             <button @click="showAllCategories = !showAllCategories"
@@ -133,7 +131,7 @@
                                     class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 border-gray-100 group-hover:border-primary/30 transition-all">
                                     @if ($popular->featured_image)
                                         <img src="{{ asset('storage/' . $popular->featured_image) }}"
-                                            class="w-full h-full object-cover group-hover:scale-110 transition-all duration-500">
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-all duration-500" loading="lazy">
                                     @else
                                         <div class="w-full h-full bg-gray-200 flex items-center justify-center">
                                             <span class="material-symbols-outlined text-2xl text-gray-400">article</span>
@@ -159,15 +157,35 @@
 
             {{-- Container Utama Artikel --}}
             <div class="lg:col-span-3 relative">
-                <div x-show="loading" x-transition.opacity
-                    class="absolute inset-0 bg-cream/50 z-20 flex justify-center pt-20 backdrop-blur-[1px]">
-                    <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                
+                {{-- SKELETON LOADING STATE --}}
+                <div x-show="loading" x-cloak x-transition.opacity
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <template x-for="i in 6" :key="i">
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 animate-pulse flex flex-col h-full">
+                            <div class="h-48 bg-gray-200 w-full"></div>
+                            <div class="p-6 space-y-4 flex-grow flex flex-col justify-between">
+                                <div class="space-y-2">
+                                    <div class="h-3 bg-gray-200 rounded w-1/3"></div>
+                                    <div class="h-5 bg-gray-200 rounded w-5/6"></div>
+                                    <div class="h-5 bg-gray-200 rounded w-2/3"></div>
+                                </div>
+                                <div class="space-y-2 pt-4">
+                                    <div class="h-3 bg-gray-200 rounded w-full"></div>
+                                    <div class="h-3 bg-gray-200 rounded w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </div>
 
-                <div id="article-container" :class="loading ? 'opacity-30' : 'opacity-100'"
-                    class="transition-all duration-500">
+                {{-- KONTEN ASLI ARTIKEL --}}
+                <div id="article-container" x-show="!loading" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform translate-y-2"
+                    x-transition:enter-end="opacity-100 transform translate-y-0">
                     @include('frontend.partials.article-grid')
                 </div>
+
             </div>
         </div>
     </main>
@@ -178,7 +196,6 @@
                 opacity: 0;
                 transform: translateY(15px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);

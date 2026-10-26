@@ -5,7 +5,6 @@
     <header class="bg-cream pt-40 pb-24 px-8 md:px-12 border-b border-gray-100 overflow-hidden">
         <div class="max-w-7xl mx-auto relative">
             <div class="relative z-10">
-                {{-- FIX RESPONSIVE FONT SIZE --}}
                 <h1
                     class="font-tegas text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-10 uppercase tracking-tighter animate-fade-in-left w-fit text-left">
                     <span class="bg-white text-dark px-6 pr-20 py-2 block mb-2 w-full shadow-xl shadow-primary/5">
@@ -33,17 +32,28 @@
                         ? route('galeri.show', ['locale' => app()->getLocale(), 'slug' => $album->slug])
                         : '#';
                 @endphp
-                <a href="{{ $albumUrl }}" class="group block">
+                <a href="{{ $albumUrl }}" class="group block" x-data="{ imageLoaded: false }">
                     <div
-                        class="relative aspect-[4/3] rounded-3xl overflow-hidden mb-6 shadow-xl shadow-primary/5 border border-gray-100">
+                        class="relative aspect-[4/3] rounded-3xl overflow-hidden mb-6 shadow-xl shadow-primary/5 border border-gray-100 bg-gray-100">
+                        
+                        {{-- SKELETON PLACEHOLDER GAMBAR ALBUM --}}
+                        <div x-show="!imageLoaded" 
+                            class="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+                            <span class="material-symbols-outlined text-4xl text-gray-300">image</span>
+                        </div>
+
                         @if ($album->cover_image)
                             <img src="{{ asset('storage/' . $album->cover_image) }}" alt="{{ $album->title }}"
-                                class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                                @load="imageLoaded = true"
+                                :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
+                                class="w-full h-full object-cover transform transition-all duration-700 group-hover:scale-110"
+                                loading="lazy" decoding="async">
                         @else
-                            <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <div class="w-full h-full bg-gray-200 flex items-center justify-center" x-init="imageLoaded = true">
                                 <span class="material-symbols-outlined text-6xl text-gray-400">photo_library</span>
                             </div>
                         @endif
+
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                         </div>
