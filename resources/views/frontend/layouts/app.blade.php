@@ -23,7 +23,7 @@
 
     {{-- ⚡ OPTIMASI LCP: PRELOAD GAMBAR HERO UTAMA HANYA DI HALAMAN BERANDA --}}
     @if(request()->routeIs('home'))
-        <link rel="preload" as="image" href="{{ asset('images/rempah.jpg') }}" fetchpriority="high">
+        <link rel="preload" as="image" href="{{ asset('images/rempah.webp') }}" type="image/webp" fetchpriority="high">
     @endif
 
     <!-- Preconnect ke Domain Eksternal Utama -->
