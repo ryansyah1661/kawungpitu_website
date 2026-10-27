@@ -30,17 +30,28 @@
             line-height: 1.75 !important;
         }
 
-        /* 4. Blockquote / Kutipan: persis seperti di editor admin (menjorok, garis kiri, italic, soft background) */
+        /* 4. Blockquote / Kutipan: persis seperti di editor admin (menjorok, garis kiri, italic, soft background & tanda kutip) */
         .prose blockquote {
+            position: relative !important;
             margin-top: 1.5rem !important;
             margin-bottom: 1.5rem !important;
-            padding: 0.75rem 1.25rem !important;
+            padding: 0.85rem 1.25rem 0.85rem 3rem !important;
             border-left: 4px solid var(--color-primary, #70080B) !important;
             background-color: rgba(112, 8, 11, 0.03) !important;
             border-radius: 0 0.5rem 0.5rem 0 !important;
             font-style: italic !important;
             color: #4b5563 !important;
-            quotes: none !important;
+        }
+        .prose blockquote::before {
+            content: "“" !important;
+            position: absolute !important;
+            left: 0.85rem !important;
+            top: -0.1rem !important;
+            font-family: Georgia, serif !important;
+            font-size: 2.75rem !important;
+            line-height: 1 !important;
+            color: var(--color-primary, #70080B) !important;
+            opacity: 0.45 !important;
         }
         .prose blockquote p {
             margin: 0 !important;
