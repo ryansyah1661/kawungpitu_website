@@ -64,27 +64,6 @@
                         {{ __('messages.program.status_title') }}
                     </h3>
                     <ul class="space-y-4 font-body text-gray-600">
-                        {{-- Semua Program --}}
-                        <li>
-                            <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
-                                @click.prevent="fetchMaterials($el.href, 'all', 'all')"
-                                class="flex justify-between items-center group cursor-pointer hover:translate-x-1 transition-transform duration-300">
-                                <span
-                                    :class="(activeStatus === 'all' && activeCategory === 'all') ?
-                                    'font-bold text-primary' : 'font-medium group-hover:text-primary'"
-                                    class="transition-colors">
-                                    {{ __('messages.program.all') }}
-                                </span>
-                                <span
-                                    :class="(activeStatus === 'all' && activeCategory === 'all') ?
-                                    'bg-primary text-white' :
-                                    'bg-gray-100 text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'"
-                                    class="transition-colors text-xs py-1 px-2.5 rounded-lg font-bold">
-                                    {{ $totalMaterialsCount }}
-                                </span>
-                            </a>
-                        </li>
-
                         {{-- Sedang Berjalan --}}
                         <li>
                             <a href="{{ route('program.index', ['locale' => app()->getLocale(), 'status' => 'ongoing']) }}"
@@ -135,7 +114,8 @@
                     </ul>
                 </div>
 
-                {{-- Kategori (Sidebar) --}}
+                {{-- Kategori (Sidebar) - Sementara disembunyikan/dikomentari dari tampilan frontend --}}
+                {{-- 
                 <div>
                     <h3
                         class="font-tegas text-xl font-black text-primary mb-6 border-b-2 border-primary/10 pb-2 uppercase tracking-tight">
@@ -185,6 +165,7 @@
                         @endforeach
                     </ul>
                 </div>
+                --}}
 
                 {{-- Most Popular --}}
                 <div class="pt-10">
