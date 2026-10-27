@@ -5,6 +5,32 @@
 @section('og_image', $program->featured_image ? asset('storage/' . $program->featured_image) : asset('images/logo-kawung-ori.png'))
 
 @section('content')
+    <style>
+        /* 1. Spasi antar paragraf yang ideal & nyaman dibaca */
+        .prose p {
+            margin-top: 1.25rem !important;
+            margin-bottom: 1.25rem !important;
+            line-height: 1.85 !important;
+        }
+
+        /* 2. Normalisasi paragraf kosong akibat dobel enter di editor admin */
+        .prose p:empty,
+        .prose p:has(> br:only-child) {
+            display: none !important;
+        }
+
+        /* 3. List / poin-poin agar rapi */
+        .prose ol, .prose ul {
+            margin-top: 1rem !important;
+            margin-bottom: 1rem !important;
+        }
+        .prose li {
+            margin-top: 0.35rem !important;
+            margin-bottom: 0.35rem !important;
+            line-height: 1.75 !important;
+        }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <article class="bg-cream pt-36 pb-24">
