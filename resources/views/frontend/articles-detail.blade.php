@@ -92,6 +92,23 @@
             margin-bottom: 0.35rem !important;
             line-height: 1.75 !important;
         }
+
+        /* 10. Blockquote / Kutipan: persis seperti di editor admin (menjorok, garis kiri, italic, soft background) */
+        .prose blockquote {
+            margin-top: 1.5rem !important;
+            margin-bottom: 1.5rem !important;
+            padding: 0.75rem 1.25rem !important;
+            border-left: 4px solid var(--color-primary, #70080B) !important;
+            background-color: rgba(112, 8, 11, 0.03) !important;
+            border-radius: 0 0.5rem 0.5rem 0 !important;
+            font-style: italic !important;
+            color: #4b5563 !important;
+            quotes: none !important;
+        }
+        .prose blockquote p {
+            margin: 0 !important;
+            font-style: italic !important;
+        }
     </style>
 
     <article class="bg-cream pt-36 pb-24">
