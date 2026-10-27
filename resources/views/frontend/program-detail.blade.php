@@ -53,9 +53,29 @@
             color: var(--color-primary, #70080B) !important;
             opacity: 0.45 !important;
         }
-        .prose blockquote p {
-            margin: 0 !important;
-            font-style: italic !important;
+        /* 5. Hirarki Sub Judul (h2) dan Anak Judul (h3) di Frontend */
+        .prose h2 {
+            font-size: 1.5rem !important;
+            font-weight: 900 !important;
+            color: #70080B !important; /* Warna khas Kawungpitu */
+            border-left: 4px solid #70080B !important;
+            padding-left: 0.75rem !important;
+            margin-top: 2.25rem !important;
+            margin-bottom: 1rem !important;
+            letter-spacing: -0.02em !important;
+        }
+        .prose h3 {
+            font-size: 1.25rem !important;
+            font-weight: 800 !important;
+            color: #1f2937 !important;
+            margin-top: 1.75rem !important;
+            margin-bottom: 0.75rem !important;
+            padding-left: 0.25rem !important;
+        }
+        .prose h4 {
+            font-size: 1.1rem !important;
+            font-weight: 700 !important;
+            color: #374151 !important;
         }
     </style>
 

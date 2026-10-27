@@ -47,6 +47,55 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('images/logo-kawung.png'))
             ->renderHook(
+                'panels::head.done',
+                fn(): string => Blade::render('
+                    <style>
+                        /* 1. Sticky Toolbar RichEditor Trix agar ikut scrolling */
+                        .fi-fo-rich-editor {
+                            overflow: visible !important;
+                        }
+                        .fi-fo-rich-editor-toolbar {
+                            position: sticky !important;
+                            top: 4rem !important; /* Pas di bawah navbar atas admin */
+                            z-index: 25 !important;
+                            background-color: #ffffff !important;
+                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+                            border-radius: 0.5rem 0.5rem 0 0 !important;
+                        }
+
+                        /* 2. Pembeda Visual Sub Judul (h2) dan Anak Judul (h3) di Trix Editor */
+                        trix-editor h1 {
+                            font-size: 1.5rem !important;
+                            font-weight: 800 !important;
+                            color: #111827 !important;
+                            margin-top: 1.5rem !important;
+                            margin-bottom: 0.75rem !important;
+                            border-bottom: 2px solid #e5e7eb !important;
+                            padding-bottom: 0.35rem !important;
+                        }
+                        trix-editor h2, 
+                        trix-editor [data-trix-attribute="heading"] {
+                            font-size: 1.35rem !important;
+                            font-weight: 800 !important;
+                            color: #70080B !important; /* Warna maroon khas Kawungpitu */
+                            margin-top: 1.5rem !important;
+                            margin-bottom: 0.65rem !important;
+                            border-left: 4px solid #70080B !important;
+                            padding-left: 0.75rem !important;
+                        }
+                        trix-editor h3, 
+                        trix-editor [data-trix-attribute="subHeading"] {
+                            font-size: 1.15rem !important;
+                            font-weight: 700 !important;
+                            color: #374151 !important; /* Slate gelap */
+                            margin-top: 1.25rem !important;
+                            margin-bottom: 0.5rem !important;
+                            padding-left: 0.5rem !important;
+                        }
+                    </style>
+                ')
+            )
+            ->renderHook(
                 'panels::user-menu.before',
                 fn(): string => Blade::render('
                     <div class="hidden sm:block text-right mr-3 font-bold text-sm text-gray-800">
