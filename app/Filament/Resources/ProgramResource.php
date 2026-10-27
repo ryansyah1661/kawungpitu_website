@@ -198,7 +198,7 @@ class ProgramResource extends Resource
                                         modifyQueryUsing: fn($query) => $query->where('type', 'program')
                                     )
                                     ->getOptionLabelFromRecordUsing(fn($record) => $record->getTranslation('name', app()->getLocale()))
-                                    ->required()
+                                    ->nullable()
                                     ->preload()
                                     ->searchable(),
 
