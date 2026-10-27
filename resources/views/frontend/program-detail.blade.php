@@ -98,45 +98,45 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <article class="bg-cream pt-36 pb-24">
-        <div class="max-w-7xl mx-auto px-8 md:px-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
-            
-            {{-- KIRI: KONTEN UTAMA --}}
-            <div class="lg:col-span-2">
-                {{-- Breadcrumb: Poles lebih halus & hapus judul program --}}
-                <nav class="mb-8 flex items-center space-x-3 text-[10px] uppercase tracking-normal font-tegas text-gray-400">
-                    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
-                        class="hover:text-primary transition-colors">{{ __('messages.navbar.home') }}</a>
-                    <span class="text-gray-300">/</span>
-                    <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
-                        class="hover:text-primary transition-colors">{{ __('messages.navbar.program') }}</a>
-                </nav>
+        <div class="max-w-7xl mx-auto px-8 md:px-12">
+            {{-- Breadcrumb: Poles lebih halus & hapus judul program --}}
+            <nav class="mb-8 flex items-center space-x-3 text-[10px] uppercase tracking-normal font-tegas text-gray-400">
+                <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
+                    class="hover:text-primary transition-colors">{{ __('messages.navbar.home') }}</a>
+                <span class="text-gray-300">/</span>
+                <a href="{{ route('program.index', ['locale' => app()->getLocale()]) }}"
+                    class="hover:text-primary transition-colors">{{ __('messages.navbar.program') }}</a>
+            </nav>
 
-                {{-- Category + Metadata --}}
-                <div class="flex flex-wrap gap-2 mb-8 uppercase tracking-normal">
-                    @foreach ($program->categories as $category)
-                        <span class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 whitespace-nowrap">
-                            @if ($category->icon)
-                                <img src="{{ asset('storage/' . $category->icon) }}" class="w-3.5 h-3.5 object-contain brightness-0 invert" alt="{{ $category->name }}">
-                            @else
-                                <span class="material-symbols-outlined text-[14px]">category</span>
-                            @endif
-                            {{ $category->name }}
-                        </span>
-                    @endforeach
-
-                    {{-- Status Badge --}}
-                    <span class="{{ $program->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[10px] font-bold py-2 px-4 rounded-lg shadow-lg flex items-center gap-1.5">
-                        @if ($program->status === 'ongoing')
-                            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+            {{-- Category + Metadata --}}
+            <div class="flex flex-wrap gap-2 mb-8 uppercase tracking-normal">
+                @foreach ($program->categories as $category)
+                    <span class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 whitespace-nowrap">
+                        @if ($category->icon)
+                            <img src="{{ asset('storage/' . $category->icon) }}" class="w-3.5 h-3.5 object-contain brightness-0 invert" alt="{{ $category->name }}">
+                        @else
+                            <span class="material-symbols-outlined text-[14px]">category</span>
                         @endif
-                        {{ $program->status === 'ongoing' ? __('messages.program.ongoing') : __('messages.program.completed') }}
+                        {{ $category->name }}
                     </span>
-                </div>
+                @endforeach
 
-                {{-- FIX RESPONSIVE: Judul Detail Program diturunkan jadi text-2xl di mobile --}}
-                <h1 class="font-tegas text-2xl sm:text-3xl md:text-5xl font-black text-dark uppercase tracking-normal leading-tight mb-10">
-                    {{ $program->title }}
-                </h1>
+                {{-- Status Badge --}}
+                <span class="{{ $program->status === 'ongoing' ? 'bg-yellow-500' : 'bg-green-500' }} text-white text-[10px] font-bold py-2 px-4 rounded-lg shadow-lg flex items-center gap-1.5">
+                    @if ($program->status === 'ongoing')
+                        <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+                    @endif
+                    {{ $program->status === 'ongoing' ? __('messages.program.ongoing') : __('messages.program.completed') }}
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                {{-- KIRI: KONTEN UTAMA --}}
+                <div class="lg:col-span-2">
+                    {{-- Judul Detail Program: berada di dalam kolom kiri agar lebarnya pas dan sejajar dengan isi konten & gambar --}}
+                    <h1 class="font-tegas text-2xl sm:text-3xl md:text-4xl font-black text-dark uppercase tracking-normal leading-tight mb-8">
+                        {{ $program->title }}
+                    </h1>
 
                 {{-- Featured Media --}}
                 @if ($program->featured_image)
@@ -310,6 +310,7 @@
                     @endif
                 </div>
             </aside>
+            </div>
         </div>
     </article>
 

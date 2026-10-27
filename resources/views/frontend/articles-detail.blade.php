@@ -159,32 +159,32 @@
     </style>
 
     <article class="bg-cream pt-36 pb-24">
-        <div class="max-w-7xl mx-auto px-8 md:px-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
-            
-            {{-- KIRI: KONTEN UTAMA --}}
-            <div class="lg:col-span-2">
-                {{-- Breadcrumb --}}
-                <nav class="mb-8 flex items-center space-x-3 text-[10px] uppercase tracking-normal font-tegas text-gray-400">
-                    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
-                        class="hover:text-primary transition-colors">{{ __('messages.navbar.home') }}</a>
-                    <span class="text-gray-300">/</span>
-                    <a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
-                        class="hover:text-primary transition-colors">{{ __('messages.navbar.article') }}</a>
-                </nav>
+        <div class="max-w-7xl mx-auto px-8 md:px-12">
+            {{-- Breadcrumb --}}
+            <nav class="mb-8 flex items-center space-x-3 text-[10px] uppercase tracking-normal font-tegas text-gray-400">
+                <a href="{{ route('home', ['locale' => app()->getLocale()]) }}"
+                    class="hover:text-primary transition-colors">{{ __('messages.navbar.home') }}</a>
+                <span class="text-gray-300">/</span>
+                <a href="{{ route('artikel.index', ['locale' => app()->getLocale()]) }}"
+                    class="hover:text-primary transition-colors">{{ __('messages.navbar.article') }}</a>
+            </nav>
 
-                {{-- Kategori --}}
-                <div class="flex flex-wrap gap-2 mb-8">
-                    @foreach ($artikel->categories as $category)
-                        <span class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-normal shadow-lg">
-                            {{ $category->name }}
-                        </span>
-                    @endforeach
-                </div>
+            {{-- Kategori --}}
+            <div class="flex flex-wrap gap-2 mb-8">
+                @foreach ($artikel->categories as $category)
+                    <span class="bg-primary text-white text-[10px] font-tegas font-black px-4 py-2 rounded-lg uppercase tracking-normal shadow-lg">
+                        {{ $category->name }}
+                    </span>
+                @endforeach
+            </div>
 
-                {{-- FIX RESPONSIVE: Judul Detail Artikel diturunkan jadi text-2xl di mobile --}}
-                <h1 class="font-tegas text-2xl sm:text-3xl md:text-5xl font-black text-dark uppercase tracking-normal leading-tight mb-12">
-                    {{ $artikel->title }}
-                </h1>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                {{-- KIRI: KONTEN UTAMA --}}
+                <div class="lg:col-span-2">
+                    {{-- Judul Detail Artikel: berada di kolom kiri agar lebarnya pas sejajar dengan isi konten --}}
+                    <h1 class="font-tegas text-2xl sm:text-3xl md:text-4xl font-black text-dark uppercase tracking-normal leading-tight mb-10">
+                        {{ $artikel->title }}
+                    </h1>
 
                 {{-- Isi Konten Artikel --}}
                 <div class="prose prose-lg max-w-none text-justify prose-figcaption:text-center prose-figcaption:italic prose-a:no-underline hover:prose-a:text-primary mb-16">
@@ -262,6 +262,7 @@
                     @endif
                 </div>
             </aside>
+            </div>
         </div>
     </article>
 
