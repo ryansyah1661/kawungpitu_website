@@ -82,15 +82,31 @@
             display: none !important;
         }
 
-        /* 9. List / poin-poin agar rapi */
-        .prose ol, .prose ul {
-            margin-top: 1rem !important;
-            margin-bottom: 1rem !important;
+        /* 9. List / Poin Berurutan (ol) & Bullet (ul) agar menjorok dan angkanya muncul tegas */
+        .prose ol {
+            list-style-type: decimal !important;
+            padding-left: 1.75rem !important;
+            margin-top: 1.25rem !important;
+            margin-bottom: 1.25rem !important;
         }
-        .prose li {
-            margin-top: 0.35rem !important;
-            margin-bottom: 0.35rem !important;
-            line-height: 1.75 !important;
+        .prose ul {
+            list-style-type: disc !important;
+            padding-left: 1.75rem !important;
+            margin-top: 1.25rem !important;
+            margin-bottom: 1.25rem !important;
+        }
+        .prose ol > li, .prose ul > li {
+            padding-left: 0.35rem !important;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+            line-height: 1.8 !important;
+        }
+        .prose ol > li::marker {
+            font-weight: 800 !important;
+            color: #70080B !important; /* Warna angka nomor maroon khas Kawungpitu */
+        }
+        .prose ul > li::marker {
+            color: #70080B !important;
         }
 
         /* 10. Blockquote / Kutipan: persis seperti di editor admin (menjorok, garis kiri, italic, soft background & tanda kutip) */
