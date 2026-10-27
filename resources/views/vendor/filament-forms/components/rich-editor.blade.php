@@ -19,7 +19,7 @@
             :valid="! $errors->has($statePath)"
             :attributes="
                 \Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())
-                    ->class(['fi-fo-rich-editor max-w-full overflow-x-auto'])
+                    ->class(['fi-fo-rich-editor max-w-full !overflow-visible'])
             "
         >
             <div
@@ -67,7 +67,7 @@
                 <trix-toolbar
                     id="trix-toolbar-{{ $id }}"
                     @class([
-                        'fi-fo-rich-editor-toolbar relative flex flex-col gap-x-3 border-b border-gray-100 px-2.5 py-2 dark:border-white/10',
+                        'fi-fo-rich-editor-toolbar sticky top-16 z-30 bg-white shadow-sm flex flex-col gap-x-3 border-b border-gray-100 px-2.5 py-2 dark:bg-gray-900 dark:border-white/10 rounded-t-lg',
                         'hidden' => ! count($getToolbarButtons()),
                     ])
                 >

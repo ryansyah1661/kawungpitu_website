@@ -47,23 +47,28 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('images/logo-kawung.png'))
             ->renderHook(
-                'panels::head.done',
+                'panels::head.end',
                 fn(): string => Blade::render('
                     <style>
-                        /* 1. Sticky Toolbar RichEditor Trix agar ikut scrolling */
-                        .fi-fo-rich-editor {
+                        /* 1. Pastikan parent container tidak memblokir sticky (hilangkan overflow hidden) */
+                        .fi-fo-rich-editor,
+                        .fi-input-wrp,
+                        .fi-fo-field-wrp,
+                        .fi-section-content {
                             overflow: visible !important;
                         }
+                        
+                        /* Sticky Toolbar RichEditor Trix agar menempel saat scroll */
                         .fi-fo-rich-editor-toolbar {
                             position: sticky !important;
-                            top: 4rem !important; /* Pas di bawah navbar atas admin */
-                            z-index: 25 !important;
+                            top: 4.25rem !important; /* Di bawah navbar atas admin */
+                            z-index: 30 !important;
                             background-color: #ffffff !important;
-                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
-                            border-radius: 0.5rem 0.5rem 0 0 !important;
+                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important;
+                            border-bottom: 2px solid #f3f4f6 !important;
                         }
 
-                        /* 2. Pembeda Visual Sub Judul (h2) dan Anak Judul (h3) di Trix Editor */
+                        /* 2. Pembeda Visual Sub Judul (h2) dan Anak Judul (h3) di Trix Editor Admin */
                         trix-editor h1 {
                             font-size: 1.5rem !important;
                             font-weight: 800 !important;
@@ -92,7 +97,149 @@ class AdminPanelProvider extends PanelProvider
                             margin-bottom: 0.5rem !important;
                             padding-left: 0.5rem !important;
                         }
+
+                        /* Floating Bubble Menu ketika teks diblok */
+                        #floating-trix-bubble {
+                            display: none;
+                            position: absolute;
+                            z-index: 9999;
+                            background: #1f2937;
+                            padding: 4px 8px;
+                            border-radius: 8px;
+                            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+                            gap: 4px;
+                            align-items: center;
+                        }
+                        #floating-trix-bubble button {
+                            color: #f9fafb;
+                            background: transparent;
+                            border: none;
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            font-size: 13px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: background-color 0.15s;
+                        }
+                        #floating-trix-bubble button:hover {
+                            background: #374151;
+                            color: #ffffff;
+                        }
+                        #floating-trix-bubble .divider {
+                            width: 1px;
+                            height: 16px;
+                            background: #4b5563;
+                            margin: 0 2px;
+                        }
                     </style>
+                ')
+            )
+            ->renderHook(
+                'panels::body.end',
+                fn(): string => Blade::render('
+                    {{-- Floating Bubble Toolbar saat teks diseleksi / diblok --}}
+                    <div id="floating-trix-bubble">
+                        <button type="button" onmousedown="event.preventDefault(); applyTrixFormat(\'bold\');" title="Bold"><b>B</b></button>
+                        <button type="button" onmousedown="event.preventDefault(); applyTrixFormat(\'italic\');" title="Italic"><i>I</i></button>
+                        <button type="button" onmousedown="event.preventDefault(); applyTrixFormat(\'underline\');" title="Underline"><u>U</u></button>
+                        <button type="button" onmousedown="event.preventDefault(); applyTrixFormat(\'strike\');" title="Strikethrough"><s>S</s></button>
+                        <div class="divider"></div>
+                        <button type="button" onmousedown="event.preventDefault(); applyTrixFormat(\'heading\');" title="Sub Judul">H2</button>
+                        <button type="button" onmousedown="event.preventDefault(); applyTrixFormat(\'subHeading\');" title="Anak Judul">H3</button>
+                        <button type="button" onmousedown="event.preventDefault(); applyTrixFormat(\'quote\');" title="Kutipan">“ ”</button>
+                    </div>
+
+                    <script>
+                        function applyTrixFormat(attribute) {
+                            const activeEditor = document.activeElement && document.activeElement.tagName === "TRIX-EDITOR" 
+                                ? document.activeElement 
+                                : document.querySelector("trix-editor");
+                            if (!activeEditor || !activeEditor.editor) return;
+
+                            if (attribute === "heading") {
+                                const isH2 = activeEditor.editor.attributeIsActive("heading");
+                                if (isH2) {
+                                    activeEditor.editor.deactivateAttribute("heading");
+                                } else {
+                                    activeEditor.editor.deactivateAttribute("subHeading");
+                                    activeEditor.editor.activateAttribute("heading");
+                                }
+                            } else if (attribute === "subHeading") {
+                                const isH3 = activeEditor.editor.attributeIsActive("subHeading");
+                                if (isH3) {
+                                    activeEditor.editor.deactivateAttribute("subHeading");
+                                } else {
+                                    activeEditor.editor.deactivateAttribute("heading");
+                                    activeEditor.editor.activateAttribute("subHeading");
+                                }
+                            } else {
+                                const isActive = activeEditor.editor.attributeIsActive(attribute);
+                                if (isActive) {
+                                    activeEditor.editor.deactivateAttribute(attribute);
+                                } else {
+                                    activeEditor.editor.activateAttribute(attribute);
+                                }
+                            }
+                        }
+
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const bubble = document.getElementById("floating-trix-bubble");
+                            if (!bubble) return;
+
+                            function updateBubblePosition() {
+                                const selection = window.getSelection();
+                                if (!selection || selection.isCollapsed || !selection.rangeCount) {
+                                    bubble.style.display = "none";
+                                    return;
+                                }
+
+                                const anchor = selection.anchorNode;
+                                const trix = anchor ? (anchor.nodeType === 1 ? anchor.closest("trix-editor") : anchor.parentElement?.closest("trix-editor")) : null;
+                                
+                                if (!trix) {
+                                    bubble.style.display = "none";
+                                    return;
+                                }
+
+                                const range = selection.getRangeAt(0);
+                                const rect = range.getBoundingClientRect();
+
+                                if (rect.width === 0 || rect.height === 0) {
+                                    bubble.style.display = "none";
+                                    return;
+                                }
+
+                                bubble.style.display = "flex";
+                                const bubbleWidth = bubble.offsetWidth || 240;
+                                const bubbleHeight = bubble.offsetHeight || 38;
+
+                                let top = rect.top + window.scrollY - bubbleHeight - 8;
+                                let left = rect.left + window.scrollX + (rect.width / 2) - (bubbleWidth / 2);
+
+                                if (left < 10) left = 10;
+                                if (top < window.scrollY + 60) {
+                                    // Jika terlalu dekat ke atas, taruh di bawah teks yang diseleksi
+                                    top = rect.bottom + window.scrollY + 8;
+                                }
+
+                                bubble.style.top = top + "px";
+                                bubble.style.left = left + "px";
+                            }
+
+                            document.addEventListener("selectionchange", function() {
+                                setTimeout(updateBubblePosition, 10);
+                            });
+
+                            document.addEventListener("mousedown", function(e) {
+                                if (!bubble.contains(e.target)) {
+                                    const sel = window.getSelection();
+                                    if (sel && sel.isCollapsed) {
+                                        bubble.style.display = "none";
+                                    }
+                                }
+                            });
+                        });
+                    </script>
                 ')
             )
             ->renderHook(
